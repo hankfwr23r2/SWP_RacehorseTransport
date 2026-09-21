@@ -18,17 +18,19 @@
     <!-- Header -->
     <header class="main-header">
         <div class="container header-container">
-            <div class="logo">
+            <a href="manager_dashboard.html" class="logo" style="text-decoration: none; color: inherit;">
                 <div class="logo-icon-eq">EQ</div>
                 <span>Vận chuyển Ngựa</span>
-            </div>
-            <nav class="main-nav">
-                <a href="manager_dashboard.html">Bảng điều khiển</a>
-                <a href="manager_phe_duyet.html" class="active">Phê duyệt Đơn hàng</a>
-                <a href="manager_phan_cong.html">Phân công</a>
-                <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a>
-                <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
+            </a>
+            <nav class="main-nav" aria-label="Menu chính">
+                <ul>
+                    <li><a href="manager_dashboard.html">Bảng điều khiển</a></li>
+                    <li><a href="manager_phe_duyet.html" class="active" aria-current="page">Phê duyệt Đơn hàng</a></li>
+                    <li><a href="manager_phan_cong.html">Phân công</a></li>
+                    <li><a href="manager_trip_reports.html">Báo cáo Chuyến đi</a></li>
+                    <li><a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a></li>
+                    <li><a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a></li>
+                </ul>
             </nav>
             <div class="user-actions">
                 <div class="avatar"></div>
@@ -45,24 +47,19 @@
         <!-- Page Title & Breadcrumb -->
         <div class="page-header">
             <div class="breadcrumb">
-                <span class="text-muted">Operations System</span> /
+                <span class="text-muted">Hệ thống Vận hành</span> /
                 <span class="text-orange">Phê duyệt Đơn hàng</span>
             </div>
             <h1>Phê duyệt Đơn hàng</h1>
-            <p class="subtitle">Xem xét and approve transport requests evaluated by the Operations Team.</p>
+            <p class="subtitle">Xem xét và phê duyệt các yêu cầu vận chuyển từ Đội Vận hành.</p>
         </div>
 
         <div class="card table-card">
             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <h2 style="margin: 0;">Quản lý Phê duyệt Đơn hàng</h2>
                 <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
-                    <select style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; font-family: Inter; color: #334155; cursor: pointer;">
-                        <option value="all">Loại dịch vụ: Tất cả</option>
-                        <option value="domestic">Nội địa</option>
-                        <option value="international">Quốc tế</option>
-                    </select>
                     <div class="search-bar" style="position: relative;">
-                        <input type="text" placeholder="Tìm Mã đơn, Khách hàng..." style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
+                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng..." oninput="searchTable()" style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
                         <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
                     </div>
                 </div>
@@ -70,9 +67,9 @@
             
             <!-- Tabs Trạng thái -->
             <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
-                <div style="padding-bottom: 12px; border-bottom: 2px solid #ea580c; color: #ea580c; font-weight: 600; cursor: pointer;">Cần xử lý (2)</div>
-                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Đã phê duyệt (150)</div>
-                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Từ chối (5)</div>
+                <div class="status-tab active-tab" data-tab="pending" onclick="switchTab('pending')" style="padding-bottom: 12px; font-weight: 600; cursor: pointer;">Cần xử lý (<span id="count-pending">0</span>)</div>
+                <div class="status-tab" data-tab="approved" onclick="switchTab('approved')" style="padding-bottom: 12px; font-weight: 500; cursor: pointer;">Đã phê duyệt (<span id="count-approved">0</span>)</div>
+                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')" style="padding-bottom: 12px; font-weight: 500; cursor: pointer;">Từ chối (<span id="count-rejected">0</span>)</div>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
@@ -88,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr data-status="pending">
                             <td class="font-semibold" style="color: #ea580c;">EQ-2026-9842</td>
                             <td class="text-muted">Al Shaqab Racing</td>
                             <td>Doha (DOH) &rarr; Paris (CDG)</td>
@@ -96,10 +93,10 @@
                             <td class="text-muted">18/10/2026</td>
                             <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
                             <td class="text-right">
-                                <button class="btn btn-primary" onclick="openModal()" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;"><i class="fa-solid fa-check"></i> Xem & Duyệt</button>
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr data-status="pending">
                             <td class="font-semibold" style="color: #ea580c;">EQ-2026-9840</td>
                             <td class="text-muted">Godolphin Stables</td>
                             <td>Dubai (DXB) &rarr; London (LHR)</td>
@@ -107,7 +104,183 @@
                             <td class="text-muted">17/10/2026</td>
                             <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
                             <td class="text-right">
-                                <button class="btn btn-primary" onclick="openModal()" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;"><i class="fa-solid fa-check"></i> Xem & Duyệt</button>
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9838</td>
+                            <td class="text-muted">Coolmore Stud</td>
+                            <td>Dublin (DUB) &rarr; Tokyo (NRT)</td>
+                            <td class="text-muted">4 (Thoroughbred)</td>
+                            <td class="text-muted">16/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9836</td>
+                            <td class="text-muted">Darley Japan</td>
+                            <td>Tokyo (NRT) &rarr; Sydney (SYD)</td>
+                            <td class="text-muted">1 (Arabian)</td>
+                            <td class="text-muted">15/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9834</td>
+                            <td class="text-muted">Juddmonte Farms</td>
+                            <td>Lexington (LEX) &rarr; London (LHR)</td>
+                            <td class="text-muted">2 (Thoroughbred)</td>
+                            <td class="text-muted">14/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9832</td>
+                            <td class="text-muted">Wertheimer et Frère</td>
+                            <td>Paris (CDG) &rarr; New York (JFK)</td>
+                            <td class="text-muted">3 (Warmblood)</td>
+                            <td class="text-muted">13/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9830</td>
+                            <td class="text-muted">Shadwell Racing</td>
+                            <td>Dubai (DXB) &rarr; Melbourne (MEL)</td>
+                            <td class="text-muted">5 (Arabian)</td>
+                            <td class="text-muted">12/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9828</td>
+                            <td class="text-muted">Aga Khan Studs</td>
+                            <td>Paris (CDG) &rarr; Dubai (DXB)</td>
+                            <td class="text-muted">2 (Thoroughbred)</td>
+                            <td class="text-muted">11/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9826</td>
+                            <td class="text-muted">Northern Farm</td>
+                            <td>Tokyo (NRT) &rarr; Hong Kong (HKG)</td>
+                            <td class="text-muted">1 (Thoroughbred)</td>
+                            <td class="text-muted">10/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9824</td>
+                            <td class="text-muted">Claiborne Farm</td>
+                            <td>Lexington (LEX) &rarr; Dubai (DXB)</td>
+                            <td class="text-muted">3 (Warmblood)</td>
+                            <td class="text-muted">09/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9822</td>
+                            <td class="text-muted">Lane's End Farm</td>
+                            <td>Lexington (LEX) &rarr; Paris (CDG)</td>
+                            <td class="text-muted">2 (Thoroughbred)</td>
+                            <td class="text-muted">08/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9820</td>
+                            <td class="text-muted">Sumaya U.S. Stables</td>
+                            <td>New York (JFK) &rarr; Doha (DOH)</td>
+                            <td class="text-muted">4 (Arabian)</td>
+                            <td class="text-muted">07/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9818</td>
+                            <td class="text-muted">Moyglare Stud Farm</td>
+                            <td>Dublin (DUB) &rarr; Melbourne (MEL)</td>
+                            <td class="text-muted">1 (Thoroughbred)</td>
+                            <td class="text-muted">06/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9816</td>
+                            <td class="text-muted">Calumet Farm</td>
+                            <td>Lexington (LEX) &rarr; Tokyo (NRT)</td>
+                            <td class="text-muted">2 (Warmblood)</td>
+                            <td class="text-muted">05/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9814</td>
+                            <td class="text-muted">Stonestreet Stables</td>
+                            <td>New York (JFK) &rarr; London (LHR)</td>
+                            <td class="text-muted">3 (Thoroughbred)</td>
+                            <td class="text-muted">04/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9812</td>
+                            <td class="text-muted">Rabbah Bloodstock</td>
+                            <td>Dubai (DXB) &rarr; Paris (CDG)</td>
+                            <td class="text-muted">2 (Arabian)</td>
+                            <td class="text-muted">03/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9810</td>
+                            <td class="text-muted">Ballylinch Stud</td>
+                            <td>Dublin (DUB) &rarr; New York (JFK)</td>
+                            <td class="text-muted">1 (Thoroughbred)</td>
+                            <td class="text-muted">02/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
+                            </td>
+                        </tr>
+                        <tr data-status="pending">
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9808</td>
+                            <td class="text-muted">WinStar Farm</td>
+                            <td>Lexington (LEX) &rarr; Hong Kong (HKG)</td>
+                            <td class="text-muted">5 (Warmblood)</td>
+                            <td class="text-muted">01/10/2026</td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-primary" onclick="openModal(this)" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;">Xem & Duyệt</button>
                             </td>
                         </tr>
                     </tbody>
@@ -116,14 +289,8 @@
             
             <!-- Phân trang (Pagination) -->
             <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
-                <span class="text-muted" style="font-size: 0.85rem;">Hiển thị 1-10 của 150 Đơn hàng</span>
-                <div class="pagination" style="display: flex; gap: 4px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang trước</button>
-                    <button class="btn btn-primary" style="padding: 6px 12px; border: none; border-radius: 4px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">1</button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">2</button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">3</button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang sau</button>
-                </div>
+                <span id="pagination-info" class="text-muted" style="font-size: 0.85rem;"></span>
+                <div id="pagination-buttons" class="pagination" style="display: flex; gap: 4px;"></div>
             </div>
         </div>
 
@@ -132,19 +299,19 @@
     <!-- Đánh giá Khả thi Xem xét Modal -->
     <div id="feasibilityModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 650px;">
-            <h2 class="modal-title">Xem xét Đánh giá Khả thi Estimate</h2>
-            <p class="modal-subtitle">The coordinator has reviewed Order EQ-2026-9840 and provided the following quote.</p>
+            <h2 class="modal-title">Xem xét Đánh giá Khả thi</h2>
+            <p class="modal-subtitle">Điều phối viên đã xem xét đơn hàng và cung cấp báo giá dưới đây.</p>
             
             <div class="modal-details" style="gap: 16px;">
                 <!-- 1. Thông tin Vận chuyển -->
                 <div class="detail-section">
                     <div class="detail-row">
-                        <span class="detail-label">Expected Tuyến đường</span>
+                        <span class="detail-label">Tuyến đường dự kiến</span>
                         <span class="detail-value font-semibold">Dubai (DXB) &rarr; Frankfurt (FRA) &rarr; London (LHR)</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Transport Type</span>
-                        <span class="detail-value font-semibold">Air Transport (Climate Control)</span>
+                        <span class="detail-label">Loại vận chuyển</span>
+                        <span class="detail-value font-semibold">Vận chuyển Hàng không (Kiểm soát Khí hậu)</span>
                     </div>
                 </div>
 
@@ -152,21 +319,17 @@
                 <div class="detail-section" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #f8fafc;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                         <div>
-                            <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: #1e293b;">
-                                <i class="fa-solid fa-file-shield text-orange" style="margin-right: 8px;"></i> Cơ sở xét duyệt (Hồ sơ pháp lý & Thú y)
-                            </h3>
+                            <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: #1e293b;">Cơ sở xét duyệt (Hồ sơ pháp lý & Thú y)</h3>
                             <p style="font-size: 0.85rem; color: #64748b; margin: 0;">
                                 * Vui lòng kiểm tra hồ sơ. <span id="checklist-counter" style="color: #ea580c; font-weight: 600;">0/8</span> hoàn tất
                             </p>
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center;">
-                            <button onclick="checkAllHorses()" class="btn" style="background: #e2e8f0; color: #334155; font-size: 0.8rem; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px;">
-                                <i class="fa-solid fa-check-double"></i> Xác nhận Tất cả
-                            </button>
+                            <button onclick="checkAllHorses()" class="btn" style="background: #e2e8f0; color: #334155; font-size: 0.8rem; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px;">Xác nhận Tất cả</button>
                             <div style="display: flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px;">
-                                <button onclick="prevHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></button>
+                                <button onclick="prevHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;">&lt;</button>
                                 <span id="horse-page-indicator" style="font-size: 0.85rem; font-weight: 600; min-width: 40px; text-align: center;">1 / 2</span>
-                                <button onclick="nextHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+                                <button onclick="nextHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;">&gt;</button>
                             </div>
                         </div>
                     </div>
@@ -174,7 +337,7 @@
                     <div id="horse-carousel" style="padding-top: 12px; border-top: 1px dashed #cbd5e1;">
                         <!-- Horse #1 -->
                         <div class="horse-checklist active-horse" style="margin-bottom: 16px;">
-                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">🐴 Ngựa #1 (Arabian - Đực)</h4>
+                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">Ngựa #1 (Arabian - Đực)</h4>
                             <div class="checkbox-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                 <label class="custom-checkbox">
                                     <input type="checkbox" class="doc-check" onchange="validateChecklist()">
@@ -201,7 +364,7 @@
 
                         <!-- Horse #2 -->
                         <div class="horse-checklist" style="display: none; margin-bottom: 16px;">
-                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">🐴 Ngựa #2 (Arabian - Cái)</h4>
+                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">Ngựa #2 (Arabian - Cái)</h4>
                             <div class="checkbox-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                 <label class="custom-checkbox">
                                     <input type="checkbox" class="doc-check" onchange="validateChecklist()">
@@ -231,20 +394,47 @@
                 <!-- 3. Chi phí -->
                 <div class="detail-section" style="border-top: 1px solid #e2e8f0; padding-top: 16px;">
                     <div class="detail-row">
-                        <span class="detail-label">Total Thành tiền (Dự kiến)</span>
+                        <span class="detail-label">Tổng thành tiền (Dự kiến)</span>
                         <span class="detail-value font-bold text-orange">612,500,000 VND</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Deposit (50%)</span>
+                        <span class="detail-label">Đặt cọc (50%)</span>
                         <span class="detail-value font-bold">306,250,000 VND</span>
                     </div>
                 </div>
             </div>
 
+            <div id="reject-reason-box" style="display: none; margin-top: 16px; padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">
+                <label style="font-size: 0.85rem; font-weight: 600; color: #dc2626; display: block; margin-bottom: 8px;">Lý do từ chối <span style="color: #ef4444;">*</span></label>
+                <textarea id="reject-reason-input" rows="3" placeholder="Nhập lý do từ chối đơn hàng..." style="width: 100%; padding: 10px 12px; border: 1px solid #fecaca; border-radius: 6px; font-family: Inter; font-size: 0.85rem; resize: vertical; outline: none; box-sizing: border-box;"></textarea>
+                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+                    <button onclick="hideRejectReason()" style="padding: 8px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer; font-family: Inter;">Hủy</button>
+                    <button onclick="confirmReject()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #dc2626; color: white; font-weight: 600; cursor: pointer; font-family: Inter;">Xác nhận Từ chối</button>
+                </div>
+            </div>
+
             <div class="modal-actions" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
                 <button class="btn btn-outline" onclick="closeModal()" style="padding: 10px 20px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer;">Đóng</button>
-                <button class="btn btn-danger" onclick="closeModal()" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ef4444; color: white; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-xmark"></i> Từ chối</button>
-                <button id="btn-approve" class="btn btn-primary btn-disabled" disabled style="padding: 10px 20px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: not-allowed;"><i class="fa-solid fa-check"></i> Phê duyệt Khởi hành</button>
+                <button id="btn-reject" class="btn btn-danger" onclick="showRejectReason()" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ef4444; color: white; font-weight: 600; cursor: pointer;">Từ chối</button>
+                <button id="btn-approve" class="btn btn-primary btn-disabled" disabled onclick="approveOrder()" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: not-allowed;">Phê duyệt Khởi hành</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xem lý do từ chối -->
+    <div id="rejectReasonModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 480px; padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #1e293b;">Lý do Từ chối <span id="reject-modal-order-id" style="color: #dc2626;"></span></h3>
+                </div>
+                <button onclick="closeRejectReasonModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748b;">&times;</button>
+            </div>
+            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px; font-size: 0.9rem; color: #991b1b; line-height: 1.5;">
+                <span id="reject-modal-reason"></span>
+            </div>
+            <div style="margin-top: 16px; text-align: right;">
+                <button onclick="closeRejectReasonModal()" style="padding: 8px 20px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer; font-family: Inter;">Đóng</button>
             </div>
         </div>
     </div>
@@ -348,73 +538,50 @@
             border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
+            background: #94a3b8;
+        }
+        .badge-success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .badge-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .status-tab {
+            color: #64748b;
+            transition: color 0.2s;
+        }
+        .status-tab:hover {
+            color: #1e293b;
+        }
+        .status-tab.active-tab {
+            color: #ea580c;
+            border-bottom: 2px solid #ea580c;
+            font-weight: 600;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
     </style>
 
-    <script>
-        let currentHorseIndex = 0;
-        
-        function updateHorseCarousel() {
-            const horses = document.querySelectorAll('.horse-checklist');
-            horses.forEach((h, idx) => {
-                h.style.display = (idx === currentHorseIndex) ? 'block' : 'none';
-            });
-            document.getElementById('horse-page-indicator').innerText = `${currentHorseIndex + 1} / ${horses.length}`;
-        }
-        
-        function prevHorse() {
-            if (currentHorseIndex > 0) {
-                currentHorseIndex--;
-                updateHorseCarousel();
-            }
-        }
-        
-        function nextHorse() {
-            const horses = document.querySelectorAll('.horse-checklist');
-            if (currentHorseIndex < horses.length - 1) {
-                currentHorseIndex++;
-                updateHorseCarousel();
-            }
-        }
-
-        function checkAllHorses() {
-            const checkboxes = document.querySelectorAll('.doc-check');
-            checkboxes.forEach(cb => cb.checked = true);
-            validateChecklist();
-        }
-
-        function openModal() {
-            document.getElementById('feasibilityModal').style.display = 'flex';
-            const checkboxes = document.querySelectorAll('.doc-check');
-            checkboxes.forEach(cb => cb.checked = false);
-            currentHorseIndex = 0;
-            updateHorseCarousel();
-            validateChecklist();
-        }
-        function closeModal() {
-            document.getElementById('feasibilityModal').style.display = 'none';
-        }
-        function validateChecklist() {
-            const checkboxes = document.querySelectorAll('.doc-check');
-            const totalChecks = checkboxes.length;
-            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
-            
-            document.getElementById('checklist-counter').innerText = `${checkedCount}/${totalChecks} hoàn tất`;
-
-            const btnApprove = document.getElementById('btn-approve');
-            
-            if (checkedCount === totalChecks) {
-                btnApprove.disabled = false;
-                btnApprove.classList.remove('btn-disabled');
-                btnApprove.classList.add('btn-active');
-            } else {
-                btnApprove.disabled = true;
-                btnApprove.classList.add('btn-disabled');
-                btnApprove.classList.remove('btn-active');
-            }
-        }
-    </script>
+    <script src="manager_phe_duyet.js"></script>
 <script src="../global_translate.js"></script>
 </body>
 </html>

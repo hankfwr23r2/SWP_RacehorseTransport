@@ -63,13 +63,22 @@ body {
 
 .main-nav {
     display: flex;
-    gap: 24px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 16px;
+    flex-wrap: nowrap;
 }
 
 .main-nav a {
     color: #cbd5e1;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
     font-weight: 500;
     padding-bottom: 4px;
     border-bottom: 2px solid transparent;
@@ -357,6 +366,41 @@ select.form-control {
     padding-top: 20px;
     color: #64748b;
     font-size: 0.8rem;
+}
+
+.status-tab {
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.status-tab:hover {
+    color: var(--text-main);
+}
+
+.status-tab.active-tab {
+    color: var(--accent-orange);
+    border-bottom-color: var(--accent-orange);
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 @media (max-width: 768px) {

@@ -66,13 +66,22 @@ body {
 
 .main-nav {
     display: flex;
-    gap: 24px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 16px;
+    flex-wrap: nowrap;
 }
 
 .main-nav a {
     color: #cbd5e1;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
     font-weight: 500;
     padding-bottom: 4px;
     border-bottom: 2px solid transparent;
@@ -146,7 +155,7 @@ body {
 /* --- Report Layout --- */
 .report-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
 
@@ -172,7 +181,7 @@ body {
 }
 
 .card-body {
-    padding: 24px;
+    padding: 16px;
     flex: 1;
 }
 
@@ -187,9 +196,11 @@ body {
 }
 
 .data-table th, .data-table td {
-    padding: 16px 24px;
+    padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+    font-size: 0.85rem;
 }
 
 .data-table th {
@@ -242,6 +253,7 @@ body {
 
 .info-value {
     font-weight: 600;
+    font-size: 0.85rem;
     color: var(--text-main);
 }
 
@@ -270,8 +282,9 @@ body {
 
 .log-item {
     display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    font-size: 0.85rem;
     border-bottom: 1px dashed var(--border-color);
     padding-bottom: 8px;
 }
@@ -283,7 +296,7 @@ body {
 
 .log-time {
     color: var(--text-muted);
-    width: 120px;
+    min-width: 100px;
 }
 
 .log-event {
