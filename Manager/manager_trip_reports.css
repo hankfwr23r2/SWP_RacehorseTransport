@@ -1,0 +1,369 @@
+/* ===== CSS for Manager Trip Reports ===== */
+:root {
+    --primary-color: #0f172a;
+    --accent-orange: #ea580c;
+    --accent-orange-hover: #c2410c;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --green-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f97316;
+    --purple-color: #8b5cf6;
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* --- Header --- */
+.main-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 16px 0;
+    border-bottom: 2px solid var(--accent-orange);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.logo-icon-eq {
+    background-color: var(--accent-orange);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.main-nav {
+    display: flex;
+    gap: 24px;
+}
+
+.main-nav a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+}
+
+.main-nav a:hover {
+    color: white;
+}
+
+.main-nav a.active {
+    color: white;
+    font-weight: 600;
+    border-bottom-color: var(--accent-orange);
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    background-color: #475569;
+    border-radius: 50%;
+}
+
+.greeting {
+    color: #f8fafc;
+}
+
+.divider {
+    color: #475569;
+}
+
+.btn-logout {
+    background: transparent;
+    border: none;
+    color: var(--accent-orange);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+}
+.btn-logout:hover {
+    text-decoration: underline;
+}
+
+/* --- Main Content --- */
+.main-content {
+    padding: 32px 24px 64px 24px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 1.75rem;
+    color: var(--primary-color);
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* --- Report Layout --- */
+.report-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 24px;
+    flex: 1;
+}
+
+/* --- Table Styles --- */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 16px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    background-color: #f8fafc;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.data-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+.data-table tr.selected {
+    background-color: #fff7ed;
+    border-left: 4px solid var(--accent-orange);
+}
+
+.font-semibold {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* --- Report Details --- */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.info-value {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.log-section {
+    background-color: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.log-section h3 {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.log-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 8px;
+}
+
+.log-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.log-time {
+    color: var(--text-muted);
+    width: 120px;
+}
+
+.log-event {
+    flex: 1;
+    color: var(--text-main);
+}
+
+.log-status {
+    font-weight: 500;
+}
+
+.status-good {
+    color: var(--green-color);
+}
+
+.status-warning {
+    color: var(--warning-color);
+}
+
+/* --- Rating Stars --- */
+.rating-stars {
+    color: #eab308; /* Yellow */
+    font-size: 1.2rem;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.feedback-text {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background-color: #f1f5f9;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #cbd5e1;
+}
+
+/* --- Footer --- */
+.main-footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 40px 0 20px 0;
+    margin-top: auto;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.copyright {
+    color: #64748b;
+    font-size: 0.85rem;
+    border-top: 1px solid #334155;
+    padding-top: 20px;
+    text-align: center;
+}

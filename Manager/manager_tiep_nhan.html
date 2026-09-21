@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive Yêu Cầu & Báo Giá - Manager</title>
+    <link rel="stylesheet" href="manager_tiep_nhan.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <nav class="main-nav">
+                <a href="manager_dashboard.html">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html">Phân công</a>
+                <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html" class="active">Yêu Cầu & Báo Giá</a>
+                <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar"></div>
+                <span class="greeting">Quản lý</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <div class="page-header">
+            <h1>Receive Yêu Cầu & Báo Giá</h1>
+        </div>
+
+        <!-- Yêu cầu mới chưa xử lý -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Yêu cầu mới chưa xử lý</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>MÃ YÊU CẦU</th>
+                            <th>KHÁCH HÀNG</th>
+                            <th>TUYẾN ĐƯỜNG</th>
+                            <th>NGÀY KHỞI HÀNH</th>
+                            <th>TRẠNG THÁI</th>
+                            <th>HÀNH ĐỘNG</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">#EQ-8910</td>
+                            <td class="text-muted">Nguyễn Văn A</td>
+                            <td class="text-muted">Hà Nội - TP.HCM</td>
+                            <td class="text-muted">18/09/2026</td>
+                            <td><span class="badge badge-warning">Chờ báo giá</span></td>
+                            <td><a href="#" class="action-link">Xử lý</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Form Create Quote -->
+        <div class="card form-card">
+            <div class="card-header border-bottom">
+                <h2 class="form-title"><i class="fa-regular fa-file-lines text-orange"></i> Tạo Báo giá cho Yêu cầu #EQ-8910</h2>
+            </div>
+            <div class="form-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Chi phí Vận chuyển (VND)</label>
+                        <input type="text" class="form-control" placeholder="Nhập số tiền...">
+                    </div>
+                    <div class="form-group">
+                        <label>Chi phí Hải quan & Y tế (VND)</label>
+                        <input type="text" class="form-control" placeholder="Nhập số tiền...">
+                    </div>
+                    <div class="form-group">
+                        <label>Deposit Percentage</label>
+                        <div class="select-wrapper">
+                            <select class="form-control">
+                                <option>50%</option>
+                                <option>70%</option>
+                                <option>100%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phân công Chuyên viên</label>
+                        <div class="select-wrapper">
+                            <select class="form-control">
+                                <option>Trần Văn B - Hải quan</option>
+                                <option>Lê Thị C - Y tế</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-outline">Hủy bỏ</button>
+                    <button class="btn btn-primary">Save & Gửi Báo giá</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2026 EquinezLogistics - Vận chuyển Ngựa đua Xuyên quốc gia System.
+            </div>
+        </div>
+    </footer>
+
+<script src="../global_translate.js"></script>
+</body>
+</html>

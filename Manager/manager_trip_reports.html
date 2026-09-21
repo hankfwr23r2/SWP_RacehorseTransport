@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Chuyến đi - Manager</title>
+    <link rel="stylesheet" href="manager_trip_reports.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <nav class="main-nav">
+                <a href="manager_dashboard.html">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html">Phân công</a>
+                <a href="manager_trip_reports.html" class="active">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar"></div>
+                <span class="greeting">Quản lý</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        
+        <!-- Page Title & Breadcrumb -->
+        <div class="page-header">
+            <h1>Báo cáo Chuyến đi & Nhật ký</h1>
+            <p class="subtitle">Xem xét các nhật ký vận chuyển đã hoàn thành, theo dõi sức khỏe ngựa và phản hồi của khách hàng.</p>
+        </div>
+
+        <div class="report-layout">
+            
+            <!-- Left Column: Trip List -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>Các chuyến đã hoàn thành gần đây</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mã Đơn hàng</th>
+                                <th>Tuyến đường</th>
+                                <th>Ngày gửi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="selected">
+                                <td class="font-semibold">EQ-2026-9830</td>
+                                <td>Singapore (SIN) &rarr; Hanoi (HAN)</td>
+                                <td class="text-muted">15/09/2026</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">EQ-2026-9828</td>
+                                <td>Kuala Lumpur (KUL) &rarr; Ho Chi Minh (SGN)</td>
+                                <td class="text-muted">12/09/2026</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">EQ-2026-9822</td>
+                                <td>Bangkok (BKK) &rarr; Da Nang (DAD)</td>
+                                <td class="text-muted">05/09/2026</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold">EQ-2026-9815</td>
+                                <td>Tokyo (NRT) &rarr; Hanoi (HAN)</td>
+                                <td class="text-muted">28/08/2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Column: Detailed Report Viewer -->
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Báo cáo Chi tiết: EQ-2026-9830</h2>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-size: 0.85rem;"><i class="fa-solid fa-download"></i> Xuất PDF</button>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="detail-grid">
+                        <div class="info-item">
+                            <span class="info-label">Khách hàng</span>
+                            <span class="info-value">Câu lạc bộ Đua ngựa Lion City</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Chi tiết Ngựa</span>
+                            <span class="info-value">1 x Ngựa Thuần chủng (Ngựa đực)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nhân viên Đi kèm</span>
+                            <span class="info-value">Nguyễn Văn Nam (Bác sĩ Thú y)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Thời gian Chuyến đi</span>
+                            <span class="info-value">8 Giờ 45 Phút</span>
+                        </div>
+                    </div>
+
+                    <!-- Health Logs -->
+                    <div class="log-section">
+                        <h3><i class="fa-solid fa-heart-pulse"></i> Nhật ký Sinh tồn</h3>
+                        <div class="log-list">
+                            <div class="log-item">
+                                <span class="log-time">08:00 (Điểm Khởi Hành)</span>
+                                <span class="log-event">Nhịp tim: 38 bpm | Nhiệt độ: 37.5°C</span>
+                                <span class="log-status status-good">Bình thường</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">12:30 (Đang bay)</span>
+                                <span class="log-event">Nhịp tim: 42 bpm | Nhiệt độ: 37.8°C</span>
+                                <span class="log-status status-good">Bình thường</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">16:45 (Đã đến nơi)</span>
+                                <span class="log-event">Nhịp tim: 40 bpm | Nhiệt độ: 37.6°C</span>
+                                <span class="log-status status-good">Bình thường</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Incident Logs -->
+                    <div class="log-section">
+                        <h3><i class="fa-solid fa-clipboard-list"></i> Sự kiện Vận chuyển</h3>
+                        <div class="log-list">
+                            <div class="log-item">
+                                <span class="log-time">09:15</span>
+                                <span class="log-event">Gặp nhiễu động nhẹ. Ngựa hơi lo lắng. Đã áp dụng quy trình làm dịu.</span>
+                                <span class="log-status status-warning">Ghi nhận</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">14:00</span>
+                                <span class="log-event">Hoàn tất quy trình cho ăn và uống nước thành công.</span>
+                                <span class="log-status status-good">Tốt</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khách hàng Feedback -->
+                    <div style="margin-top: 24px;">
+                        <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main);">Đánh giá & Phản hồi từ Khách hàng</h3>
+                        <div class="rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="feedback-text">
+                            "Dịch vụ xuất sắc. Đội ngũ thú y cực kỳ chuyên nghiệp và ngựa đến nơi trong tình trạng hoàn hảo. Chắc chắn chúng tôi sẽ tiếp tục sử dụng EQ Transport cho các giải đua sắp tới."
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2026 EquinezLogistics - Vận chuyển Ngựa đua Xuyên quốc gia System.
+            </div>
+        </div>
+    </footer>
+
+<script src="../global_translate.js"></script>
+</body>
+</html>

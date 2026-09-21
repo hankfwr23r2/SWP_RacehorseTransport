@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Quản lý Đội xe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="OPS-07.css">
+    <link rel="stylesheet" href="ops_sidebar.css">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+<body>
+
+<div class="ops-layout">
+  <aside class="ops-sidebar">
+    <div class="ops-brand">
+       <div class="logo-circle">EQ</div>
+       <span>Điều hành</span>
+    </div>
+    <nav class="ops-nav">
+       <a href="CUS2_Policy.html" class="nav-item">Văn bản Pháp lý</a>
+       <a href="CUS2_KiemDich.html" class="nav-item">Danh mục Kiểm dịch</a>
+       <a href="chi-tiet-kiem-dich.html" class="nav-item">Chi tiết Kiểm dịch</a>
+       <a href="OPS-03.html" class="nav-item">Đánh giá Khả thi</a>
+       <a href="OPS-04.html" class="nav-item">Sự cố</a>
+       <a href="OPS-05.html" class="nav-item">Lộ trình</a>
+       <a href="OPS-06.html" class="nav-item">Giám sát</a>
+       <a href="OPS-07.html" class="nav-item active">Đội xe</a>
+       <a href="OPS-08.html" class="nav-item">Nhân sự</a>
+    </nav>
+    <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+  </aside>
+  <div class="ops-main">
+
+
+
+
+<div class="page active" id="page-ops07">
+  <div class="breadcrumb-bar">
+    <div class="dot"></div>
+    <span>Đội xe Hub / Quản lý Đội xe & Phương tiện</span>
+  </div>
+  <div class="workspace">
+    <div class="page-title">Quản lý Đội xe</div>
+    <div class="page-subtitle">Quản lý toàn bộ phương tiện vận chuyển: thêm/sửa/xóa, theo dõi trạng thái bảo trì và lịch sử sử dụng.</div>
+
+    <!-- Stats -->
+    <div class="grid-4 mb-12">
+      <div class="stat-card"><div class="stat-number">24</div><div class="stat-label">Tổng số phương tiện</div></div>
+      <div class="stat-card"><div class="stat-number green">18</div><div class="stat-label">Khả dụng</div></div>
+      <div class="stat-card"><div class="stat-number orange">4</div><div class="stat-label">Đang sử dụng</div></div>
+      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Đang bảo dưỡng</div></div>
+    </div>
+
+    <div class="card">
+      <div class="flex-between mb-12">
+        <div class="card-title" style="margin-bottom:0;">Danh sách Phương tiện Vận chuyển</div>
+        <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;">+ Thêm phương tiện</button>
+      </div>
+      <table>
+        <thead><tr><th>Mã xe</th><th>Tên phương tiện</th><th>Loại</th><th>Sức chứa</th><th>Biển số / ID</th><th>Trạng thái</th><th>Lần bảo trì gần nhất</th><th>Thao tác</th></tr></thead>
+        <tbody>
+          <tr><td class="code">VH-001</td><td>Xe Thùng VIP</td><td>Xe tải chuyên dụng</td><td>2 ngăn</td><td>29H-12345</td><td><span class="badge badge-success">Khả dụng</span></td><td>15/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
+          <tr><td class="code">VH-002</td><td>Xe Thùng Tiêu chuẩn</td><td>Xe tải chuyên dụng</td><td>4 ngăn</td><td>51C-98765</td><td><span class="badge badge-success">Khả dụng</span></td><td>10/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
+          <tr><td class="code">VH-003</td><td>Khoang HK - VN Airlines</td><td>Khoang hàng không</td><td>3 ngăn</td><td>VN-CARGO-03</td><td><span class="badge badge-success">Khả dụng</span></td><td>12/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
+          <tr><td class="code">VH-004</td><td>Xe Thùng Lạnh</td><td>Xe tải chuyên dụng</td><td>3 ngăn</td><td>30A-55678</td><td><span class="badge badge-info">Đang sử dụng</span></td><td>01/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
+          <tr><td class="code">VH-005</td><td>Xe Container Quốc tế</td><td>Container đặc biệt</td><td>6 ngăn</td><td>51D-11122</td><td><span class="badge badge-success">Khả dụng</span></td><td>08/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Vehicle detail / edit form -->
+    <div class="card">
+      <div class="card-title"><div class="icon"></div> Chi tiết Phương tiện — VH-001</div>
+      <div class="divider"></div>
+      <div class="grid-3">
+        <div class="form-group"><label class="form-label">Tên phương tiện</label><input class="form-input" value="Xe Thùng VIP"></div>
+        <div class="form-group"><label class="form-label">Loại phương tiện</label><select class="form-input"><option>Xe tải chuyên dụng</option><option>Khoang hàng không</option><option>Container đặc biệt</option></select></div>
+        <div class="form-group"><label class="form-label">Sức chứa (ngăn)</label><input class="form-input" value="2"></div>
+      </div>
+      <div class="grid-3">
+        <div class="form-group"><label class="form-label">Biển số / Mã ID</label><input class="form-input" value="29H-12345"></div>
+        <div class="form-group"><label class="form-label">Trạng thái</label><select class="form-input"><option>Khả dụng</option><option selected>Đang sử dụng</option></select></div>
+        <div class="form-group"><label class="form-label">Ngày bảo trì gần nhất</label><input class="form-input" type="date" value="2026-09-15"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Ghi chú kỹ thuật</label><textarea class="form-input" rows="2" placeholder="Kiểm soát nhiệt tự động, hệ thống giảm xóc đặc biệt cho ngựa..."></textarea></div>
+      <div class="flex-end mt-16">
+        <button class="btn btn-outline">Hủy</button>
+        <button class="btn btn-primary">Lưu thông tin</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER (giống CUS-02) ===== -->
+<footer style="background:#0F172A;padding:32px 40px 16px;margin-top:0;">
+  <div class="flex-between" style="padding-bottom:20px;border-bottom:1px solid #1E293B;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;">EQ</div>
+      <span style="font-size:16px;font-weight:700;color:#fff;">Vận chuyển Ngựa</span>
+    </div>
+    <div style="display:flex;gap:24px;">
+      <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Điều Khoản Dịch vụ</a>
+      <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Chính sách Bảo mật</a>
+      <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Hỗ trợ Khách hàng</a>
+    </div>
+  </div>
+  <div style="text-align:center;padding-top:16px;font-size:11px;color:#64748B;">
+    © 2026 EquinezLogistics — Hệ thống Vận chuyển Ngựa đua Xuyên quốc gia. Đồ án môn học SWP.
+  </div>
+</footer>
+
+
+  </div>
+</div>
+<script src="../global_translate.js"></script>
+</body>
+</html>

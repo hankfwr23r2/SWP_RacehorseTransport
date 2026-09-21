@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo giá — Vận chuyển Ngựa</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">
+            <div class="header-logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            Vận chuyển Ngựa
+        </div>
+        <nav class="nav-links">
+            <a href="home_auth.html">Trang chủ</a>
+            <a href="create_request.html">Đặt chuyến ngay</a>
+            <a href="#">Tra cứu lộ trình</a>
+        </nav>
+        <div class="header-actions">
+            <div class="user-profile">
+                Xin chào, Trang trại Long Thành
+                <div class="avatar">AVT</div>
+            </div>
+            <a href="../index.html" class="btn-outline">Đăng xuất</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="page-title">
+            <div class="breadcrumb">Cổng Khách hàng / <span>Nhận Báo giá</span></div>
+            <h1>Báo giá Chính thức</h1>
+            <p>Manager đã phê duyệt yêu cầu vận chuyển của bạn. Vui lòng xem xét báo giá bên dưới và xác nhận để tiến hành đặt cọc.</p>
+        </div>
+
+        <div class="acceptance-layout">
+            <!-- Left Column -->
+            <div class="layout-left">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Thông tin Đơn hàng</h3>
+                        <span class="status-tag" style="background: #dbeafe; color: #1d4ed8;">Đã có Báo giá</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Mã Vận đơn:</span>
+                        <span class="value">EQ-2026-9842</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Tuyến đường:</span>
+                        <span class="value">Kho Đồng Nai → SGN (HCM) ✈ HKG (Hồng Kông)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Ngựa:</span>
+                        <span class="value">Storm Runner — Thoroughbred, 5 tuổi, 520kg</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Ngày khởi hành dự kiến:</span>
+                        <span class="value">15/11/2026</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Ngày lập báo giá:</span>
+                        <span class="value">25/10/2026</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Hiệu lực báo giá:</span>
+                        <span class="value" style="color: #dc2626; font-weight: 600;">7 ngày (hết hạn 01/11/2026)</span>
+                    </div>
+                </div>
+
+                <!-- Bảng chi phí chính thức -->
+                <div class="card">
+                    <div class="card-header" style="margin-bottom: 1rem;">
+                        <h3>Bảng Chi phí Chính thức</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;">
+                            <thead>
+                                <tr style="background: #f1f5f9; border-bottom: 2px solid #e2e8f0;">
+                                    <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #475569;">Hạng mục</th>
+                                    <th style="text-align: right; padding: 10px 12px; font-weight: 600; color: #475569;">Đơn giá</th>
+                                    <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #475569;">SL</th>
+                                    <th style="text-align: right; padding: 10px 12px; font-weight: 600; color: #475569;">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px; font-weight: 500;">Phí vận chuyển (VN → HKG, Quốc tế)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">120,000,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">120,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px; font-weight: 500;">Phí kiểm dịch (tuyến VN → HKG)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">15,000,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">15,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Thức ăn — Cỏ khô Timothy Hay</td>
+                                    <td style="text-align: right; padding: 10px 12px;">500,000 ₫/ngày</td>
+                                    <td style="text-align: center; padding: 10px 12px;">3</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">1,500,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Bảo hiểm — Gói Cơ bản (2%)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">2% × 2 tỷ</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">40,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Phí nhân viên hộ tống y tế</td>
+                                    <td style="text-align: right; padding: 10px 12px;">8,500,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">8,500,000 ₫</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: #0f172a; color: white;">
+                                    <td colspan="3" style="padding: 12px; font-weight: 700; font-size: 1rem;">TỔNG CỘNG</td>
+                                    <td style="text-align: right; padding: 12px; font-weight: 800; font-size: 1.1rem; color: #fb923c;">185,000,000 ₫</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="layout-right">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Thanh toán Đặt cọc</h3>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Tổng Chi phí</span>
+                        <span class="value">185,000,000 ₫</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Tiền cọc yêu cầu (50%)</span>
+                        <span class="value" style="color: #dc2626; font-weight: 700;">92,500,000 ₫</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Số dư thanh toán sau</span>
+                        <span class="value" style="color: #64748b;">92,500,000 ₫</span>
+                    </div>
+
+                    <div style="margin-top: 1rem; padding: 12px; background: #f0fdf4; border-radius: 8px; border: 1px solid #86efac; font-size: 0.85rem; color: #166534;">
+                        <strong>Phương thức thanh toán:</strong><br>
+                        Chuyển khoản ngân hàng hoặc QR Pay. Thông tin sẽ được gửi qua email sau khi xác nhận.
+                    </div>
+                </div>
+
+                <button class="btn-solid-orange btn-full" style="padding: 1rem; font-size: 1.05rem;" onclick="alert('Báo giá đã được chấp nhận! Vui lòng thanh toán tiền cọc trong 48h.')">✅ Chấp nhận Báo giá</button>
+                <button class="btn-dark btn-full" onclick="alert('Yêu cầu điều chỉnh đã được gửi đến Manager.')">📝 Yêu cầu Điều chỉnh</button>
+
+                <div class="alert-warning" style="margin-top: 1.5rem; margin-bottom: 0;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div style="font-size: 0.85rem;">Báo giá có hiệu lực trong <strong>7 ngày</strong>. Sau thời hạn này, giá có thể thay đổi và cần báo giá lại.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="header-logo">
+                <div class="header-logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                Vận chuyển Ngựa
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+        </div>
+    </footer>
+<script src="../global_translate.js"></script>
+</body>
+</html>
