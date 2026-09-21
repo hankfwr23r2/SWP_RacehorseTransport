@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân công & Personnel - Manager</title>
+    <link rel="stylesheet" href="manager_phan_cong.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <nav class="main-nav">
+                <a href="manager_dashboard.html">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html" class="active">Phân công</a>
+                <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar"></div>
+                <span class="greeting">Quản lý</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <div class="page-header">
+            <h1>Phân công & Personnel</h1>
+        </div>
+
+        <!-- Tuyến xe cần phân công -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Tuyến đườngs pending dispatch</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ORDER ID</th>
+                            <th>TUYẾN ĐƯỜNG</th>
+                            <th>NGÀY KHỞI HÀNH</th>
+                            <th>ĐẶC ĐIỂM NGỰA</th>
+                            <th class="text-right">TRẠNG THÁI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">#TR-9022</td>
+                            <td class="text-muted">Thanh Hoa - Hai Phong</td>
+                            <td class="text-muted">28/08/2026</td>
+                            <td class="text-muted">Royal British Steed, temperature sensitive</td>
+                            <td class="text-right"><span class="badge badge-warning">Pending Assignment</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Form Phân bổ -->
+        <div class="card form-card">
+            <div class="card-header border-bottom">
+                <h2 class="form-title"><i class="fa-solid fa-user-plus text-orange"></i> Assign specialized care personnel for trip #TR-9022</h2>
+            </div>
+            <div class="form-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Đội xe Coordinator</label>
+                        <div class="select-wrapper">
+                            <select class="form-control">
+                                <option>Tran Minh</option>
+                                <option>Le Quang</option>
+                                <option>Pham Tam</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Chuyên viên Pháp lý</label>
+                        <div class="select-wrapper">
+                            <select class="form-control">
+                                <option>Pham Van Hung</option>
+                                <option>Nguyen Thi Thu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-outline">Hủy bỏ</button>
+                    <button class="btn btn-primary">Xác nhận & Phân công Task</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2026 EquinezLogistics - Vận chuyển Ngựa đua Xuyên quốc gia System.
+            </div>
+        </div>
+    </footer>
+
+<script src="../global_translate.js"></script>
+</body>
+</html>
