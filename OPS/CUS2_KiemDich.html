@@ -21,9 +21,13 @@
        <span>Điều hành</span>
     </div>
     <nav class="ops-nav">
-       <a href="CUS2_Policy.html" class="nav-item">Văn bản Pháp lý</a>
+       <!-- Đổi tên thành trang List và đổi nhãn cho đúng chuẩn -->
+       <a href="CUS2_Policy_List.html" class="nav-item">Hải quan & Pháp lý</a>
+       
        <a href="CUS2_KiemDich.html" class="nav-item active">Danh mục Kiểm dịch</a>
-       <a href="chi-tiet-kiem-dich.html" class="nav-item">Chi tiết Kiểm dịch</a>
+       
+       <!-- ĐÃ XÓA mục "Chi tiết Kiểm dịch" ở đây -->
+       
        <a href="OPS-03.html" class="nav-item">Đánh giá Khả thi</a>
        <a href="OPS-04.html" class="nav-item">Sự cố</a>
        <a href="OPS-05.html" class="nav-item">Lộ trình</a>
@@ -51,49 +55,49 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-header">
-                    <span>Tổng hồ sơ</span>
+                    <span>Tổng Yêu Cầu</span>
                     <i class="fa-solid fa-list-ul icon-gray"></i>
                 </div>
-                <div class="stat-value">24 <span class="stat-unit">hồ sơ</span></div>
+                <div class="stat-value">12 <span class="stat-unit">đơn</span></div>
                 <div class="stat-line line-blue"></div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
-                    <span>Đang xử lý</span>
+                    <span>Đang Xử Lý</span>
                     <i class="fa-regular fa-clock icon-orange"></i>
                 </div>
-                <div class="stat-value">8 <span class="stat-unit">hồ sơ</span></div>
+                <div class="stat-value">4 <span class="stat-unit">đơn</span></div>
                 <div class="stat-line line-orange"></div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
-                    <span>Chờ bổ sung</span>
+                    <span>Chờ Khách Bổ Sung</span>
                     <i class="fa-solid fa-triangle-exclamation icon-yellow"></i>
                 </div>
-                <div class="stat-value">5 <span class="stat-unit">hồ sơ</span></div>
+                <div class="stat-value">2 <span class="stat-unit">đơn</span></div>
                 <div class="stat-line line-yellow"></div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
-                    <span>Hoàn tất</span>
+                    <span>Đã Thông Quan Toàn Bộ</span>
                     <i class="fa-regular fa-circle-check icon-green"></i>
                 </div>
-                <div class="stat-value">11 <span class="stat-unit">hồ sơ</span></div>
+                <div class="stat-value">6 <span class="stat-unit">đơn</span></div>
                 <div class="stat-line line-green"></div>
             </div>
         </div>
 
-        <!-- Filter Bar -->
+        <!-- Filter Bar (Giữ nguyên cấu trúc, sửa lại placeholder) -->
         <div class="filter-bar">
             <div class="filter-group search-group">
                 <label>TÌM KIẾM</label>
                 <div class="input-with-icon">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Tìm theo mã vận đơn, tên ngựa...">
+                    <input type="text" placeholder="Tìm theo mã vận đơn, tên khách hàng...">
                 </div>
             </div>
             <div class="filter-group">
-                <label>NGÀY NỘP HỒ SƠ</label>
+                <label>NGÀY TIẾP NHẬN</label>
                 <select>
                     <option>Tất cả thời gian</option>
                 </select>
@@ -103,119 +107,88 @@
             </div>
         </div>
 
-        <!-- Data Table -->
+        <!-- Data Table (Đã gom nhóm theo Đơn Hàng) -->
         <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>MÃ VẬN ĐƠN</th>
-                        <th>TÊN NGỰA</th>
-                        <th>TUYẾN ĐƯỜNG</th>
-                        <th>NGÀY NỘP</th>
-                        <th>TRẠNG THÁI</th>
-                        <th>NGƯỜI PHỤ TRÁCH</th>
-                        <th>HÀNH ĐỘNG</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td class="bold">EQ-2026-9842</td>
-                        <td class="bold">Bạch Mã Vương</td>
-                        <td>Hồng Kông (HKG) → Long An (VNM)</td>
-                        <td>18/10/2026</td>
-                        <td><span class="status-badge status-orange">Đang xem xét</span></td>
-                        <td>Trần Minh Anh</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="bold">EQ-2026-8711</td>
-                        <td class="bold">Hắc Phong</td>
-                        <td>Nhật Bản (JPN) → Bình Dương (VNM)</td>
-                        <td>17/10/2026</td>
-                        <td><span class="status-badge status-green">Thông quan</span></td>
-                        <td>Lê Hoàng Nam</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="bold">EQ-2026-7240</td>
-                        <td class="bold">Xích Thố</td>
-                        <td>Australia (AUS) → Long An (VNM)</td>
-                        <td>16/10/2026</td>
-                        <td><span class="status-badge status-orange">Chờ bổ sung</span></td>
-                        <td>Nguyễn Thị Mai</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td class="bold">EQ-2026-5512</td>
-                        <td class="bold">Kim Kê</td>
-                        <td>Singapore (SIN) → Củ Chi (VNM)</td>
-                        <td>15/10/2026</td>
-                        <td><span class="status-badge status-blue">Đã nộp Hải quan</span></td>
-                        <td>Trần Minh Anh</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td class="bold">EQ-2026-4011</td>
-                        <td class="bold">Bảo Tuyết</td>
-                        <td>Nhật Bản (JPN) → Long An (VNM)</td>
-                        <td>14/10/2026</td>
-                        <td><span class="status-badge status-gray">Đã tiếp nhận</span></td>
-                        <td>Phạm Thanh Sơn</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td class="bold">EQ-2026-3199</td>
-                        <td class="bold">Ngân Hà</td>
-                        <td>Hồng Kông (HKG) → Bình Dương (VNM)</td>
-                        <td>12/10/2026</td>
-                        <td><span class="status-badge status-red">Từ chối</span></td>
-                        <td>Lê Hoàng Nam</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td class="bold">EQ-2026-2187</td>
-                        <td class="bold">Phi Vũ</td>
-                        <td>New Zealand (NZL) → Củ Chi (VNM)</td>
-                        <td>10/10/2026</td>
-                        <td><span class="status-badge status-green">Thông quan</span></td>
-                        <td>Nguyễn Thị Mai</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td class="bold">EQ-2026-1104</td>
-                        <td class="bold">Thiên Lý Mã</td>
-                        <td>Hồng Kông (HKG) → Long An (VNM)</td>
-                        <td>08/10/2026</td>
-                        <td><span class="status-badge status-green">Thông quan</span></td>
-                        <td>Phạm Thanh Sơn</td>
-                        <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>MÃ VẬN ĐƠN</th>
+                <th>KHÁCH HÀNG / CLB</th>
+                <th>TUYẾN ĐƯỜNG</th>
+                <th>SỐ LƯỢNG NGỰA</th>
+                <th>NGÀY TIẾP NHẬN</th>
+                <th>TRẠNG THÁI HỒ SƠ</th>
+                <th>HÀNH ĐỘNG</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td class="bold">EQ-2026-9842</td>
+                <td class="bold">Saigon Racing Club</td>
+                <td>Hồng Kông (HKG) → Long An (VNM)</td>
+                <td class="bold">3 ngựa</td>
+                <td>18/10/2026</td>
+                <td><span class="status-badge status-orange">Đang kiểm duyệt</span></td>
+                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="bold">EQ-2026-7240</td>
+                <td class="bold">Ông Trần Văn A</td>
+                <td>Australia (AUS) → Long An (VNM)</td>
+                <td class="bold">1 ngựa</td>
+                <td>17/10/2026</td>
+                <td><span class="status-badge status-yellow">Chờ bổ sung</span></td>
+                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td class="bold">EQ-2026-5512</td>
+                <td class="bold">Hanoi Equestrian</td>
+                <td>Singapore (SIN) → Củ Chi (VNM)</td>
+                <td class="bold">5 ngựa</td>
+                <td>16/10/2026</td>
+                <td><span class="status-badge status-blue">Chờ thông quan</span></td>
+                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td class="bold">EQ-2026-8711</td>
+                <td class="bold">Đại Nam Stud</td>
+                <td>Nhật Bản (JPN) → Bình Dương (VNM)</td>
+                <td class="bold">2 ngựa</td>
+                <td>15/10/2026</td>
+                <td><span class="status-badge status-green">Đã thông quan</span></td>
+                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td class="bold">EQ-2026-3199</td>
+                <td class="bold">Saigon Racing Club</td>
+                <td>Hồng Kông (HKG) → Bình Dương (VNM)</td>
+                <td class="bold">4 ngựa</td>
+                <td>12/10/2026</td>
+                <td><span class="status-badge status-red">Từ chối</span></td>
+                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
 
-            <!-- Pagination -->
-            <div class="pagination-container">
-                <div class="pagination-info">
-                    Hiển thị <strong>1 - 8</strong> trong <strong>24</strong> hồ sơ.
-                </div>
-                <div class="pagination-controls">
-                    <button class="page-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
-            </div>
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <div class="pagination-info">
+            Hiển thị <strong>1 - 5</strong> trong <strong>12</strong> đơn yêu cầu.
         </div>
+        <div class="pagination-controls">
+            <button class="page-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
 
     </main>
 
