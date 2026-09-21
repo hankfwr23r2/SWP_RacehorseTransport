@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Vận chuyển Ngựa</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Đăng nhập Nội bộ - Vận chuyển Ngựa</title>
+    <link rel="stylesheet" href="staff_login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../global_translate.css">
 </head>
@@ -14,56 +14,51 @@
         <div class="auth-left">
             <div class="auth-logo">
                 <div class="auth-logo-icon">
-                    <!-- Placeholder for icon -->
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
                 </div>
                 Vận chuyển Ngựa
             </div>
-            
+
             <div class="auth-content">
-                <h1>Vận chuyển Ngựa đua Chuyên nghiệp</h1>
-                <p>An toàn, chuẩn quốc tế và giám sát 24/7 trên mọi dặm đường của chiến mã.</p>
+                <h1>Hệ thống Nội bộ</h1>
+                <p>Cổng đăng nhập dành cho nhân viên. Quản lý, tài xế, hộ tống và vận hành.</p>
             </div>
-            
+
             <div class="auth-footer">
-                © 2026 EquineLogistics. Tiêu chuẩn vận tải hiệp hội hoàng gia.
+                © 2026 EquineLogistics. Hệ thống nội bộ.
             </div>
         </div>
 
         <!-- Right Side -->
         <div class="auth-right">
             <div class="auth-form-container">
-                <h2>Đăng nhập vào Tài khoản</h2>
-                <p>Đăng nhập để tiếp tục sử dụng dịch vụ vận chuyển chuyên nghiệp</p>
-                
-                <form action="home_auth.html">
+                <h2>Đăng nhập Nội bộ</h2>
+                <p>Vui lòng đăng nhập bằng email được cấp</p>
+
+                <form id="staffLoginForm">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="example@gmail.com" required>
+                        <input type="email" id="email" placeholder="staff@equinelogistics.com" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="password">Mật khẩu</label>
                         <input type="password" id="password" placeholder="••••••••" required>
                     </div>
-                    
+
                     <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                    
+
                     <button type="submit" class="btn-primary">Đăng nhập</button>
                 </form>
-                
-                <div class="auth-switch">
-                    Nếu bạn chưa có tài khoản,
-                    <br>
-                    bạn có thể <a href="register.html">Đăng ký tại đây !</a>
-                </div>
-                
-                <div class="auth-manager-link" style="margin-top: 2rem; font-size: 0.85rem; text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
-                    Dành cho nội bộ: <a href="../Staffs/staff_login.html" style="color: var(--text-main); font-weight: 600;">Đăng nhập Nhân viên</a>
+
+                <div class="return-link">
+                    <a href="../index.html">← Quay lại Trang chủ</a>
                 </div>
             </div>
         </div>
     </div>
-<script src="../global_translate.js"></script>
+
+    <script src="staff_login.js"></script>
+    <script src="../global_translate.js"></script>
 </body>
 </html>
