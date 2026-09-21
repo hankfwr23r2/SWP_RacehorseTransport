@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phê duyệt Sự cố & Chi Phí - Manager</title>
+    <link rel="stylesheet" href="manager_duyet_su_co.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <nav class="main-nav">
+                <a href="manager_dashboard.html">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html">Phân công</a>
+                <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_duyet_su_co.html" class="active">Sự cố & Chi Phí</a>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar"></div>
+                <span class="greeting">Quản lý</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <div class="page-header">
+            <h1>Phê duyệt Sự cố & Chi Phí</h1>
+        </div>
+
+        <!-- Sự cố chờ xử lý -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Pending Sự cố</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>TRIP ID</th>
+                            <th>REPORT TIME</th>
+                            <th>SEVERITY</th>
+                            <th>COORDINATOR PROPOSAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">#TR-9021</td>
+                            <td class="text-muted">10:30 25/08</td>
+                            <td><span class="badge badge-danger">Emergency</span></td>
+                            <td class="text-muted">Flat tire on highway, need to call the nearest mobile animal rescue.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Form Phê duyệt sự cố -->
+        <div class="card form-card">
+            <div class="card-header border-bottom">
+                <h2 class="form-title"><i class="fa-solid fa-file-invoice text-orange"></i> Phê duyệt Giải pháp Sự cố (Incident #INC-001)</h2>
+            </div>
+            <div class="form-body">
+                <div class="info-block">
+                    <div class="info-label">Thông tin từ Điều phối viên:</div>
+                    <div class="info-text">"Xe 29H-12345 bị nổ lốp tại KM15 cao tốc HN-HP. Không có thương vong, nhiệt độ cabin ổn định dưới 22°C. Đề xuất gọi cứu hộ khẩn cấp."</div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Loại phát sinh (Nguồn gốc sự cố)</label>
+                        <select class="form-control">
+                            <option value="vehicle" selected>🚛 Phương tiện (Xe hỏng, nổ lốp...)</option>
+                            <option value="horse">🐴 Ngựa (Bệnh, hoảng loạn, chấn thương...)</option>
+                            <option value="weather">🌧️ Thời tiết (Bão, ngập, sương mù...)</option>
+                            <option value="customer">👤 Khách hàng (Thay đổi yêu cầu, hủy...)</option>
+                            <option value="other">📋 Khác</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Đối trả — Ai chịu chi phí?</label>
+                        <select class="form-control">
+                            <option value="company" selected>Công ty chịu (lỗi vận hành)</option>
+                            <option value="customer">Khách hàng chịu (lỗi từ ngựa/yêu cầu thay đổi)</option>
+                            <option value="insurance">Bảo hiểm chi trả</option>
+                            <option value="shared">Chia sẻ (50/50)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Chi phí phát sinh dự kiến (VND)</label>
+                        <input type="text" class="form-control" value="1,500,000">
+                    </div>
+                    <div class="form-group">
+                        <label>Gói chi phí phát sinh cố định (nếu khách đã mua)</label>
+                        <select class="form-control">
+                            <option value="none">Không có gói</option>
+                            <option value="bronze">Gói Bronze — Bao phủ tối đa 5 triệu VND</option>
+                            <option value="silver" selected>Gói Silver — Bao phủ tối đa 15 triệu VND</option>
+                            <option value="gold">Gói Gold — Bao phủ tối đa 50 triệu VND</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Chỉ đạo xử lý của Manager</label>
+                    <textarea class="form-control" rows="2" placeholder="Nhập chỉ đạo cụ thể...">Đồng ý gọi cứu hộ. Chi phí trong phạm vi gói Silver. Theo dõi nhiệt khoang liên tục.</textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button class="btn btn-outline-danger">Từ chối Giải pháp</button>
+                    <button class="btn btn-primary">Phê duyệt & Lưu Chi phí</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2026 EquinezLogistics - Vận chuyển Ngựa đua Xuyên quốc gia System.
+            </div>
+        </div>
+    </footer>
+
+<script src="../global_translate.js"></script>
+</body>
+</html>
