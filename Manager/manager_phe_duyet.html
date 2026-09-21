@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phê duyệt Đơn hàng - Manager</title>
+    <link rel="stylesheet" href="manager_phe_duyet.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <nav class="main-nav">
+                <a href="manager_dashboard.html">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html" class="active">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html">Phân công</a>
+                <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar"></div>
+                <span class="greeting">Quản lý</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+
+        <!-- Page Title & Breadcrumb -->
+        <div class="page-header">
+            <div class="breadcrumb">
+                <span class="text-muted">Operations System</span> /
+                <span class="text-orange">Phê duyệt Đơn hàng</span>
+            </div>
+            <h1>Phê duyệt Đơn hàng</h1>
+            <p class="subtitle">Xem xét and approve transport requests evaluated by the Operations Team.</p>
+        </div>
+
+        <div class="card table-card">
+            <!-- Workflow flow indicator -->
+            <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; font-size: 0.75rem; flex-wrap: wrap;">
+                <span style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-weight: 600;">① Khách đặt</span>
+                <span style="color: #94a3b8;">→</span>
+                <span style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-weight: 600;">② Manager giao</span>
+                <span style="color: #94a3b8;">→</span>
+                <span style="background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 4px; font-weight: 600;">③ Điều phối xem xét</span>
+                <span style="color: #94a3b8;">→</span>
+                <span style="background: #fce7f3; color: #be185d; padding: 4px 10px; border-radius: 4px; font-weight: 600;">④ Y tế kiểm tra</span>
+                <span style="color: #94a3b8;">→</span>
+                <span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-weight: 600;">⑤ Manager phê duyệt</span>
+            </div>
+
+            <div class="card-header">
+                <h2>Đơn vận chuyển đang chờ duyệt</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Mã Đơn hàng</th>
+                            <th>Khách hàng</th>
+                            <th>Tuyến đường</th>
+                            <th>Số ngựa</th>
+                            <th>Ngày gửi</th>
+                            <th>Bước hiện tại</th>
+                            <th class="text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">EQ-2026-9842</td>
+                            <td class="text-muted">Al Shaqab Racing</td>
+                            <td>Doha (DOH) &rarr; Paris (CDG)</td>
+                            <td class="text-muted">3 (Thoroughbred)</td>
+                            <td class="text-muted">18/10/2026</td>
+                            <td><span class="badge badge-blue">② Chờ giao Điều phối</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-warning">Giao cho Điều phối</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">EQ-2026-9840</td>
+                            <td class="text-muted">Godolphin Stables</td>
+                            <td>Dubai (DXB) &rarr; London (LHR)</td>
+                            <td class="text-muted">2 (Arabian)</td>
+                            <td class="text-muted">17/10/2026</td>
+                            <td><span class="badge badge-purple">④ Y tế đã OK</span></td>
+                            <td class="text-right">
+                                <button class="btn btn-success" onclick="openModal()">Xem xét & Phê duyệt</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Đánh giá Khả thi Xem xét Modal (Hidden by default) -->
+    <div id="feasibilityModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">Xem xét Đánh giá Khả thi Estimate</h2>
+            <p class="modal-subtitle">The coordinator has reviewed Order EQ-2026-9840 and provided the following quote.</p>
+            
+            <div class="modal-details">
+                <div class="detail-row">
+                    <span class="detail-label">Expected Tuyến đường</span>
+                    <span class="detail-value font-semibold">Dubai (DXB) &rarr; Frankfurt (FRA) &rarr; London (LHR)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transport Type</span>
+                    <span class="detail-value font-semibold">Air Transport (Climate Control)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Thành tiền (Dự kiến)</span>
+                    <span class="detail-value font-bold text-orange">612,500,000 VND</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Deposit (50%)</span>
+                    <span class="detail-value font-bold">306,250,000 VND</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-outline-modal" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary-modal">Phê duyệt & Gửi Báo giá</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2026 EquinezLogistics - Vận chuyển Ngựa đua Xuyên quốc gia System.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openModal() {
+            document.getElementById('feasibilityModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('feasibilityModal').style.display = 'none';
+        }
+    </script>
+<script src="../global_translate.js"></script>
+</body>
+</html>

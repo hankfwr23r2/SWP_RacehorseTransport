@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Yêu cầu Vận chuyển - Bước 4 - Vận chuyển Ngựa</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+<body>
+    <!-- Header (Authenticated) -->
+    <header class="header">
+        <div class="header-logo">
+            <div class="header-logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            Vận chuyển Ngựa
+        </div>
+        
+        <nav class="nav-links">
+            <a href="home_auth.html">Trang chủ</a>
+            <a href="create_request.html" class="active" style="border-bottom: 2px solid var(--primary-color); padding-bottom: 4px;">Đặt chuyến ngay</a>
+            <a href="#">Tra cứu lộ trình</a>
+        </nav>
+        
+        <div class="header-actions">
+            <div class="user-profile">
+                Xin chào, Trang trại Long Thành
+                <div class="avatar">AVT</div>
+            </div>
+            <a href="../index.html" class="btn-outline">Đăng xuất</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="request-container">
+            <div class="request-header">
+                <h2>Tạo Yêu cầu Vận chuyển mới</h2>
+            </div>
+            
+            <div class="stepper">
+                <div class="step completed">
+                    <div class="step-number">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="step-label">Tuyến đường</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="step-label">Thông tin ngựa</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="step-label">Dịch vụ & Y tế</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">4</div>
+                    <div class="step-label" style="text-align: center;">Xác nhận</div>
+                </div>
+            </div>
+
+            <div class="request-form-card" style="padding-top: 1rem;">
+                <div class="alert-warning">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div>Vui lòng rà soát kỹ tất cả thông tin dưới đây trước khi gửi yêu cầu. Thông tin chính xác giúp đẩy nhanh quá trình thẩm định.</div>
+                </div>
+
+                <!-- 1. Tuyến đường -->
+                <div class="review-section">
+                    <h4>1. Chi tiết Tuyến đường</h4>
+                    <div class="review-grid">
+                        <div class="review-item">
+                            <div class="review-label">Quốc gia Xuất phát</div>
+                            <div class="review-value">🇻🇳 Việt Nam</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Điểm Xuất phát</div>
+                            <div class="review-value">Kho Đồng Nai — Trang trại Long Thành</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Quốc gia Đến</div>
+                            <div class="review-value">🇭🇰 Hồng Kông (SAR)</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Điểm Đến</div>
+                            <div class="review-value">Sân bay Chek Lap Kok (HKG) — Kho Cargo</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Loại vận chuyển</div>
+                            <div class="review-value">Quốc tế — Hàng không + Đường bộ</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Ngày khởi hành dự kiến</div>
+                            <div class="review-value">15/11/2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Thông tin ngựa -->
+                <div class="review-section">
+                    <h4>2. Đặc điểm nhận dạng Ngựa (1 cá thể)</h4>
+                    <div class="review-grid">
+                        <div class="review-item">
+                            <div class="review-label">Tên ngựa</div>
+                            <div class="review-value">Storm Runner</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Mã Microchip ID</div>
+                            <div class="review-value">#VN-985211</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Giống ngựa</div>
+                            <div class="review-value">Thoroughbred (Thuần chủng Anh)</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Giới tính / Tuổi / Cân nặng</div>
+                            <div class="review-value">Thiến (Gelding) | 5 tuổi | 520 kg</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Màu lông</div>
+                            <div class="review-value">Nâu đỏ (Bay)</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Hình ảnh nhận dạng</div>
+                            <div class="review-value" style="color: #059669;">✅ Đã tải lên 2 ảnh</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Hồ sơ -->
+                <div class="review-section">
+                    <h4>3. Hồ sơ Pháp lý & Sức khỏe</h4>
+                    <div class="review-grid" style="margin-bottom: 1rem;">
+                        <div class="review-item" style="background: transparent; border: none; padding: 0;">
+                            <div class="review-label">Hộ chiếu Ngựa</div>
+                            <div class="file-tag">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Equine_Passport_StormRunner.pdf
+                            </div>
+                        </div>
+                        <div class="review-item" style="background: transparent; border: none; padding: 0;">
+                            <div class="review-label">Sổ Tiêm chủng</div>
+                            <div class="file-tag">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Vaccination_Record_StormRunner.pdf
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-grid">
+                        <div class="review-item">
+                            <div class="review-label">Tiền sử bệnh</div>
+                            <div class="review-value">Không có</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Thuốc đang dùng</div>
+                            <div class="review-value">Không</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Cần cách ly</div>
+                            <div class="review-value">Không</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Dịch vụ -->
+                <div class="review-section">
+                    <h4>4. Dịch vụ Kèm theo</h4>
+                    <div class="review-grid">
+                        <div class="review-item">
+                            <div class="review-label">Cho ăn</div>
+                            <div class="review-value">Có — Cỏ khô (Timothy Hay)</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Khu vực vận chuyển</div>
+                            <div class="review-value">Ngăn Tiêu chuẩn — 1.2m × 2.4m</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Nước uống</div>
+                            <div class="review-value">Nước sạch — Tiêu chuẩn</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Bảo hiểm</div>
+                            <div class="review-value">Gói Cơ bản — Tối đa 100 triệu VND</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Bảng chi phí -->
+                <div class="review-section">
+                    <h4>5. Bảng Chi phí Dự kiến</h4>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="background: #f1f5f9; border-bottom: 2px solid #e2e8f0;">
+                                    <th style="text-align: left; padding: 10px 12px; font-weight: 600; color: #475569;">Hạng mục</th>
+                                    <th style="text-align: right; padding: 10px 12px; font-weight: 600; color: #475569;">Đơn giá</th>
+                                    <th style="text-align: center; padding: 10px 12px; font-weight: 600; color: #475569;">SL</th>
+                                    <th style="text-align: right; padding: 10px 12px; font-weight: 600; color: #475569;">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Phí vận chuyển cơ bản (VN → HKG, Quốc tế)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">120,000,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">120,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Phí kiểm dịch cố định (tuyến VN → HKG)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">15,000,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">15,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Thức ăn — Cỏ khô Timothy Hay (3 ngày)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">500,000 ₫/ngày</td>
+                                    <td style="text-align: center; padding: 10px 12px;">3</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">1,500,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Ngăn vận chuyển — Tiêu chuẩn</td>
+                                    <td style="text-align: right; padding: 10px 12px;">—</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600; color: #059669;">Đã bao gồm</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Nước sạch tiêu chuẩn</td>
+                                    <td style="text-align: right; padding: 10px 12px;">—</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600; color: #059669;">Đã bao gồm</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Bảo hiểm vận chuyển — Gói Cơ bản (2%)</td>
+                                    <td style="text-align: right; padding: 10px 12px;">2% × 2 tỷ</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">40,000,000 ₫</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 10px 12px;">Phí nhân viên hộ tống y tế</td>
+                                    <td style="text-align: right; padding: 10px 12px;">8,500,000 ₫</td>
+                                    <td style="text-align: center; padding: 10px 12px;">1</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-weight: 600;">8,500,000 ₫</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr style="background: #0f172a; color: white;">
+                                    <td colspan="3" style="padding: 12px; font-weight: 700; font-size: 1rem;">TỔNG CỘNG DỰ KIẾN</td>
+                                    <td style="text-align: right; padding: 12px; font-weight: 800; font-size: 1.1rem; color: #fb923c;">185,000,000 ₫</td>
+                                </tr>
+                                <tr style="background: #1e293b; color: #94a3b8;">
+                                    <td colspan="3" style="padding: 10px 12px; font-size: 0.85rem;">Tiền cọc yêu cầu (50%)</td>
+                                    <td style="text-align: right; padding: 10px 12px; font-size: 0.85rem; font-weight: 600; color: #fbbf24;">92,500,000 ₫</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 8px; font-style: italic;">
+                        * Giá chính thức sẽ được Manager xác nhận và gửi báo giá sau khi đánh giá khả thi. Giá trên chỉ mang tính tham khảo.
+                    </div>
+                </div>
+                
+                <form action="acceptance.html">
+                    <div class="form-actions">
+                        <a href="create_request_step3.html" class="btn-outline-dark" style="padding: 0.75rem 2rem; display: inline-block; text-align: center;">Quay lại</a>
+                        <button type="submit" class="btn-solid-orange" style="padding: 0.75rem 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                            Xác nhận & Gửi yêu cầu 
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="header-logo">
+                <div class="header-logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                Vận chuyển Ngựa
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+        </div>
+    </footer>
+<script src="../global_translate.js"></script>
+</body>
+</html>

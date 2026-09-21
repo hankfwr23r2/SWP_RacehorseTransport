@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nghiệm thu Đơn hàng - Vận chuyển Ngựa</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+    <!-- Header (Authenticated) -->
+    <header class="header">
+        <div class="header-logo">
+            <div class="header-logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="M12 5l7 7-7 7" />
+                </svg>
+            </div>
+            Vận chuyển Ngựa
+        </div>
+
+        <nav class="nav-links">
+            <a href="home_auth.html">Trang chủ</a>
+            <a href="create_request.html">Đặt chuyến ngay</a>
+            <a href="#">Tra cứu lộ trình</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="user-profile">
+                Xin chào, Trang trại Long Thành
+                <div class="avatar">AVT</div>
+            </div>
+            <a href="../index.html" class="btn-outline">Đăng xuất</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="page-title">
+            <div class="breadcrumb">Cổng Khách hàng / <span>Nghiệm thu Đơn hàng</span></div>
+            <h1>Nghiệm thu Đơn hàng</h1>
+            <p>Chuyến vận chuyển của bạn đã hoàn thành an toàn tại điểm đến. Vui lòng thực hiện quá trình nghiệm thu để bàn giao.
+            </p>
+        </div>
+
+        <div class="acceptance-layout">
+            <!-- Left Column -->
+            <div class="layout-left">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Chi tiết Đơn hàng</h3>
+                        <span class="status-tag">Đã đến nơi</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Mã Vận đơn:</span>
+                        <span class="value">EQ-2026-9842</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Ngày Giao hàng:</span>
+                        <span class="value">22/10/2026 — 04:15 PM</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Điểm Giao hàng:</span>
+                        <span class="value">My Quynh Training Farm, Duc Hoa, Long An</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="margin-bottom: 1rem;">
+                        <h3>Hình ảnh Nghiệm thu & Đối chiếu Thực tế</h3>
+                    </div>
+
+                    <div class="image-compare">
+                        <div class="image-box">
+                            <img src="https://images.unsplash.com/photo-1598974357801-cbca100e65d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                                alt="Điểm Đến Handover">
+                            <p>Điểm Đến Handover</p>
+                        </div>
+                        <div class="image-box">
+                            <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60"
+                                alt="Tình trạng Thể chất của Ngựa">
+                            <p>Tình trạng Thể chất của Ngựa</p>
+                        </div>
+                    </div>
+
+                    <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">Danh sách Cam kết Chất lượng Bàn giao</h4>
+
+                    <div class="checklist">
+                        <div class="check-item">
+                            <div class="check-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            Hàng hóa nguyên vẹn (Ngựa an toàn, không chấn thương)
+                        </div>
+                        <div class="check-item">
+                            <div class="check-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            Đúng số lượng (Đầy đủ 1 ngựa đua cùng trang bị đi kèm)
+                        </div>
+                        <div class="check-item">
+                            <div class="check-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            Đúng chủng loại (Thông tin khớp đúng hộ chiếu ngựa và hồ sơ kiểm dịch)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="layout-right">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Thanh toán & Quyết toán</h3>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="label">Tổng Chi phí Dịch vụ</span>
+                        <span class="value">185,000,000 ₫</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Tiền cọc (Đã thanh toán)</span>
+                        <span class="value" style="color: #059669;">- 92,500,000 ₫</span>
+                    </div>
+
+                    <div class="info-row payment-total">
+                        <span>Số dư còn lại</span>
+                        <span>92,500,000 ₫</span>
+                    </div>
+                </div>
+
+                <button class="btn-solid-orange btn-full" style="padding: 1rem; font-size: 1.05rem;">Xác nhận Nghiệm thu</button>
+                <button class="btn-dark btn-full">Thanh toán Số dư</button>
+
+                <div class="alert-warning" style="margin-top: 1.5rem; margin-bottom: 0;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="flex-shrink: 0;">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <div style="font-size: 0.85rem;">Vui lòng xác nhận nghiệm thu thực tế trước khi thanh toán số dư còn lại.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="header-logo">
+                <div class="header-logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="M12 5l7 7-7 7" />
+                    </svg>
+                </div>
+                Vận chuyển Ngựa
+            </div>
+            <div class="footer-links">
+                <a href="#">Điều khoản Dịch vụ</a>
+                <a href="#">Chính sách Bảo mật</a>
+                <a href="#">Hỗ trợ Khách hàng</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 EquineLogistics — Hệ thống Vận chuyển Ngựa đua Xuyên quốc gia.
+        </div>
+    </footer>
+<script src="../global_translate.js"></script>
+</body>
+
+</html>
