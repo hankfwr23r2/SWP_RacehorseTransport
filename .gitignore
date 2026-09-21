@@ -1,0 +1,22 @@
+# --- Frontend (React) ---
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+
+# --- Backend (Spring Boot) ---
+backend/target/
+backend/bin/
+backend/.mvn/
+backend/*.class
+backend/application-secret.properties
+
+# --- OS & IDE Files ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
