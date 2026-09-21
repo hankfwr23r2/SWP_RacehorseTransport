@@ -7,16 +7,41 @@ var searchQuery = '';
 function openIncidentModal(btn) {
     activeRow = btn.closest('tr');
     var tripId = activeRow.querySelector('td').textContent;
+    var status = activeRow.getAttribute('data-status');
     document.getElementById('modal-incident-id').innerText = tripId;
     document.getElementById('incidentModal').style.display = 'flex';
     hideRejectReason();
     hideApproveDirective();
+
+    var actionButtons = document.getElementById('action-buttons');
+    var resultBox = document.getElementById('modal-result-box');
+
+    if (status === 'approved') {
+        actionButtons.style.display = 'none';
+        var directive = activeRow.getAttribute('data-directive') || '';
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #16a34a; font-weight: 600; margin: 0 0 8px 0;">Chỉ đạo xử lý của Manager</p>' +
+            '<p style="margin: 0; color: #166534; font-size: 0.88rem; line-height: 1.6;">' + directive + '</p></div>';
+    } else if (status === 'rejected') {
+        actionButtons.style.display = 'none';
+        var reason = activeRow.getAttribute('data-reason') || '';
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #dc2626; font-weight: 600; margin: 0 0 8px 0;">Lý do từ chối</p>' +
+            '<p style="margin: 0; color: #991b1b; font-size: 0.88rem; line-height: 1.6;">' + reason + '</p></div>';
+    } else {
+        actionButtons.style.display = 'flex';
+        resultBox.style.display = 'none';
+    }
 }
 
 function closeIncidentModal() {
     document.getElementById('incidentModal').style.display = 'none';
     hideRejectReason();
     hideApproveDirective();
+    document.getElementById('modal-result-box').style.display = 'none';
+    document.getElementById('action-buttons').style.display = 'flex';
     activeRow = null;
 }
 
@@ -133,13 +158,13 @@ function changeRowStatus(row, status, reason, directive) {
         statusBadge.className = 'badge badge-success';
         statusBadge.textContent = 'Đã phê duyệt';
         row.setAttribute('data-directive', directive || '');
-        actionCell.innerHTML = '<button onclick="viewDirective(this)" style="padding: 6px 12px; border: 1px solid #bbf7d0; border-radius: 4px; background: #f0fdf4; color: #16a34a; cursor: pointer; font-weight: 600; font-family: Inter; font-size: 0.85rem;"><i class="fa-solid fa-eye"></i> Xem chỉ đạo</button>';
+        actionCell.innerHTML = '<button onclick="openIncidentModal(this)" class="btn btn-outline" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã phê duyệt sự cố ' + tripId, 'success');
     } else if (status === 'rejected') {
         statusBadge.className = 'badge badge-danger';
         statusBadge.textContent = 'Từ chối';
         row.setAttribute('data-reason', reason || '');
-        actionCell.innerHTML = '<button onclick="viewRejectReason(this)" style="padding: 6px 12px; border: 1px solid #fecaca; border-radius: 4px; background: #fef2f2; color: #dc2626; cursor: pointer; font-weight: 600; font-family: Inter; font-size: 0.85rem;"><i class="fa-solid fa-eye"></i> Xem lý do</button>';
+        actionCell.innerHTML = '<button onclick="openIncidentModal(this)" class="btn btn-outline" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã từ chối sự cố ' + tripId, 'error');
     }
 

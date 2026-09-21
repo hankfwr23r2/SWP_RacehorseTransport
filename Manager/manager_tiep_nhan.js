@@ -6,15 +6,44 @@ let searchQuery = '';
 
 function openQuoteModal(btn) {
     activeRow = btn.closest('tr');
+    var status = activeRow.getAttribute('data-status');
     const orderId = activeRow.querySelector('td').textContent;
     document.getElementById('modal-order-id').innerText = orderId;
     document.getElementById('quoteDetailModal').style.display = 'flex';
     hideRejectReason();
+
+    var btnReject = document.getElementById('tn-btn-reject');
+    var btnApprove = document.getElementById('btn-approve');
+    var resultBox = document.getElementById('modal-result-box');
+
+    if (status === 'approved') {
+        btnReject.style.display = 'none';
+        btnApprove.style.display = 'none';
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #16a34a; font-weight: 600; margin: 0 0 8px 0;">Kết quả phê duyệt</p>' +
+            '<p style="margin: 0; color: #166534; font-size: 0.88rem; line-height: 1.6;">Báo giá đã được phê duyệt và gửi cho khách hàng.</p></div>';
+    } else if (status === 'rejected') {
+        btnReject.style.display = 'none';
+        btnApprove.style.display = 'none';
+        var reason = activeRow.getAttribute('data-reason') || '';
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #dc2626; font-weight: 600; margin: 0 0 8px 0;">Lý do từ chối</p>' +
+            '<p style="margin: 0; color: #991b1b; font-size: 0.88rem; line-height: 1.6;">' + reason + '</p></div>';
+    } else {
+        btnReject.style.display = '';
+        btnApprove.style.display = '';
+        resultBox.style.display = 'none';
+    }
 }
 
 function closeQuoteModal() {
     document.getElementById('quoteDetailModal').style.display = 'none';
     hideRejectReason();
+    document.getElementById('modal-result-box').style.display = 'none';
+    document.getElementById('tn-btn-reject').style.display = '';
+    document.getElementById('btn-approve').style.display = '';
     activeRow = null;
 }
 
@@ -37,6 +66,7 @@ function showRejectReason() {
     box.style.display = 'block';
     box.style.animation = 'slideDown 0.3s ease';
     document.getElementById('tn-btn-reject').style.display = 'none';
+    document.getElementById('btn-approve').style.display = 'none';
     input.focus();
 }
 
@@ -46,6 +76,7 @@ function hideRejectReason() {
     document.getElementById('tn-reject-reason-input').style.borderColor = '#fecaca';
     document.getElementById('tn-reject-reason-input').placeholder = 'Nhập lý do từ chối báo giá...';
     document.getElementById('tn-btn-reject').style.display = '';
+    document.getElementById('btn-approve').style.display = '';
 }
 
 function confirmReject() {
@@ -85,13 +116,13 @@ function changeRowStatus(row, status, reason) {
     if (status === 'approved') {
         badgeCell.className = 'badge badge-success';
         badgeCell.textContent = 'Đã gửi Báo giá';
-        actionCell.innerHTML = '<span style="color: #16a34a; font-weight: 600; font-size: 0.85rem;">Đã gửi</span>';
+        actionCell.innerHTML = '<button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã phê duyệt & gửi báo giá ' + orderId, 'success');
     } else if (status === 'rejected') {
         badgeCell.className = 'badge badge-danger';
         badgeCell.textContent = 'Từ chối';
         row.setAttribute('data-reason', reason || '');
-        actionCell.innerHTML = '<button onclick="viewRejectReason(this)" style="padding: 6px 12px; border: 1px solid #fecaca; border-radius: 4px; background: #fef2f2; color: #dc2626; cursor: pointer; font-weight: 600; font-family: Inter; font-size: 0.85rem;">Xem lý do</button>';
+        actionCell.innerHTML = '<button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã từ chối báo giá ' + orderId, 'error');
     }
 

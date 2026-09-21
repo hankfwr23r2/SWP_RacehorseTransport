@@ -325,7 +325,7 @@
                             </p>
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center;">
-                            <button onclick="checkAllHorses()" class="btn" style="background: #e2e8f0; color: #334155; font-size: 0.8rem; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px;">Xác nhận Tất cả</button>
+                            <button id="btn-check-all" onclick="checkAllHorses()" class="btn" style="background: #e2e8f0; color: #334155; font-size: 0.8rem; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px;">Xác nhận Tất cả</button>
                             <div style="display: flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px;">
                                 <button onclick="prevHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;">&lt;</button>
                                 <span id="horse-page-indicator" style="font-size: 0.85rem; font-weight: 600; min-width: 40px; text-align: center;">1 / 2</span>
@@ -412,6 +412,8 @@
                     <button onclick="confirmReject()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #dc2626; color: white; font-weight: 600; cursor: pointer; font-family: Inter;">Xác nhận Từ chối</button>
                 </div>
             </div>
+
+            <div id="modal-result-box" style="display: none; margin-top: 16px;"></div>
 
             <div class="modal-actions" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
                 <button class="btn btn-outline" onclick="closeModal()" style="padding: 10px 20px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer;">Đóng</button>

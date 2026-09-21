@@ -33,17 +33,56 @@ function checkAllHorses() {
 
 function openModal(btn) {
     activeRow = btn.closest('tr');
+    var status = activeRow.getAttribute('data-status');
     document.getElementById('feasibilityModal').style.display = 'flex';
     const checkboxes = document.querySelectorAll('.doc-check');
     checkboxes.forEach(cb => cb.checked = false);
     currentHorseIndex = 0;
     updateHorseCarousel();
     validateChecklist();
+
+    var btnReject = document.getElementById('btn-reject');
+    var btnApprove = document.getElementById('btn-approve');
+    var btnCheckAll = document.getElementById('btn-check-all');
+    var resultBox = document.getElementById('modal-result-box');
+
+    if (status === 'approved') {
+        btnReject.style.display = 'none';
+        btnApprove.style.display = 'none';
+        btnCheckAll.style.display = 'none';
+        checkboxes.forEach(cb => { cb.checked = true; cb.disabled = true; });
+        validateChecklist();
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #16a34a; font-weight: 600; margin: 0 0 8px 0;">Kết quả phê duyệt</p>' +
+            '<p style="margin: 0; color: #166534; font-size: 0.88rem; line-height: 1.6;">Đơn hàng đã được phê duyệt khởi hành.</p></div>';
+    } else if (status === 'rejected') {
+        btnReject.style.display = 'none';
+        btnApprove.style.display = 'none';
+        btnCheckAll.style.display = 'none';
+        checkboxes.forEach(cb => { cb.disabled = true; });
+        var reason = activeRow.getAttribute('data-reason') || '';
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">' +
+            '<p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #dc2626; font-weight: 600; margin: 0 0 8px 0;">Lý do từ chối</p>' +
+            '<p style="margin: 0; color: #991b1b; font-size: 0.88rem; line-height: 1.6;">' + reason + '</p></div>';
+    } else {
+        btnReject.style.display = '';
+        btnApprove.style.display = '';
+        btnCheckAll.style.display = '';
+        checkboxes.forEach(cb => { cb.disabled = false; });
+        resultBox.style.display = 'none';
+    }
 }
 
 function closeModal() {
     document.getElementById('feasibilityModal').style.display = 'none';
     hideRejectReason();
+    document.getElementById('modal-result-box').style.display = 'none';
+    document.getElementById('btn-reject').style.display = '';
+    document.getElementById('btn-approve').style.display = '';
+    document.getElementById('btn-check-all').style.display = '';
+    document.querySelectorAll('.doc-check').forEach(cb => { cb.disabled = false; });
     activeRow = null;
 }
 
@@ -66,6 +105,7 @@ function showRejectReason() {
     box.style.display = 'block';
     box.style.animation = 'slideDown 0.3s ease';
     document.getElementById('btn-reject').style.display = 'none';
+    document.getElementById('btn-approve').style.display = 'none';
     input.focus();
 }
 
@@ -75,6 +115,7 @@ function hideRejectReason() {
     document.getElementById('reject-reason-input').style.borderColor = '#fecaca';
     document.getElementById('reject-reason-input').placeholder = 'Nhập lý do từ chối đơn hàng...';
     document.getElementById('btn-reject').style.display = '';
+    document.getElementById('btn-approve').style.display = '';
 }
 
 function confirmReject() {
@@ -114,13 +155,13 @@ function changeRowStatus(row, status, reason) {
     if (status === 'approved') {
         badgeCell.className = 'badge badge-success';
         badgeCell.textContent = 'Đã phê duyệt';
-        actionCell.innerHTML = '<span style="color: #16a34a; font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-circle-check"></i> Đã duyệt</span>';
+        actionCell.innerHTML = '<button class="btn btn-outline" onclick="openModal(this)" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã phê duyệt đơn hàng ' + orderId, 'success');
     } else if (status === 'rejected') {
         badgeCell.className = 'badge badge-danger';
         badgeCell.textContent = 'Từ chối';
         row.setAttribute('data-reason', reason || '');
-        actionCell.innerHTML = '<button onclick="viewRejectReason(this)" style="padding: 6px 12px; border: 1px solid #fecaca; border-radius: 4px; background: #fef2f2; color: #dc2626; cursor: pointer; font-weight: 600; font-family: Inter; font-size: 0.85rem;"><i class="fa-solid fa-eye"></i> Xem lý do</button>';
+        actionCell.innerHTML = '<button class="btn btn-outline" onclick="openModal(this)" style="padding: 6px 12px;">Xem chi tiết</button>';
         showToast('Đã từ chối đơn hàng ' + orderId, 'error');
     }
 
