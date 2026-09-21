@@ -27,7 +27,7 @@
                 <a href="manager_phe_duyet.html" class="active">Phê duyệt Đơn hàng</a>
                 <a href="manager_phan_cong.html">Phân công</a>
                 <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a>
                 <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
             </nav>
             <div class="user-actions">
@@ -53,21 +53,26 @@
         </div>
 
         <div class="card table-card">
-            <!-- Workflow flow indicator -->
-            <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; font-size: 0.75rem; flex-wrap: wrap;">
-                <span style="background: #dbeafe; color: #1d4ed8; padding: 4px 10px; border-radius: 4px; font-weight: 600;">① Khách đặt</span>
-                <span style="color: #94a3b8;">→</span>
-                <span style="background: #fef3c7; color: #92400e; padding: 4px 10px; border-radius: 4px; font-weight: 600;">② Manager giao</span>
-                <span style="color: #94a3b8;">→</span>
-                <span style="background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 4px; font-weight: 600;">③ Điều phối xem xét</span>
-                <span style="color: #94a3b8;">→</span>
-                <span style="background: #fce7f3; color: #be185d; padding: 4px 10px; border-radius: 4px; font-weight: 600;">④ Y tế kiểm tra</span>
-                <span style="color: #94a3b8;">→</span>
-                <span style="background: #d1fae5; color: #065f46; padding: 4px 10px; border-radius: 4px; font-weight: 600;">⑤ Manager phê duyệt</span>
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <h2 style="margin: 0;">Quản lý Phê duyệt Đơn hàng</h2>
+                <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
+                    <select style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; font-family: Inter; color: #334155; cursor: pointer;">
+                        <option value="all">Loại dịch vụ: Tất cả</option>
+                        <option value="domestic">Nội địa</option>
+                        <option value="international">Quốc tế</option>
+                    </select>
+                    <div class="search-bar" style="position: relative;">
+                        <input type="text" placeholder="Tìm Mã đơn, Khách hàng..." style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
+                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
+                    </div>
+                </div>
             </div>
-
-            <div class="card-header">
-                <h2>Đơn vận chuyển đang chờ duyệt</h2>
+            
+            <!-- Tabs Trạng thái -->
+            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
+                <div style="padding-bottom: 12px; border-bottom: 2px solid #ea580c; color: #ea580c; font-weight: 600; cursor: pointer;">Cần xử lý (2)</div>
+                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Đã phê duyệt (150)</div>
+                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Từ chối (5)</div>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
@@ -84,62 +89,162 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="font-semibold">EQ-2026-9842</td>
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9842</td>
                             <td class="text-muted">Al Shaqab Racing</td>
                             <td>Doha (DOH) &rarr; Paris (CDG)</td>
                             <td class="text-muted">3 (Thoroughbred)</td>
                             <td class="text-muted">18/10/2026</td>
-                            <td><span class="badge badge-blue">② Chờ giao Điều phối</span></td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
                             <td class="text-right">
-                                <button class="btn btn-warning">Giao cho Điều phối</button>
+                                <button class="btn btn-primary" onclick="openModal()" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;"><i class="fa-solid fa-check"></i> Xem & Duyệt</button>
                             </td>
                         </tr>
                         <tr>
-                            <td class="font-semibold">EQ-2026-9840</td>
+                            <td class="font-semibold" style="color: #ea580c;">EQ-2026-9840</td>
                             <td class="text-muted">Godolphin Stables</td>
                             <td>Dubai (DXB) &rarr; London (LHR)</td>
                             <td class="text-muted">2 (Arabian)</td>
                             <td class="text-muted">17/10/2026</td>
-                            <td><span class="badge badge-purple">④ Y tế đã OK</span></td>
+                            <td><span class="badge badge-warning">Chờ phê duyệt</span></td>
                             <td class="text-right">
-                                <button class="btn btn-success" onclick="openModal()">Xem xét & Phê duyệt</button>
+                                <button class="btn btn-primary" onclick="openModal()" style="padding: 6px 12px; border: none; border-radius: 4px; color: white; background: #ea580c; cursor: pointer; font-weight: 600;"><i class="fa-solid fa-check"></i> Xem & Duyệt</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            
+            <!-- Phân trang (Pagination) -->
+            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
+                <span class="text-muted" style="font-size: 0.85rem;">Hiển thị 1-10 của 150 Đơn hàng</span>
+                <div class="pagination" style="display: flex; gap: 4px;">
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang trước</button>
+                    <button class="btn btn-primary" style="padding: 6px 12px; border: none; border-radius: 4px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">1</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">2</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">3</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang sau</button>
+                </div>
+            </div>
         </div>
 
     </main>
 
-    <!-- Đánh giá Khả thi Xem xét Modal (Hidden by default) -->
+    <!-- Đánh giá Khả thi Xem xét Modal -->
     <div id="feasibilityModal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 650px;">
             <h2 class="modal-title">Xem xét Đánh giá Khả thi Estimate</h2>
             <p class="modal-subtitle">The coordinator has reviewed Order EQ-2026-9840 and provided the following quote.</p>
             
-            <div class="modal-details">
-                <div class="detail-row">
-                    <span class="detail-label">Expected Tuyến đường</span>
-                    <span class="detail-value font-semibold">Dubai (DXB) &rarr; Frankfurt (FRA) &rarr; London (LHR)</span>
+            <div class="modal-details" style="gap: 16px;">
+                <!-- 1. Thông tin Vận chuyển -->
+                <div class="detail-section">
+                    <div class="detail-row">
+                        <span class="detail-label">Expected Tuyến đường</span>
+                        <span class="detail-value font-semibold">Dubai (DXB) &rarr; Frankfurt (FRA) &rarr; London (LHR)</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Transport Type</span>
+                        <span class="detail-value font-semibold">Air Transport (Climate Control)</span>
+                    </div>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Transport Type</span>
-                    <span class="detail-value font-semibold">Air Transport (Climate Control)</span>
+
+                <!-- 2. Cơ sở xét duyệt (Hồ sơ ngựa) -->
+                <div class="detail-section" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; background-color: #f8fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: #1e293b;">
+                                <i class="fa-solid fa-file-shield text-orange" style="margin-right: 8px;"></i> Cơ sở xét duyệt (Hồ sơ pháp lý & Thú y)
+                            </h3>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">
+                                * Vui lòng kiểm tra hồ sơ. <span id="checklist-counter" style="color: #ea580c; font-weight: 600;">0/8</span> hoàn tất
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button onclick="checkAllHorses()" class="btn" style="background: #e2e8f0; color: #334155; font-size: 0.8rem; padding: 6px 12px; border: none; cursor: pointer; border-radius: 4px;">
+                                <i class="fa-solid fa-check-double"></i> Xác nhận Tất cả
+                            </button>
+                            <div style="display: flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 2px;">
+                                <button onclick="prevHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></button>
+                                <span id="horse-page-indicator" style="font-size: 0.85rem; font-weight: 600; min-width: 40px; text-align: center;">1 / 2</span>
+                                <button onclick="nextHorse()" class="btn" style="padding: 4px 8px; border: none; background: transparent; cursor: pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="horse-carousel" style="padding-top: 12px; border-top: 1px dashed #cbd5e1;">
+                        <!-- Horse #1 -->
+                        <div class="horse-checklist active-horse" style="margin-bottom: 16px;">
+                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">🐴 Ngựa #1 (Arabian - Đực)</h4>
+                            <div class="checkbox-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Hộ chiếu ngựa (Passport)</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Giấy chứng nhận Y tế</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Xét nghiệm Âm tính</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Giấy phép Hải quan</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Horse #2 -->
+                        <div class="horse-checklist" style="display: none; margin-bottom: 16px;">
+                            <h4 style="font-size: 0.9rem; margin: 0 0 8px 0; color: #334155;">🐴 Ngựa #2 (Arabian - Cái)</h4>
+                            <div class="checkbox-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Hộ chiếu ngựa (Passport)</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Giấy chứng nhận Y tế</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Xét nghiệm Âm tính</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="doc-check" onchange="validateChecklist()">
+                                    <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-label">Giấy phép Hải quan</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Total Thành tiền (Dự kiến)</span>
-                    <span class="detail-value font-bold text-orange">612,500,000 VND</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Deposit (50%)</span>
-                    <span class="detail-value font-bold">306,250,000 VND</span>
+
+                <!-- 3. Chi phí -->
+                <div class="detail-section" style="border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <div class="detail-row">
+                        <span class="detail-label">Total Thành tiền (Dự kiến)</span>
+                        <span class="detail-value font-bold text-orange">612,500,000 VND</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Deposit (50%)</span>
+                        <span class="detail-value font-bold">306,250,000 VND</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-actions">
-                <button class="btn btn-outline-modal" onclick="closeModal()">Close</button>
-                <button class="btn btn-primary-modal">Phê duyệt & Gửi Báo giá</button>
+            <div class="modal-actions" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn btn-outline" onclick="closeModal()" style="padding: 10px 20px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer;">Đóng</button>
+                <button class="btn btn-danger" onclick="closeModal()" style="padding: 10px 20px; border: none; border-radius: 6px; background: #ef4444; color: white; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-xmark"></i> Từ chối</button>
+                <button id="btn-approve" class="btn btn-primary btn-disabled" disabled style="padding: 10px 20px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: not-allowed;"><i class="fa-solid fa-check"></i> Phê duyệt Khởi hành</button>
             </div>
         </div>
     </div>
@@ -164,12 +269,150 @@
         </div>
     </footer>
 
+    <!-- Style bổ sung cho Custom Checkbox -->
+    <style>
+        /* Custom Checkbox UI */
+        .custom-checkbox {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #ffffff;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .custom-checkbox:hover {
+            border-color: #94a3b8;
+            background: #f1f5f9;
+        }
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+            transition: all 0.2s;
+        }
+        .checkmark i {
+            font-size: 0.7rem;
+        }
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #ea580c;
+            border-color: #ea580c;
+            color: white;
+        }
+        .custom-checkbox input:checked ~ .check-label {
+            color: #ea580c;
+            font-weight: 500;
+        }
+        .check-label {
+            font-size: 0.85rem;
+            color: #475569;
+            transition: all 0.2s;
+        }
+        .btn-disabled {
+            background-color: #cbd5e1 !important;
+            color: #64748b !important;
+            cursor: not-allowed !important;
+            border-color: #cbd5e1 !important;
+        }
+        .btn-active {
+            background-color: #ea580c !important;
+            color: #ffffff !important;
+            cursor: pointer !important;
+            border-color: #ea580c !important;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+
     <script>
+        let currentHorseIndex = 0;
+        
+        function updateHorseCarousel() {
+            const horses = document.querySelectorAll('.horse-checklist');
+            horses.forEach((h, idx) => {
+                h.style.display = (idx === currentHorseIndex) ? 'block' : 'none';
+            });
+            document.getElementById('horse-page-indicator').innerText = `${currentHorseIndex + 1} / ${horses.length}`;
+        }
+        
+        function prevHorse() {
+            if (currentHorseIndex > 0) {
+                currentHorseIndex--;
+                updateHorseCarousel();
+            }
+        }
+        
+        function nextHorse() {
+            const horses = document.querySelectorAll('.horse-checklist');
+            if (currentHorseIndex < horses.length - 1) {
+                currentHorseIndex++;
+                updateHorseCarousel();
+            }
+        }
+
+        function checkAllHorses() {
+            const checkboxes = document.querySelectorAll('.doc-check');
+            checkboxes.forEach(cb => cb.checked = true);
+            validateChecklist();
+        }
+
         function openModal() {
             document.getElementById('feasibilityModal').style.display = 'flex';
+            const checkboxes = document.querySelectorAll('.doc-check');
+            checkboxes.forEach(cb => cb.checked = false);
+            currentHorseIndex = 0;
+            updateHorseCarousel();
+            validateChecklist();
         }
         function closeModal() {
             document.getElementById('feasibilityModal').style.display = 'none';
+        }
+        function validateChecklist() {
+            const checkboxes = document.querySelectorAll('.doc-check');
+            const totalChecks = checkboxes.length;
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            document.getElementById('checklist-counter').innerText = `${checkedCount}/${totalChecks} hoàn tất`;
+
+            const btnApprove = document.getElementById('btn-approve');
+            
+            if (checkedCount === totalChecks) {
+                btnApprove.disabled = false;
+                btnApprove.classList.remove('btn-disabled');
+                btnApprove.classList.add('btn-active');
+            } else {
+                btnApprove.disabled = true;
+                btnApprove.classList.add('btn-disabled');
+                btnApprove.classList.remove('btn-active');
+            }
         }
     </script>
 <script src="../global_translate.js"></script>

@@ -27,7 +27,7 @@
                 <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
                 <a href="manager_phan_cong.html">Phân công</a>
                 <a href="manager_trip_reports.html" class="active">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a>
                 <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
             </nav>
             <div class="user-actions">
@@ -52,41 +52,70 @@
             
             <!-- Left Column: Trip List -->
             <div class="card">
-                <div class="card-header">
-                    <h2>Các chuyến đã hoàn thành gần đây</h2>
+                <div class="card-header" style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <h2 style="margin: 0; font-size: 1.1rem;">Báo cáo Chuyến đi</h2>
+                    </div>
+                    <div class="search-bar" style="position: relative; width: 100%;">
+                        <input type="text" placeholder="Tìm Mã đơn, Khách hàng..." style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; font-family: Inter; outline: none; box-sizing: border-box;">
+                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
+                    </div>
                 </div>
-                <div class="table-responsive">
+                
+                <div class="table-responsive" style="margin-top: 16px; border-top: 1px solid #e2e8f0;">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Mã Đơn hàng</th>
+                                <th>Mã Đơn & Khách hàng</th>
                                 <th>Tuyến đường</th>
                                 <th>Ngày gửi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="selected">
-                                <td class="font-semibold">EQ-2026-9830</td>
+                                <td>
+                                    <div class="font-semibold" style="color: #ea580c;">EQ-2026-9830</div>
+                                    <div class="text-muted" style="font-size: 0.85rem;"><i class="fa-solid fa-user" style="margin-right: 4px;"></i>Al Shaqab Racing</div>
+                                </td>
                                 <td>Singapore (SIN) &rarr; Hanoi (HAN)</td>
                                 <td class="text-muted">15/09/2026</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">EQ-2026-9828</td>
+                                <td>
+                                    <div class="font-semibold">EQ-2026-9828</div>
+                                    <div class="text-muted" style="font-size: 0.85rem;"><i class="fa-solid fa-user" style="margin-right: 4px;"></i>Godolphin Stables</div>
+                                </td>
                                 <td>Kuala Lumpur (KUL) &rarr; Ho Chi Minh (SGN)</td>
                                 <td class="text-muted">12/09/2026</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">EQ-2026-9822</td>
+                                <td>
+                                    <div class="font-semibold">EQ-2026-9822</div>
+                                    <div class="text-muted" style="font-size: 0.85rem;"><i class="fa-solid fa-user" style="margin-right: 4px;"></i>Nguyễn Văn A</div>
+                                </td>
                                 <td>Bangkok (BKK) &rarr; Da Nang (DAD)</td>
                                 <td class="text-muted">05/09/2026</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold">EQ-2026-9815</td>
+                                <td>
+                                    <div class="font-semibold">EQ-2026-9815</div>
+                                    <div class="text-muted" style="font-size: 0.85rem;"><i class="fa-solid fa-user" style="margin-right: 4px;"></i>Trần Thị B</div>
+                                </td>
                                 <td>Tokyo (NRT) &rarr; Hanoi (HAN)</td>
                                 <td class="text-muted">28/08/2026</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                
+                <!-- Phân trang (Pagination) -->
+                <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-top: 1px solid #e2e8f0; font-size: 0.85rem;">
+                    <div class="pagination" style="display: flex; gap: 4px; width: 100%; justify-content: center;">
+                        <button class="btn btn-outline" style="padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">&lt;</button>
+                        <button class="btn btn-primary" style="padding: 4px 8px; border: none; border-radius: 4px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">1</button>
+                        <button class="btn btn-outline" style="padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">2</button>
+                        <button class="btn btn-outline" style="padding: 4px 8px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">&gt;</button>
+                    </div>
                 </div>
             </div>
 
