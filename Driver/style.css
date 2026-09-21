@@ -22,7 +22,8 @@ body {
     font-family: var(--font-family);
     background-color: var(--bg-color);
     color: var(--text-main);
-    overflow: hidden; /* Prevent scrolling on body, scroll on main */
+    overflow: hidden;
+    /* Prevent scrolling on body, scroll on main */
 }
 
 .app-container {
@@ -164,8 +165,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .page-header {
@@ -189,7 +197,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .trip-header {
@@ -331,6 +339,7 @@ body {
     color: var(--text-muted);
     margin-bottom: 2px;
 }
+
 .stage-info p strong {
     color: var(--text-main);
 }
@@ -341,7 +350,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .milestone {
@@ -356,7 +365,8 @@ body {
 
 .milestone-line {
     position: absolute;
-    left: 19px; /* center of the 40px icon */
+    left: 19px;
+    /* center of the 40px icon */
     top: 40px;
     bottom: 0;
     width: 2px;
@@ -417,9 +427,17 @@ body {
     text-transform: uppercase;
 }
 
-.completed-text { color: var(--green-color); }
-.pending-text { color: var(--accent-orange); }
-.disabled-text { color: var(--text-muted); }
+.completed-text {
+    color: var(--green-color);
+}
+
+.pending-text {
+    color: var(--accent-orange);
+}
+
+.disabled-text {
+    color: var(--text-muted);
+}
 
 .m-desc {
     color: var(--text-muted);
@@ -525,7 +543,8 @@ body {
     }
 
     .info-grid {
-        grid-template-columns: 1fr; /* Stack info blocks on mobile */
+        grid-template-columns: 1fr;
+        /* Stack info blocks on mobile */
     }
 
     .milestone-header {

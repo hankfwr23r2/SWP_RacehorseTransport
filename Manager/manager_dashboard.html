@@ -29,7 +29,7 @@
                 <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
                 <a href="manager_phan_cong.html">Phân công</a>
                 <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a>
                 <a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a>
             </nav>
             <div class="user-actions">
@@ -43,7 +43,7 @@
 
     <!-- Main Content -->
     <main class="container main-content">
-        
+
         <!-- Page Title & Breadcrumb -->
         <div class="page-header">
             <h1>Bảng điều khiển Quản lý</h1>
@@ -53,7 +53,8 @@
         <!-- KPIs Grid -->
         <div class="dashboard-grid">
             <div class="kpi-card">
-                <div class="kpi-title"><i class="fa-solid fa-sack-dollar text-orange"></i> Tổng Doanh Thu (Tháng Này)</div>
+                <div class="kpi-title"><i class="fa-solid fa-sack-dollar text-orange"></i> Tổng Doanh Thu (Tháng Này)
+                </div>
                 <div class="kpi-value">4.2 Tỷ VNĐ</div>
                 <div class="kpi-subtext"><i class="fa-solid fa-arrow-trend-up"></i> Tăng 12% so với tháng trước</div>
             </div>
@@ -65,13 +66,14 @@
             <div class="kpi-card">
                 <div class="kpi-title"><i class="fa-solid fa-users text-orange"></i> Nhân sự Đang Làm Việc</div>
                 <div class="kpi-value">24</div>
-                <div class="kpi-subtext negative"><i class="fa-solid fa-arrow-trend-down"></i> Giảm 2 người so với hôm qua</div>
+                <div class="kpi-subtext negative"><i class="fa-solid fa-arrow-trend-down"></i> Giảm 2 người so với hôm
+                    qua</div>
             </div>
         </div>
 
         <!-- Dashboard Layout -->
         <div class="dashboard-layout">
-            
+
             <!-- Left Column: Revenue Chart -->
             <div class="card">
                 <div class="card-header">
@@ -177,7 +179,7 @@
     <!-- Chart.js Initialization -->
     <script>
         const ctx = document.getElementById('revenueChart').getContext('2d');
-        
+
         // Gradient for the line chart
         let gradient = ctx.createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(234, 88, 12, 0.5)'); // accent-orange with opacity
@@ -193,7 +195,7 @@
                     borderColor: '#ea580c', // accent-orange
                     backgroundColor: gradient,
                     borderWidth: 3,
-                    pointQuay lạigroundColor: '#ffffff',
+                    pointBackgroundColor: '#ffffff',
                     pointBorderColor: '#ea580c',
                     pointBorderWidth: 2,
                     pointRadius: 4,
@@ -216,7 +218,7 @@
                         bodyFont: { size: 14, family: 'Inter' },
                         displayColors: false,
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return context.parsed.y + 'B VND';
                             }
                         }
@@ -242,7 +244,7 @@
                         ticks: {
                             font: { family: 'Inter', size: 12 },
                             color: '#64748b',
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value + 'B';
                             }
                         }
@@ -255,6 +257,7 @@
             }
         });
     </script>
-<script src="../global_translate.js"></script>
+    <script src="../global_translate.js"></script>
 </body>
+
 </html>

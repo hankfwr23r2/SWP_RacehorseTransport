@@ -27,7 +27,7 @@
                 <a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a>
                 <a href="manager_phan_cong.html">Phân công</a>
                 <a href="manager_trip_reports.html">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html">Yêu Cầu & Báo Giá</a>
+                <a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a>
                 <a href="manager_duyet_su_co.html" class="active">Sự cố & Chi Phí</a>
             </nav>
             <div class="user-actions">
@@ -47,93 +47,155 @@
 
         <!-- Sự cố chờ xử lý -->
         <div class="card mb-4">
-            <div class="card-header">
-                <h2>Pending Sự cố</h2>
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <h2 style="margin: 0;">Sự cố chờ duyệt</h2>
+                <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
+                    <select style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; font-family: Inter; color: #334155; cursor: pointer;">
+                        <option value="all">Mức độ: Tất cả</option>
+                        <option value="emergency">Mức độ: Khẩn cấp (Emergency)</option>
+                        <option value="warning">Mức độ: Cảnh báo (Warning)</option>
+                    </select>
+                    <select style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; font-family: Inter; color: #334155; cursor: pointer;">
+                        <option value="all">Loại sự cố: Tất cả</option>
+                        <option value="vehicle">Xe cộ & Vận hành</option>
+                        <option value="horse">Sức khỏe Ngựa</option>
+                        <option value="weather">Thời tiết & Ngoại cảnh</option>
+                    </select>
+                    <div class="search-bar" style="position: relative;">
+                        <input type="text" placeholder="Tìm Biển số xe, Tuyến đường, ID..." style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 280px; font-family: Inter; outline: none;">
+                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
+                    </div>
+                </div>
             </div>
+            
+            <!-- Tabs Trạng thái -->
+            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
+                <div style="padding-bottom: 12px; border-bottom: 2px solid #ea580c; color: #ea580c; font-weight: 600; cursor: pointer;">Chờ xử lý (1)</div>
+                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Đã phê duyệt (15)</div>
+                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Từ chối (2)</div>
+            </div>
+
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>TRIP ID</th>
+                            <th>THÔNG TIN CHUYẾN</th>
                             <th>REPORT TIME</th>
                             <th>SEVERITY</th>
                             <th>COORDINATOR PROPOSAL</th>
+                            <th class="text-right">THAO TÁC</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="font-semibold">#TR-9021</td>
+                            <td>
+                                <div style="font-weight: 500; color: #1e293b;">HN &rarr; HP</div>
+                                <div style="font-size: 0.85rem; color: #64748b;"><i class="fa-solid fa-truck" style="margin-right: 4px;"></i>29H-12345</div>
+                            </td>
                             <td class="text-muted">10:30 25/08</td>
                             <td><span class="badge badge-danger">Emergency</span></td>
-                            <td class="text-muted">Flat tire on highway, need to call the nearest mobile animal rescue.</td>
+                            <td class="text-muted">Flat tire on highway, need to call the nearest mobile animal rescue.
+                            </td>
+                            <td class="text-right">
+                                <button class="btn btn-outline" onclick="openIncidentModal('INC-001')" style="padding: 6px 12px;"><i class="fa-solid fa-eye"></i> Xem chi tiết</button>
+                            </td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
+            
+            <!-- Phân trang (Pagination) -->
+            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
+                <span class="text-muted" style="font-size: 0.85rem;">Hiển thị 1-10 của 25 Sự cố</span>
+                <div class="pagination" style="display: flex; gap: 4px;">
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang trước</button>
+                    <button class="btn btn-primary" style="padding: 6px 12px; border: none; border-radius: 4px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">1</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">2</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">3</button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang sau</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Form Phê duyệt sự cố -->
-        <div class="card form-card">
-            <div class="card-header border-bottom">
-                <h2 class="form-title"><i class="fa-solid fa-file-invoice text-orange"></i> Phê duyệt Giải pháp Sự cố (Incident #INC-001)</h2>
+    </main>
+
+    <!-- Modal Phê duyệt Sự cố -->
+    <div id="incidentModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div class="modal-content" style="background: white; border-radius: 8px; width: 100%; max-width: 650px; padding: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
+                <h2 style="margin: 0; font-size: 1.25rem; color: #1e293b;"><i class="fa-solid fa-file-invoice text-orange" style="margin-right: 8px;"></i>Phê duyệt Giải pháp Sự cố <span id="modal-incident-id" style="color: #ea580c;">#INC-001</span></h2>
+                <button onclick="closeIncidentModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748b;"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="form-body">
-                <div class="info-block">
-                    <div class="info-label">Thông tin từ Điều phối viên:</div>
-                    <div class="info-text">"Xe 29H-12345 bị nổ lốp tại KM15 cao tốc HN-HP. Không có thương vong, nhiệt độ cabin ổn định dưới 22°C. Đề xuất gọi cứu hộ khẩn cấp."</div>
+                <h3 style="font-size: 1.05rem; color: #1e293b; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">1. Báo cáo Tình trạng & Bằng chứng (Từ Điều phối)</h3>
+                <div class="info-block" style="margin-bottom: 24px;">
+                    <div class="info-text" style="margin-bottom: 16px;">
+                        <p style="margin: 0 0 8px 0;">"Xe 29H-12345 bị nổ lốp tại KM15 cao tốc HN-HP. Không có thương vong, nhiệt độ cabin ổn định dưới 22°C. Đề xuất gọi cứu hộ khẩn cấp."</p>
+                        <p style="margin: 0; color: #ea580c; font-weight: 600;">💰 Chi phí phát sinh dự kiến: 1,500,000 VND</p>
+                    </div>
+                    
+                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 12px;">
+                        <span style="font-size: 0.85rem; color: #475569; font-weight: 500; display: block; margin-bottom: 8px;">Tài liệu đính kèm (2 ảnh)</span>
+                        <div style="display: flex; gap: 12px;">
+                            <div style="position: relative; width: 100px; height: 100px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                <img src="https://placehold.co/100x100?text=Hoa+Don" alt="Hóa đơn" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; font-size: 0.7rem; padding: 4px; text-align: center;"><i class="fa-solid fa-receipt"></i> Hóa đơn</div>
+                            </div>
+                            <div style="position: relative; width: 100px; height: 100px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                <img src="https://placehold.co/100x100?text=Hien+Truong" alt="Hiện trường" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; font-size: 0.7rem; padding: 4px; text-align: center;"><i class="fa-solid fa-camera"></i> Hiện trường</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+
+                <h3 style="font-size: 1.05rem; color: #1e293b; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">2. Giải pháp Đề xuất (Từ Điều phối viên)</h3>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Loại phát sinh (Nguồn gốc sự cố)</label>
-                        <select class="form-control">
-                            <option value="vehicle" selected>🚛 Phương tiện (Xe hỏng, nổ lốp...)</option>
-                            <option value="horse">🐴 Ngựa (Bệnh, hoảng loạn, chấn thương...)</option>
-                            <option value="weather">🌧️ Thời tiết (Bão, ngập, sương mù...)</option>
-                            <option value="customer">👤 Khách hàng (Thay đổi yêu cầu, hủy...)</option>
-                            <option value="other">📋 Khác</option>
-                        </select>
+                        <div style="padding: 10px 14px; background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; color: #334155; font-weight: 500;">
+                            🚛 Phương tiện (Xe hỏng, nổ lốp...)
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Đối trả — Ai chịu chi phí?</label>
-                        <select class="form-control">
-                            <option value="company" selected>Công ty chịu (lỗi vận hành)</option>
-                            <option value="customer">Khách hàng chịu (lỗi từ ngựa/yêu cầu thay đổi)</option>
-                            <option value="insurance">Bảo hiểm chi trả</option>
-                            <option value="shared">Chia sẻ (50/50)</option>
-                        </select>
+                        <label>Nguồn quỹ xử lý</label>
+                        <div style="padding: 10px 14px; background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; color: #334155; font-weight: 500;">
+                            Quỹ rủi ro Công ty
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Chi phí phát sinh dự kiến (VND)</label>
-                        <input type="text" class="form-control" value="1,500,000">
+                        <div style="padding: 10px 14px; background-color: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; color: #ea580c; font-weight: 600; font-size: 1.05rem;">
+                            1,500,000 VND
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Gói chi phí phát sinh cố định (nếu khách đã mua)</label>
-                        <select class="form-control">
-                            <option value="none">Không có gói</option>
-                            <option value="bronze">Gói Bronze — Bao phủ tối đa 5 triệu VND</option>
-                            <option value="silver" selected>Gói Silver — Bao phủ tối đa 15 triệu VND</option>
-                            <option value="gold">Gói Gold — Bao phủ tối đa 50 triệu VND</option>
-                        </select>
+                        <label>Khả năng Claim Bảo hiểm (Hoàn vốn sau)</label>
+                        <div style="padding: 10px 14px; background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; color: #334155; font-weight: 500;">
+                            Có thể Claim (Bảo hiểm phương tiện)
+                        </div>
                     </div>
                 </div>
+
+                <h3 style="font-size: 1.05rem; color: #1e293b; margin-top: 24px; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">3. Quyết định của Manager</h3>
 
                 <div class="form-group">
                     <label>Chỉ đạo xử lý của Manager</label>
-                    <textarea class="form-control" rows="2" placeholder="Nhập chỉ đạo cụ thể...">Đồng ý gọi cứu hộ. Chi phí trong phạm vi gói Silver. Theo dõi nhiệt khoang liên tục.</textarea>
+                    <textarea class="form-control" rows="2"
+                        placeholder="Nhập chỉ đạo cụ thể...">Đồng ý gọi cứu hộ ngay lập tức. Chi phí xuất từ Quỹ rủi ro Công ty. Yêu cầu giữ lại mọi hóa đơn để claim bảo hiểm xe sau chuyến.</textarea>
                 </div>
-                
-                <div class="form-actions">
-                    <button class="btn btn-outline-danger">Từ chối Giải pháp</button>
-                    <button class="btn btn-primary">Phê duyệt & Lưu Chi phí</button>
-                </div>
-            </div>
-        </div>
 
-    </main>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-outline-danger" onclick="closeIncidentModal()" style="padding: 8px 16px; border: 1px solid #ef4444; color: #ef4444; background: white; border-radius: 4px; cursor: pointer;">Từ chối Giải pháp</button>
+                    <button class="btn btn-primary" style="padding: 8px 16px; background: #ea580c; border: none; color: white; border-radius: 4px; cursor: pointer; font-weight: 600;">Phê duyệt & Lưu Chi phí</button>
+                </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="main-footer">
@@ -155,6 +217,16 @@
         </div>
     </footer>
 
-<script src="../global_translate.js"></script>
+    <script>
+        function openIncidentModal(incidentId) {
+            document.getElementById('modal-incident-id').innerText = '#' + incidentId;
+            document.getElementById('incidentModal').style.display = 'flex';
+        }
+        function closeIncidentModal() {
+            document.getElementById('incidentModal').style.display = 'none';
+        }
+    </script>
+    <script src="../global_translate.js"></script>
 </body>
+
 </html>
