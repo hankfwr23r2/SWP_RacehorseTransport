@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Hồ sơ Hải quan - CUS-02</title>
+    <link rel="stylesheet" href="style_KiemDich.css"> <!-- Tái sử dụng CSS của trang danh sách -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ops_sidebar.css">
+</head>
+<body>
+<div class="ops-layout">
+  <aside class="ops-sidebar">
+    <div class="ops-brand">
+       <div class="logo-circle">EQ</div>
+       <span>Điều hành</span>
+    </div>
+    <nav class="ops-nav">
+       <a href="CUS2_Policy_List.html" class="nav-item active">Hải quan & Pháp lý</a>
+       <a href="CUS2_KiemDich.html" class="nav-item">Danh mục Kiểm dịch</a>
+       <a href="OPS-03.html" class="nav-item">Đánh giá Khả thi</a>
+       <a href="OPS-04.html" class="nav-item">Sự cố</a>
+       <a href="OPS-05.html" class="nav-item">Lộ trình</a>
+       <a href="OPS-06.html" class="nav-item">Giám sát</a>
+       <a href="OPS-07.html" class="nav-item">Đội xe</a>
+       <a href="OPS-08.html" class="nav-item">Nhân sự</a>
+    </nav>
+    <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+  </aside>
+
+  <div class="ops-main">
+    <main class="container main-content">
+        <div class="page-header">
+            <div class="breadcrumb">
+                <span class="text-muted">Operations System</span> /
+                <span class="text-orange">Hải quan & Pháp lý</span>
+            </div>
+            <h1>Quản lý Vận đơn Xuất/Nhập cảnh</h1>
+            <p class="subtitle">Theo dõi trạng thái khai báo Hải quan và bộ chứng từ vận tải (Master Bill) của toàn bộ chuyến đi.</p>
+        </div>
+
+        <!-- Stats Cards (Đóng vai trò như Quick Filters) -->
+        <div class="stats-grid" style="cursor: pointer;">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Tổng Vận đơn</span>
+                    <i class="fa-solid fa-folder-open icon-gray"></i>
+                </div>
+                <div class="stat-value">8 <span class="stat-unit">đơn</span></div>
+                <div class="stat-line line-blue"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Chờ Y tế Kiểm dịch</span>
+                    <i class="fa-solid fa-user-doctor icon-yellow"></i>
+                </div>
+                <div class="stat-value">3 <span class="stat-unit">đơn</span></div>
+                <div class="stat-line line-yellow"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Sẵn sàng nộp Tờ khai</span>
+                    <i class="fa-solid fa-building-flag icon-orange"></i>
+                </div>
+                <div class="stat-value">2 <span class="stat-unit">đơn</span></div>
+                <div class="stat-line line-orange"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span>Đã Thông quan</span>
+                    <i class="fa-regular fa-circle-check icon-green"></i>
+                </div>
+                <div class="stat-value">3 <span class="stat-unit">đơn</span></div>
+                <div class="stat-line line-green"></div>
+            </div>
+        </div>
+
+        <!-- Filter Bar (Bổ sung) -->
+        <div class="filter-bar">
+            <div class="filter-group search-group">
+                <label>TÌM KIẾM</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Tìm mã vận đơn (VD: EQ-2026...), tên khách hàng...">
+                </div>
+            </div>
+            <div class="filter-group">
+                <label>TRẠNG THÁI HẢI QUAN</label>
+                <select>
+                    <option>Tất cả trạng thái</option>
+                    <option>Chờ đủ điều kiện Y tế</option>
+                    <option>Sẵn sàng nộp tờ khai</option>
+                    <option>Đang chờ Hải quan duyệt</option>
+                    <option>Đã thông quan</option>
+                </select>
+            </div>
+            <div class="filter-group filter-action">
+                <button class="btn btn-primary btn-filter"><i class="fa-solid fa-filter"></i> Lọc</button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>MÃ VẬN ĐƠN</th>
+                        <th>KHÁCH HÀNG</th>
+                        <th>CỬA KHẨU / TUYẾN ĐƯỜNG</th>
+                        <th>NGÀY KHỞI HÀNH</th>
+                        <th>ĐK KIỂM DỊCH (TIỀN ĐỀ)</th>
+                        <th>TRẠNG THÁI HẢI QUAN</th>
+                        <th>HÀNH ĐỘNG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="bold">EQ-2026-9842</td>
+                        <td class="bold">Saigon Racing Club</td>
+                        <td>Sân bay HKG → Sân bay SGN</td>
+                        <td>20/10/2026</td>
+                        <td><span style="font-size: 0.8rem; color: #ea580c; font-weight: 500;">Chưa đạt (1/3 ngựa)</span></td>
+                        <td><span class="status-badge status-orange">Chờ đủ điều kiện</span></td>
+                        <td><a href="CUS2_Policy.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">EQ-2026-7240</td>
+                        <td class="bold">Ông Trần Văn A</td>
+                        <td>Cảng Hải Phòng → Sydney (AUS)</td>
+                        <td>19/10/2026</td>
+                        <td><span style="font-size: 0.8rem; color: #22c55e; font-weight: 500;">Đã đạt 100%</span></td>
+                        <td><span class="status-badge status-blue">Sẵn sàng nộp tờ khai</span></td>
+                        <td><a href="CUS2_Policy.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="bold">EQ-2026-8711</td>
+                        <td class="bold">Đại Nam Stud</td>
+                        <td>Sân bay NRT (Nhật Bản) → SGN</td>
+                        <td>15/10/2026</td>
+                        <td><span style="font-size: 0.8rem; color: #22c55e; font-weight: 500;">Đã đạt 100%</span></td>
+                        <td><span class="status-badge status-green">Đã thông quan</span></td>
+                        <td><a href="CUS2_Policy.html" class="action-link">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination (Bổ sung) -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Hiển thị <strong>1 - 3</strong> trong <strong>8</strong> vận đơn.
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>
