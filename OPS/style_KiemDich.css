@@ -571,4 +571,8 @@ body {
         flex-wrap: wrap;
         justify-content: center;
     }
+    .status-yellow {
+    background-color: #fef3c7;
+    color: #d97706;
+}
 }
