@@ -1,222 +1,300 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Yêu cầu Vận chuyển - Bước 3 - Vận chuyển Ngựa</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Tạo Yêu cầu Vận chuyển - Dịch vụ & Y tế - Vận chuyển Ngựa</title>
+    <!-- FontAwesome for icons (Synced with Manager) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="../global_translate.css">
 </head>
+
 <body>
-    <!-- Header (Authenticated) -->
-    <header class="header">
-        <div class="header-logo">
-            <div class="header-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <!-- Header (Synced with Manager) -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="home_auth.html" class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </a>
+            <nav class="main-nav" aria-label="Menu khách hàng">
+                <ul>
+                    <li><a href="home_auth.html">Trang chủ</a></li>
+                    <li><a href="create_request.html" class="active" aria-current="page">Đặt chuyến ngay</a></li>
+                    <li><a href="#">Tra cứu lộ trình</a></li>
+                    <li><a href="bao_gia.html">Báo giá của tôi</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar">LT</div>
+                <span class="greeting">Trang trại Long Thành</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
             </div>
-            Vận chuyển Ngựa
-        </div>
-        
-        <nav class="nav-links">
-            <a href="home_auth.html">Trang chủ</a>
-            <a href="create_request.html" class="active" style="border-bottom: 2px solid var(--primary-color); padding-bottom: 4px;">Đặt chuyến ngay</a>
-            <a href="#">Tra cứu lộ trình</a>
-        </nav>
-        
-        <div class="header-actions">
-            <div class="user-profile">
-                Xin chào, Trang trại Long Thành
-                <div class="avatar">AVT</div>
-            </div>
-            <a href="../index.html" class="btn-outline">Đăng xuất</a>
         </div>
     </header>
 
-    <main class="main-container">
-        <div class="request-container">
-            <div class="request-header">
-                <h2>Tạo Yêu cầu Vận chuyển mới</h2>
-            </div>
-            
-            <div class="stepper">
-                <div class="step completed">
-                    <div class="step-number">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div class="step-label">Tuyến đường</div>
+    <!-- Main Content Container -->
+    <main class="container main-content">
+        <div class="request-wrapper">
+            <!-- Page Header & Breadcrumb -->
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="home_auth.html"><i class="fa-solid fa-house"></i> Cổng Khách hàng</a> /
+                    <a href="create_request.html">Đặt chuyến</a> /
+                    <span class="text-orange">Bước 3: Dịch vụ & Y tế</span>
                 </div>
-                <div class="step completed">
-                    <div class="step-number">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <div class="step-label">Thông tin ngựa</div>
-                </div>
-                <div class="step active">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Dịch vụ & Y tế</div>
-                </div>
-                <div class="step">
-                    <div class="step-label" style="text-align: center;">4<br>Xác nhận</div>
-                </div>
+                <h1>Hồ sơ Y tế & Tùy chọn Dịch vụ Chăm sóc</h1>
+                <p class="subtitle">Đính kèm giấy tờ kiểm dịch và lựa chọn tiêu chuẩn chăm sóc tối ưu sức khỏe của ngựa đua trong suốt chuyến đi.</p>
             </div>
 
-            <div class="request-form-card">
-                <h3>Hồ sơ Pháp lý & Sức khỏe</h3>
-                
-                <form action="create_request_step4.html">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Hộ chiếu Ngựa</label>
-                            <div class="upload-area">
-                                <div class="upload-icon">📁</div>
-                                <div class="upload-text">Kéo thả file hoặc <strong>Chọn tệp</strong></div>
-                                <div class="upload-hint">Hỗ trợ PDF, JPG (Tối đa 5MB)</div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Sổ Tiêm chủng</label>
-                            <div class="upload-area">
-                                <div class="upload-icon">💉</div>
-                                <div class="upload-text">Kéo thả file hoặc <strong>Chọn tệp</strong></div>
-                                <div class="upload-hint">Hỗ trợ PDF, JPG (Tối đa 5MB)</div>
-                            </div>
-                        </div>
+            <!-- Stepper Component -->
+            <div class="stepper-container">
+                <div class="stepper">
+                    <a href="create_request.html" class="step completed" title="Quay lại Bước 1">
+                        <div class="step-number"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-label">1. Tuyến đường</div>
+                    </a>
+                    <a href="create_request_step2.html" class="step completed" title="Quay lại Bước 2">
+                        <div class="step-number"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-label">2. Thông tin ngựa</div>
+                    </a>
+                    <div class="step active">
+                        <div class="step-number"><i class="fa-solid fa-notes-medical"></i></div>
+                        <div class="step-label">3. Dịch vụ & Y tế</div>
                     </div>
-
-                    <!-- Tiền sử bệnh -->
-                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
-                        <h4 style="font-size: 0.95rem; color: #0f172a; margin-bottom: 1rem;">🩺 Tiền sử Bệnh lý</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Ngựa có tiền sử bệnh không?</label>
-                                <select id="has_disease">
-                                    <option value="no" selected>Không có tiền sử bệnh</option>
-                                    <option value="yes">Có — Khai báo chi tiết bên dưới</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Đang uống thuốc đặc biệt?</label>
-                                <select id="has_medication">
-                                    <option value="no" selected>Không</option>
-                                    <option value="yes">Có — Ghi rõ loại thuốc</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="disease_detail">Chi tiết bệnh lý / thuốc đang dùng (nếu có)</label>
-                            <textarea id="disease_detail" placeholder="VD: Ngựa có tiền sử viêm khớp nhẹ, đang dùng Phenylbutazone 2g/ngày..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Ngựa cần vận chuyển riêng (cách ly)?</label>
-                            <select id="need_isolation">
-                                <option value="no" selected>Không — Vận chuyển chung bình thường</option>
-                                <option value="yes">Có — Cần ngăn riêng biệt (phụ phí)</option>
-                            </select>
-                        </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">4. Xác nhận & Dự toán</div>
                     </div>
-                    
-                    <!-- Dịch vụ kèm theo -->
-                    <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
-                        <h4 style="font-size: 0.95rem; color: #92400e; margin-bottom: 1rem;">🍽️ Dịch vụ Chăm sóc trong Hành trình</h4>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Cho ăn trong hành trình?</label>
-                                <select id="feeding">
-                                    <option value="yes" selected>Có — Cung cấp thức ăn (bao gồm trong giá)</option>
-                                    <option value="custom">Có — Thức ăn đặc biệt (phụ phí)</option>
-                                    <option value="self">Khách tự chuẩn bị thức ăn</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Loại thức ăn</label>
-                                <select id="food_type">
-                                    <option value="hay" selected>Cỏ khô (Timothy Hay) — Tiêu chuẩn</option>
-                                    <option value="alfalfa">Cỏ Alfalfa — Giàu protein</option>
-                                    <option value="mixed">Thức ăn hỗn hợp (Pellets + Hay)</option>
-                                    <option value="fresh">Cỏ tươi + Cà rốt + Táo</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Khu vực vận chuyển</label>
-                                <select id="stall_type">
-                                    <option value="standard" selected>Ngăn Tiêu chuẩn — 1.2m × 2.4m</option>
-                                    <option value="vip">Ngăn VIP — 1.5m × 3.0m (rộng hơn 25%)</option>
-                                    <option value="isolation">Ngăn Cách ly — Riêng biệt hoàn toàn</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Nước uống bổ sung</label>
-                                <select id="water_supplement">
-                                    <option value="normal" selected>Nước sạch — Tiêu chuẩn</option>
-                                    <option value="electrolyte">Nước điện giải — Chống mất nước (phụ phí)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bảo hiểm -->
-                    <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;">
-                        <h4 style="font-size: 0.95rem; color: #166534; margin-bottom: 1rem;">🛡️ Bảo hiểm Vận chuyển</h4>
-                        
-                        <div class="form-group">
-                            <label>Đăng ký bảo hiểm?</label>
-                            <select id="insurance">
-                                <option value="none">Không đăng ký bảo hiểm</option>
-                                <option value="basic" selected>Gói Cơ bản — Bồi thường tối đa 100 triệu VND (2% giá trị)</option>
-                                <option value="premium">Gói Nâng cao — Bồi thường tối đa 500 triệu VND (3.5% giá trị)</option>
-                                <option value="full">Gói Toàn diện — Bồi thường toàn bộ giá trị khai báo (5% giá trị)</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="horse_value">Giá trị ngựa khai báo (VND)</label>
-                                <input type="text" id="horse_value" placeholder="VD: 2,000,000,000" value="2,000,000,000">
-                            </div>
-                            <div class="form-group">
-                                <label>Phí bảo hiểm dự kiến</label>
-                                <input type="text" value="40,000,000 VND (2% × 2 tỷ)" disabled style="background: #f1f5f9; color: #059669; font-weight: 600;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="special_care">Yêu cầu chăm sóc đặc biệt khác (Không bắt buộc)</label>
-                        <textarea id="special_care" placeholder="Nhập lưu ý về chế độ ăn, dị ứng thuốc hoặc tâm lý của ngựa..."></textarea>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <a href="create_request_step2.html" class="btn-outline-dark" style="padding: 0.75rem 2rem; display: inline-block; text-align: center;">Quay lại</a>
-                        <button type="submit" class="btn-solid-orange" style="padding: 0.75rem 2rem;">Tiếp tục (Bước 4)</button>
-                    </div>
-                </form>
+                </div>
             </div>
+
+            <form action="create_request_step4.html" method="GET">
+                <!-- 1. Hồ sơ Pháp lý & Thú y -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-file-shield text-orange"></i> 1. Hồ sơ Pháp lý & Giấy tờ Thú y OIE</h2>
+                        <span class="badge badge-info"><i class="fa-solid fa-certificate"></i> Bắt buộc thẩm định</span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-passport text-muted"></i> Hộ chiếu Ngựa (Horse Passport) <span class="required">*</span></label>
+                                <div class="upload-area">
+                                    <div class="upload-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                                    <div class="upload-text">Kéo thả file Hộ chiếu hoặc <strong>Chọn tệp</strong></div>
+                                    <div class="upload-hint">Định dạng PDF, JPG hoặc PNG (Tối đa 5MB)</div>
+                                    <div style="margin-top: 8px;">
+                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> passport_storm_runner.pdf (2.4 MB)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-syringe text-muted"></i> Sổ Tiêm chủng / Chứng nhận Kiểm dịch <span class="required">*</span></label>
+                                <div class="upload-area">
+                                    <div class="upload-icon"><i class="fa-solid fa-file-medical"></i></div>
+                                    <div class="upload-text">Kéo thả sổ tiêm hoặc <strong>Chọn tệp</strong></div>
+                                    <div class="upload-hint">Yêu cầu vacxin cúm ngựa (Equine Influenza) trong 6 tháng</div>
+                                    <div style="margin-top: 8px;">
+                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> vaccination_card_2026.pdf (1.8 MB)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Tiền sử Bệnh lý & Cách ly -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-heart-pulse text-orange"></i> 2. Tiền sử Bệnh lý & Chế độ Cách ly</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="has_disease">Ngựa có tiền sử bệnh lý không? <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="has_disease">
+                                        <option value="no" selected>Không — Thể trạng hoàn toàn bình thường</option>
+                                        <option value="yes">Có — Khai báo chi tiết bên dưới</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="has_medication">Có đang điều trị thuốc đặc biệt không? <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="has_medication">
+                                        <option value="no" selected>Không dùng thuốc</option>
+                                        <option value="yes">Có — Cần chuyên viên y tế cho uống thuốc định kỳ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="disease_detail">Mô tả bệnh lý / Phác đồ thuốc đi kèm (nếu có)</label>
+                            <textarea id="disease_detail" class="form-control" placeholder="VD: Ngựa có tiền sử mỏi khớp nhẹ sau giải đấu, cần uống glucosamine bổ sung sau bữa ăn trưa..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="need_isolation">Yêu cầu ngăn chuồng cách ly chuyên biệt? <span class="required">*</span></label>
+                            <div class="select-wrapper">
+                                <select class="form-control" id="need_isolation">
+                                    <option value="no" selected>Không — Vận chuyển trong cụm chuồng tiêu chuẩn</option>
+                                    <option value="yes">Có — Chuồng cách ly độc lập có màng kháng khuẩn (Phụ phí)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Chăm sóc Dinh dưỡng & Chuồng Stalls -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-bowl-food text-orange"></i> 3. Chăm sóc Dinh dưỡng & Khoang Vận chuyển Stalls</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="feeding">Chế độ dinh dưỡng trên đường <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="feeding">
+                                        <option value="yes" selected>Đội ngũ hậu cần chuẩn bị (Đã bao gồm trong giá)</option>
+                                        <option value="custom">Thực đơn đặc biệt theo yêu cầu (Phụ phí thức ăn)</option>
+                                        <option value="self">Chủ trang trại tự chuẩn bị khẩu phần đóng gói</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="food_type">Loại thức ăn chính <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="food_type">
+                                        <option value="hay" selected>Cỏ khô Timothy Hay nhập khẩu — Tiêu chuẩn thi đấu</option>
+                                        <option value="alfalfa">Cỏ Alfalfa — Giàu đạm & khoáng chất</option>
+                                        <option value="mixed">Thức ăn hỗn hợp cao cấp (Pellets + Timothy)</option>
+                                        <option value="fresh">Cỏ tươi tự nhiên + Táo/Cà rốt bổ sung</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="stall_type">Quy cách khoang vận chuyển (Stalls) <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="stall_type">
+                                        <option value="standard" selected>Khoang Tiêu chuẩn (1.2m × 2.4m) — Khuyên dùng</option>
+                                        <option value="vip">Khoang VIP Royal (1.5m × 3.0m) — Rộng hơn 25%, sàn đệm cao su</option>
+                                        <option value="isolation">Khoang Cách ly Độc lập — Có vách ngăn kín và lọc khí HEPA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="water_supplement">Chế độ nước uống & Điện giải <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select class="form-control" id="water_supplement">
+                                        <option value="normal" selected>Nước khoáng tinh khiết tiêu chuẩn — Uống tự do</option>
+                                        <option value="electrolyte">Bổ sung dung dịch điện giải chống mất nước & giảm stress</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Gói Bảo hiểm Vận chuyển -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-shield-halved text-orange"></i> 4. Gói Bảo hiểm Vận chuyển Chuyên biệt</h2>
+                        <span class="badge badge-warning"><i class="fa-solid fa-shield-virus"></i> Bảo lãnh bồi thường</span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="insurance">Lựa chọn gói bảo hiểm rủi ro <span class="required">*</span></label>
+                            <div class="select-wrapper">
+                                <select class="form-control" id="insurance" onchange="calculateInsurance()">
+                                    <option value="none">Không đăng ký bảo hiểm bổ sung (Trách nhiệm dân sự tối thiểu)</option>
+                                    <option value="basic" selected>Gói Cơ bản — Bồi thường tối đa 500 triệu VND (2% giá trị khai báo)</option>
+                                    <option value="premium">Gói Nâng cao — Bồi thường tối đa 2 tỷ VND (3.5% giá trị khai báo)</option>
+                                    <option value="full">Gói Toàn diện — Bồi thường 100% giá trị khai báo (5.0% giá trị)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="horse_value">Giá trị cá thể ngựa khai báo (VND) <span class="required">*</span></label>
+                                <input type="text" id="horse_value" class="form-control" placeholder="VD: 2,000,000,000" value="2,000,000,000" oninput="calculateInsurance()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phí bảo hiểm dự toán</label>
+                                <div style="display: flex; align-items: center; height: 42px; padding: 0 14px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; font-weight: 700; color: #059669; font-size: 0.95rem;" id="insurance_display">
+                                    <i class="fa-solid fa-calculator text-muted" style="margin-right: 8px; color: #059669 !important;"></i>
+                                    40,000,000 VND (2.0% × 2,000,000,000 VND)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Ghi chú thêm -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-clipboard-user text-orange"></i> 5. Ghi chú Hướng dẫn cho Đội ngũ Hộ tống (Escort / Groom)</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="special_care">Yêu cầu tâm lý, thói quen sinh hoạt hoặc dặn dò đặc biệt</label>
+                            <textarea id="special_care" class="form-control" placeholder="VD: Ngựa nhạy cảm với tiếng còi xe lớn, thích được chải lông trước khi ngủ, cho uống nước ấm khi trời lạnh..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <a href="create_request_step2.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Bước 2: Thông tin ngựa</a>
+                    <button type="submit" class="btn btn-primary">Tiếp tục: Xác nhận & Dự toán <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </form>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="header-logo">
-                <div class="header-logo-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </div>
-                Vận chuyển Ngựa
+    <!-- Footer (Synced with Manager) -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
             </div>
             <div class="footer-links">
                 <a href="#">Điều khoản Dịch vụ</a>
-                <a href="#">Chính sách Bảo mật</a>
-                <a href="#">Hỗ trợ Khách hàng</a>
+                <a href="#">Chính sách Vận chuyển</a>
+                <a href="#">Tiêu chuẩn Y tế OIE</a>
+                <a href="#">Hỗ trợ 24/7</a>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+            &copy; 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. All rights reserved.
         </div>
     </footer>
-<script src="../global_translate.js"></script>
+
+    <script src="../global_translate.js"></script>
+    <script src="create_request.js"></script>
 </body>
+
 </html>
