@@ -1,126 +1,506 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ - Vận chuyển Ngựa</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Cổng Khách hàng — Vận chuyển Ngựa đua Xuyên quốc gia</title>
+    <!-- FontAwesome 6 (Synced with Manager) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="../global_translate.css">
 </head>
+
 <body>
-    <!-- Header (Authenticated) -->
-    <header class="header">
-        <div class="header-logo">
-            <div class="header-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <!-- Header (Synced with Manager Design) -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="home_auth.html" class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </a>
+            <nav class="main-nav" aria-label="Menu khách hàng">
+                <ul>
+                    <li><a href="home_auth.html" class="active" aria-current="page">Trang chủ</a></li>
+                    <li><a href="create_request.html">Đặt chuyến ngay</a></li>
+                    <li><a href="#tra-cuu">Tra cứu lộ trình</a></li>
+                    <li><a href="bao_gia.html">Báo giá của tôi</a></li>
+                    <li><a href="acceptance.html">Nghiệm thu</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar">LT</div>
+                <span class="greeting">Trang trại Long Thành</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+                </button>
             </div>
-            Vận chuyển Ngựa
-        </div>
-        
-        <nav class="nav-links">
-            <a href="home_auth.html" class="active" style="border-bottom: 2px solid var(--primary-color); padding-bottom: 4px;">Trang chủ</a>
-            <a href="create_request.html">Đặt chuyến ngay</a>
-            <a href="#">Tra cứu lộ trình</a>
-        </nav>
-        
-        <div class="header-actions">
-            <div class="user-profile">
-                Xin chào, Long Thanh Farm
-                <div class="avatar">AVT</div>
-            </div>
-            <a href="../index.html" class="btn-outline">Đăng xuất</a>
         </div>
     </header>
 
-    <main class="main-container">
-        <!-- Hero Section -->
-        <section class="hero">
+    <!-- Main Container -->
+    <main class="container main-content" style="padding-top: 28px;">
+        <!-- Hero Section (Manager Aesthetic & Personalized) -->
+        <section class="hero-manager">
             <div class="hero-content">
-                <h1>Vận chuyển Ngựa đua Xuyên quốc gia <span>Đẳng cấp & An toàn</span></h1>
-                <p>Giải pháp logistics chuyên biệt dành riêng cho ngựa đua thuần chủng. Bao trọn gói thủ tục hải quan, kiểm dịch thú y OIE và hệ thống giám sát sức khỏe thời gian thực 24/7 trên mọi chặng đường.</p>
+                <div style="margin-bottom: 16px;">
+                    <span class="badge" style="background: rgba(234, 88, 12, 0.2); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.4); font-size: 0.8rem; padding: 6px 12px;">
+                        <i class="fa-solid fa-crown text-orange"></i> Thành viên VIP: Trang trại Long Thành
+                    </span>
+                </div>
+                <h1>Cổng Điều phối & Quản lý <span>Vận chuyển Ngựa đua</span></h1>
+                <p>Theo dõi lộ trình live qua vệ tinh, giám sát các chỉ số nhịp tim & thân nhiệt 24/7, xác nhận báo giá dịch vụ hải quan và quản lý hợp đồng vận tải xuyên quốc gia.</p>
                 <div class="hero-actions">
-                    <a href="create_request.html" class="btn-solid-orange btn-large">Tạo Yêu cầu Vận chuyển</a>
-                    <a href="#" class="btn-outline-dark btn-large">Tra cứu Đơn hàng</a>
+                    <a href="create_request.html" class="btn btn-primary btn-large">
+                        <i class="fa-solid fa-paper-plane"></i> Đặt Chuyến Vận Chuyển Mới
+                    </a>
+                    <a href="bao_gia.html" class="btn btn-outline-light btn-large">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Xem Báo Giá Đang Chờ Duyệt (1)
+                    </a>
                 </div>
             </div>
-            <div class="hero-image">
-                [Hero Image: Horse boarding specialized truck]
+
+            <!-- Hero Right: Live Status Simulator (Khách hàng's Active Shipment) -->
+            <div class="hero-status-card">
+                <div class="status-card-header">
+                    <span class="live-indicator">
+                        <span class="pulse-dot"></span> ĐANG VẬN CHUYỂN LIVE
+                    </span>
+                    <span class="flight-no">Chuyên cơ #EQ-AIR-8910</span>
+                </div>
+
+                <div class="status-route">
+                    <div class="route-point">
+                        <div class="point-code">SGN</div>
+                        <div class="point-city">Tân Sơn Nhất</div>
+                    </div>
+                    <div class="route-line">
+                        <i class="fa-solid fa-plane"></i>
+                        <div class="line-bar"></div>
+                    </div>
+                    <div class="route-point">
+                        <div class="point-code">HKG</div>
+                        <div class="point-city">Chek Lap Kok</div>
+                    </div>
+                </div>
+
+                <div class="status-meta-grid">
+                    <div class="meta-item">
+                        <div class="meta-label">Cá thể ngựa</div>
+                        <div class="meta-val">Storm Runner (#VN-985211)</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Nhịp tim & Thân nhiệt</div>
+                        <div class="meta-val text-success">
+                            <i class="fa-solid fa-heart-pulse"></i> 38 bpm • 37.8°C (Ổn định)
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Độ cao & Vận tốc</div>
+                        <div class="meta-val">FL340 (10,300m) • 860 km/h</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Dự kiến hạ cánh (ETA)</div>
+                        <div class="meta-val" style="color: #fbbf24;">14:30 (Đúng kế hoạch)</div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="features">
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <!-- KPI Statistics (Customer Dashboard Grid) -->
+        <section class="dashboard-grid">
+            <div class="kpi-card">
+                <div class="kpi-title">
+                    <i class="fa-solid fa-truck-moving text-orange"></i> Đang Vận Chuyển
                 </div>
-                <h3>Chuẩn Y tế Quốc tế</h3>
-                <p>Hỗ trợ trọn gói thủ tục sổ tiêm chủng, giấy phép xuất nhập cảnh và kiểm dịch cửa khẩu theo tiêu chuẩn OIE.</p>
+                <div class="kpi-value">02</div>
+                <div class="kpi-subtext">01 chuyên cơ Air Cargo + 01 xe tải chuyên dụng</div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <div class="kpi-card">
+                <div class="kpi-title">
+                    <i class="fa-solid fa-file-invoice-dollar text-orange"></i> Báo Giá Chờ Duyệt
                 </div>
-                <h3>Phương tiện Chuyên dụng</h3>
-                <p>Hệ thống Stalls hàng không và xe tải trang bị điều hòa không khí, hệ thống chống sốc, đảm bảo ngựa không căng thẳng.</p>
+                <div class="kpi-value text-orange">01</div>
+                <div class="kpi-subtext"><a href="bao_gia.html" style="color: var(--accent-orange); font-weight: 600;">Xem đơn #EQ-2026-9842 &rarr;</a></div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="11" r="3"/></svg>
+            <div class="kpi-card">
+                <div class="kpi-title">
+                    <i class="fa-solid fa-horse-head text-orange"></i> Chiến Mã Đã Lưu
                 </div>
-                <h3>Giám sát Live 24/7</h3>
-                <p>Đội ngũ Escort đi kèm ghi nhận liên tục chỉ số nhịp tim, nhiệt độ, tình trạng ăn uống và định vị GPS toàn cầu.</p>
+                <div class="kpi-value">08</div>
+                <div class="kpi-subtext">Đã đồng bộ Microchip ID và Hộ chiếu OIE</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">
+                    <i class="fa-solid fa-clipboard-check text-orange"></i> Nghiệm Thu Hoàn Tất
+                </div>
+                <div class="kpi-value">14</div>
+                <div class="kpi-subtext"><a href="acceptance.html" style="color: #64748b; font-weight: 500;">Tỷ lệ an toàn 100%</a></div>
             </div>
         </section>
 
-        <!-- Xử lý Section -->
+        <!-- Quick Tracking Search Bar -->
+        <section id="tra-cuu" class="card tracking-card">
+            <div class="tracking-inner">
+                <div class="tracking-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="track-input" placeholder="Nhập Mã Vận đơn (VD: #EQ-2026-9842, #EQ-8910) hoặc Số Vi chip..." class="tracking-input" onkeypress="if(event.key === 'Enter') handleTrackSearch()">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="handleTrackSearch()" style="padding: 12px 24px; white-space: nowrap;">
+                    <i class="fa-solid fa-location-crosshairs"></i> Tra cứu Lộ trình
+                </button>
+            </div>
+            <div class="tracking-chips">
+                <span class="chip-label"><i class="fa-solid fa-bolt text-orange"></i> Đơn của bạn:</span>
+                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-2026-9842')">#EQ-2026-9842 (SGN &rarr; HKG - Chờ duyệt giá)</button>
+                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-8910')">#EQ-8910 (SGN &rarr; HKG - Đang bay)</button>
+                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-8911')">#EQ-8911 (Đồng Nai &rarr; Hà Nội)</button>
+            </div>
+
+            <!-- Dynamic Result Card -->
+            <div id="track-result-box" style="display: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-color);">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Customer Recent Orders Table (Manager Table Format) -->
+        <section class="card" style="margin-bottom: 48px;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="fa-solid fa-clock-rotate-left text-orange"></i> Đơn Vận Chuyển Gần Đây Của Bạn</h2>
+                <a href="create_request.html" class="btn btn-primary" style="padding: 7px 16px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-plus"></i> Đặt Chuyến Mới
+                </a>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>MÃ VẬN ĐƠN</th>
+                                <th>CHIẾN MÃ</th>
+                                <th>LỘ TRÌNH & PHƯƠNG THỨC</th>
+                                <th class="nowrap">TRẠNG THÁI</th>
+                                <th class="nowrap">NGÀY KHỞI HÀNH</th>
+                                <th class="text-right nowrap">THAO TÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="nowrap">
+                                    <div class="font-bold text-orange">#EQ-2026-9842</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Tạo 09:15 - 20/09/2026</div>
+                                </td>
+                                <td>
+                                    <div class="font-semibold">Storm Runner</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Microchip: #VN-985211 (520kg)</div>
+                                </td>
+                                <td>
+                                    <div>Kho Đồng Nai &rarr; Tân Sơn Nhất &rarr; HKG</div>
+                                    <span class="badge badge-warning" style="font-size: 0.7rem; padding: 2px 6px; margin-top: 2px;">
+                                        <i class="fa-solid fa-plane"></i> Air Cargo + Xe tải
+                                    </span>
+                                </td>
+                                <td class="nowrap">
+                                    <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Đã có Báo giá</span>
+                                </td>
+                                <td class="nowrap">25/11/2026</td>
+                                <td class="text-right nowrap">
+                                    <a href="bao_gia.html" class="btn btn-primary" style="padding: 5px 12px; font-size: 0.76rem;">
+                                        <i class="fa-solid fa-eye"></i> Xem Báo Giá
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nowrap">
+                                    <div class="font-bold text-orange">#EQ-AIR-8910</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Tạo 14:00 - 18/09/2026</div>
+                                </td>
+                                <td>
+                                    <div class="font-semibold">Thunder Bolt</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Microchip: #VN-985212 (490kg)</div>
+                                </td>
+                                <td>
+                                    <div>SGN Tân Sơn Nhất &rarr; Chek Lap Kok (HKG)</div>
+                                    <span class="badge badge-warning" style="font-size: 0.7rem; padding: 2px 6px; margin-top: 2px;">
+                                        <i class="fa-solid fa-plane"></i> Air Cargo Quốc tế
+                                    </span>
+                                </td>
+                                <td class="nowrap">
+                                    <span class="badge badge-success"><i class="fa-solid fa-circle-notch fa-spin"></i> Đang bay (FL340)</span>
+                                </td>
+                                <td class="nowrap">Hôm nay (22/09)</td>
+                                <td class="text-right nowrap">
+                                    <button type="button" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.76rem;" onclick="quickFillTrack('#EQ-8910')">
+                                        <i class="fa-solid fa-satellite-dish"></i> Theo dõi Live
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nowrap">
+                                    <div class="font-bold text-orange">#EQ-2026-9104</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Tạo 08:30 - 10/09/2026</div>
+                                </td>
+                                <td>
+                                    <div class="font-semibold">Golden Pegasus</div>
+                                    <div class="text-muted" style="font-size: 0.72rem;">Microchip: #VN-984109 (510kg)</div>
+                                </td>
+                                <td>
+                                    <div>Trang trại Long Thành &rarr; Trang trại Sóc Sơn</div>
+                                    <span class="badge badge-info" style="font-size: 0.7rem; padding: 2px 6px; margin-top: 2px;">
+                                        <i class="fa-solid fa-truck"></i> Xe tải giảm chấn
+                                    </span>
+                                </td>
+                                <td class="nowrap">
+                                    <span class="badge badge-success"><i class="fa-solid fa-check-double"></i> Đã đến nơi</span>
+                                </td>
+                                <td class="nowrap">12/09/2026</td>
+                                <td class="text-right nowrap">
+                                    <a href="acceptance.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.76rem;">
+                                        <i class="fa-solid fa-signature"></i> Nghiệm Thu
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Routes Table (Manager Table Format) -->
+        <section class="card" style="margin-bottom: 48px;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="fa-solid fa-map-location-dot text-orange"></i> Tuyến Vận Chuyển Phổ Biến & Lịch Trình Bay</h2>
+                <span class="badge badge-info"><i class="fa-solid fa-calendar-check"></i> Cập nhật Tháng 9/2026</span>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>TUYẾN ĐƯỜNG</th>
+                                <th class="nowrap">PHƯƠNG THỨC</th>
+                                <th class="nowrap">THỜI GIAN DỰ KIẾN</th>
+                                <th class="nowrap">TẦN SUẤT / LỊCH TRÌNH</th>
+                                <th class="nowrap">TRẠNG THÁI</th>
+                                <th class="text-right nowrap">HÀNH ĐỘNG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="font-bold">TP. Hồ Chí Minh (SGN) &rarr; Hồng Kông (HKG)</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Kho Cargo Tân Sơn Nhất &rarr; Trường đua Sha Tin</div>
+                                </td>
+                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
+                                <td class="font-semibold nowrap">3.5 Giờ bay</td>
+                                <td class="nowrap">Thứ 3 & Thứ 6 hàng tuần</td>
+                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
+                                <td class="text-right nowrap">
+                                    <a href="create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="font-bold">Hà Nội (HAN) &rarr; Tokyo (NRT)</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Kho Cargo Nội Bài &rarr; Trung tâm Huấn luyện JRA Miho</div>
+                                </td>
+                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
+                                <td class="font-semibold nowrap">5.0 Giờ bay</td>
+                                <td class="nowrap">Chuyến bay Thứ 4 hàng tuần</td>
+                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
+                                <td class="text-right nowrap">
+                                    <a href="create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="font-bold">TP. Hồ Chí Minh (SGN) &rarr; Singapore (SIN)</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Sân bay Tân Sơn Nhất &rarr; Singapore Turf Club</div>
+                                </td>
+                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
+                                <td class="font-semibold nowrap">2.0 Giờ bay</td>
+                                <td class="nowrap">3 Chuyến / tuần</td>
+                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
+                                <td class="text-right nowrap">
+                                    <a href="create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="font-bold">Kho Đồng Nai &rarr; Kho Long An / Hà Nội</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">Trang trại Long Thành &rarr; Trang trại Mỹ Quỳnh / Sóc Sơn</div>
+                                </td>
+                                <td class="nowrap"><span class="badge badge-info"><i class="fa-solid fa-truck"></i> Xe tải chuyên dụng</span></td>
+                                <td class="font-semibold nowrap">4 Giờ &mdash; 28 Giờ</td>
+                                <td class="nowrap">Khởi hành hàng ngày theo yêu cầu</td>
+                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
+                                <td class="text-right nowrap">
+                                    <a href="create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section (4 Steps) -->
         <section class="process-section">
-            <h2>Quy trình Vận hành Chuyên nghiệp</h2>
+            <div class="section-header">
+                <h2>Quy trình Vận hành Chuyên nghiệp</h2>
+                <p>Khép kín từ khâu tiếp nhận thông tin trực tuyến đến khi hoàn thành nghiệm thu bàn giao an toàn tại điểm đến.</p>
+            </div>
+
             <div class="process-grid">
                 <div class="process-card">
                     <div class="process-number">1</div>
-                    <h3>Tiếp nhận Hồ sơ</h3>
-                    <p>Khách hàng gửi yêu cầu vận chuyển và upload Hộ chiếu, Sổ tiêm chủng của ngựa.</p>
+                    <h3>Tiếp nhận & Lập Hồ sơ</h3>
+                    <p>Khách hàng gửi yêu cầu vận chuyển, tải lên Hộ chiếu ngựa và Sổ tiêm phòng trực tuyến trên hệ thống.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">2</div>
-                    <h3>Thẩm định & Kiểm dịch</h3>
-                    <p>Chuyên viên xử lý giấy tờ hải quan và xin giấy phép kiểm dịch từ cơ quan thú y.</p>
+                    <h3>Thẩm định & Báo giá</h3>
+                    <p>Quản lý kiểm tra điều kiện bay, đối soát yêu cầu thú y và gửi bảng Báo giá chính thức trong vòng 24h.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">3</div>
-                    <h3>Điều phối Lộ trình</h3>
-                    <p>Xây dựng lộ trình tối ưu, bố trí điểm dừng nghỉ, phân công xe chuyên dụng và tài xế.</p>
+                    <h3>Kiểm dịch & Điều phối</h3>
+                    <p>Bộ phận vận hành xin cấp phép OIE, bố trí xe tải giảm chấn và lắp đặt khoang chuồng Stalls hàng không.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">4</div>
                     <h3>Vận chuyển & Bàn giao</h3>
-                    <p>Giám sát sức khỏe thời gian thực trên app và bàn giao ngựa an toàn tại đích đến.</p>
+                    <p>Bác sĩ thú y hộ tống trực tiếp, khách hàng theo dõi nhịp tim qua app và ký biên bản nghiệm thu khi nhận ngựa.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="header-logo">
-                <div class="header-logo-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </div>
-                Vận chuyển Ngựa
+    <!-- Footer (Synced with Manager) -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
             </div>
             <div class="footer-links">
                 <a href="#">Điều khoản Dịch vụ</a>
-                <a href="#">Chính sách Bảo mật</a>
-                <a href="#">Hỗ trợ Khách hàng</a>
+                <a href="#">Chính sách Vận chuyển</a>
+                <a href="#">Tiêu chuẩn Y tế OIE</a>
+                <a href="#">Bảo hiểm Rủi ro</a>
+                <a href="#">Hỗ trợ 24/7</a>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+            &copy; 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project. All rights reserved.
         </div>
     </footer>
-<script src="../global_translate.js"></script>
+
+    <script src="../global_translate.js"></script>
+    <script>
+        const MOCK_TRACKS = {
+            '#EQ-2026-9842': {
+                code: '#EQ-2026-9842',
+                route: 'Kho Đồng Nai (VN) &rarr; Tân Sơn Nhất (SGN) &rarr; Chek Lap Kok (HKG)',
+                horse: 'Storm Runner (#VN-985211 - 520kg)',
+                status: 'Đã hoàn tất lập phương án bay • Đang chờ khách duyệt Báo giá',
+                type: 'Air Cargo Quốc tế + Xe tải chuyên dụng',
+                health: 'Đã tiêm phòng Cúm ngựa (Equine Influenza) & cấp giấy OIE',
+                eta: 'Dự kiến cất cánh: 25/11/2026',
+                actionLink: 'bao_gia.html',
+                actionText: 'Xem Báo Giá Chính Thức'
+            },
+            '#EQ-8910': {
+                code: '#EQ-AIR-8910',
+                route: 'Tân Sơn Nhất (SGN) &rarr; Chek Lap Kok (HKG)',
+                horse: 'Thunder Bolt (#VN-985212 - 490kg)',
+                status: 'Đang bay qua không phận biển Đông (FL340)',
+                type: 'Chuyên cơ Air Cargo Boeing 777F',
+                health: 'Nhịp tim: 38 bpm • Thân nhiệt: 37.8°C (Ổn định, không hoảng loạn)',
+                eta: 'Hạ cánh dự kiến: 14:30 hôm nay (Đúng giờ)',
+                actionLink: '#',
+                actionText: 'Xem Camera Live Buồng Chuồng'
+            },
+            '#EQ-8911': {
+                code: '#EQ-8911',
+                route: 'Trang trại Long Thành (Đồng Nai) &rarr; Hà Nội (HAN)',
+                horse: 'Desert King (#UAE-7741 - 505kg)',
+                status: 'Đang di chuyển qua trạm dừng nghỉ Nha Trang (Quốc lộ 1A)',
+                type: 'Xe tải chuyên dụng bóng hơi giảm chấn',
+                health: 'Thân nhiệt: 37.9°C • Đã ăn khẩu phần cỏ Timothy Hay đợt 2',
+                eta: 'Dự kiến đến kho Sóc Sơn: 08:30 ngày mai',
+                actionLink: '#',
+                actionText: 'Xem Định Vị GPS'
+            }
+        };
+
+        function quickFillTrack(code) {
+            document.getElementById('track-input').value = code;
+            handleTrackSearch();
+            const el = document.getElementById('tra-cuu');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handleTrackSearch() {
+            const query = document.getElementById('track-input').value.trim();
+            const box = document.getElementById('track-result-box');
+            if (!query) {
+                alert('Vui lòng nhập Mã Vận đơn hoặc Mã Vi chip.');
+                return;
+            }
+
+            const trackData = MOCK_TRACKS[query] || {
+                code: query,
+                route: 'Kho Đồng Nai (VN) &rarr; Sân bay Quốc tế',
+                horse: 'Chiến mã thuộc Trang trại Long Thành',
+                status: 'Đang tra cứu hệ thống điều phối vệ tinh',
+                type: 'Vận chuyển Tiêu chuẩn',
+                health: 'Hồ sơ sức khỏe định kỳ đạt tiêu chuẩn',
+                eta: 'Đang cập nhật lịch trình',
+                actionLink: 'create_request.html',
+                actionText: 'Tạo Yêu Cầu Mới'
+            };
+
+            box.style.display = 'block';
+            box.innerHTML = `
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary-color);">
+                            <i class="fa-solid fa-file-lines text-orange" style="margin-right: 6px;"></i> Mã Vận đơn: ${trackData.code}
+                        </div>
+                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> ${trackData.status}</span>
+                    </div>
+                    <div class="review-grid" style="background: white; border: 1px solid #e2e8f0;">
+                        <div class="review-item">
+                            <div class="review-label">Tuyến đường</div>
+                            <div class="review-value font-semibold">${trackData.route}</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Cá thể ngựa</div>
+                            <div class="review-value">${trackData.horse}</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Phương tiện</div>
+                            <div class="review-value">${trackData.type}</div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-label">Tình trạng sinh trắc học</div>
+                            <div class="review-value text-success font-semibold">${trackData.health}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span><i class="fa-solid fa-clock text-orange"></i> ${trackData.eta}</span>
+                        <a href="${trackData.actionLink}" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.82rem;">
+                            ${trackData.actionText} &rarr;
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
 </body>
+
 </html>
