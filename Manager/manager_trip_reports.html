@@ -184,8 +184,8 @@
                             <span class="info-value">Câu lạc bộ Đua ngựa Lion City</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Tuyến đường</span>
-                            <span class="info-value">Singapore (SIN) → Hanoi (HAN)</span>
+                            <span class="info-label">Loại hình Vận chuyển</span>
+                            <span class="info-value">Hàng không Xuyên biên giới</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Chi tiết Ngựa</span>
@@ -195,9 +195,125 @@
                             <span class="info-label">Nhân viên Đi kèm</span>
                             <span class="info-value">Nguyễn Văn Nam (Bác sĩ Thú y)</span>
                         </div>
-                        <div class="info-item">
-                            <span class="info-label">Thời gian Chuyến đi</span>
-                            <span class="info-value">8 Giờ 45 Phút</span>
+                    </div>
+
+                    <!-- Logistics Details (Multi-leg Journey) -->
+                    <div class="log-section" style="margin-top: 24px;">
+                        <h3 style="font-size: 0.95rem; margin-bottom: 12px; color: #1e293b;">
+                            <i class="fa-solid fa-map-location-dot" style="color: #ea580c; margin-right: 6px;"></i> Hành trình Vận chuyển (Đa chặng)
+                        </h3>
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+                            Tổng thời gian ước tính: <span style="font-weight: 600; color: #1e293b;">32 Giờ 15 Phút</span>
+                        </div>
+
+                        <div class="route-timeline">
+                            <!-- Leg 1: Ground -->
+                            <div class="route-leg">
+                                <div class="route-leg-header">
+                                    <div class="leg-title-wrapper">
+                                        <span class="leg-badge ground"><i class="fa-solid fa-truck"></i></span>
+                                        <span class="leg-title">Chặng 1: Tokyo ➔ Haneda (HND)</span>
+                                    </div>
+                                    <span class="leg-meta">Xe chuyên dụng: EQ-TRK-JP01</span>
+                                </div>
+                                <div class="leg-details">
+                                    <div class="leg-route-text">Kho trung tâm Tokyo ➔ Sân bay quốc tế Haneda</div>
+                                    <div class="leg-time-stats">
+                                        <div class="time-block">
+                                            <span class="time-label">Dự kiến:</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">08:00 - 09:15</span>
+                                        </div>
+                                        <div class="time-block">
+                                            <span class="time-label">Thực tế:</span>
+                                            <span class="time-value">08:00 - 09:15</span>
+                                        </div>
+                                        <div class="time-status on-time">
+                                            <i class="fa-solid fa-check-circle"></i> Đúng giờ
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Leg 2: Air -->
+                            <div class="route-leg">
+                                <div class="route-leg-header">
+                                    <div class="leg-title-wrapper">
+                                        <span class="leg-badge air"><i class="fa-solid fa-plane"></i></span>
+                                        <span class="leg-title">Chặng 2: Haneda (HND) ➔ Bắc Kinh (PEK)</span>
+                                    </div>
+                                    <span class="leg-meta">Chuyến bay: NH-Cargo 8511</span>
+                                </div>
+                                <div class="leg-details">
+                                    <div class="leg-route-text">Sân bay quốc tế Haneda ➔ Sân bay quốc tế Thủ đô Bắc Kinh</div>
+                                    <div class="leg-time-stats">
+                                        <div class="time-block">
+                                            <span class="time-label">Dự kiến:</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">12:30 - 16:00</span>
+                                        </div>
+                                        <div class="time-block">
+                                            <span class="time-label">Thực tế:</span>
+                                            <span class="time-value">12:30 - 15:45</span>
+                                        </div>
+                                        <div class="time-status early">
+                                            <i class="fa-solid fa-bolt"></i> Sớm 15p
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Leg 3: Air -->
+                            <div class="route-leg">
+                                <div class="route-leg-header">
+                                    <div class="leg-title-wrapper">
+                                        <span class="leg-badge air"><i class="fa-solid fa-plane"></i></span>
+                                        <span class="leg-title">Chặng 3: Bắc Kinh (PEK) ➔ Hà Nội (HAN)</span>
+                                    </div>
+                                    <span class="leg-meta">Chuyến bay: VN-Cargo 331</span>
+                                </div>
+                                <div class="leg-details">
+                                    <div class="leg-route-text">Sân bay quốc tế Thủ đô Bắc Kinh ➔ Sân bay quốc tế Nội Bài</div>
+                                    <div class="leg-time-stats">
+                                        <div class="time-block">
+                                            <span class="time-label">Dự kiến:</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">18:00 - 22:00</span>
+                                        </div>
+                                        <div class="time-block">
+                                            <span class="time-label">Thực tế:</span>
+                                            <span class="time-value">18:00 - 22:30</span>
+                                        </div>
+                                        <div class="time-status late">
+                                            <i class="fa-solid fa-clock"></i> Trễ 30p
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Leg 4: Ground -->
+                            <div class="route-leg">
+                                <div class="route-leg-header">
+                                    <div class="leg-title-wrapper">
+                                        <span class="leg-badge ground"><i class="fa-solid fa-truck"></i></span>
+                                        <span class="leg-title">Chặng 4: Hà Nội (HAN) ➔ Sóc Sơn</span>
+                                    </div>
+                                    <span class="leg-meta">Xe chuyên dụng: EQ-TRK-VN05</span>
+                                </div>
+                                <div class="leg-details">
+                                    <div class="leg-route-text">Nội Bài Cargo Terminal (ALSC) ➔ Trại ngựa cách ly Sóc Sơn</div>
+                                    <div class="leg-time-stats">
+                                        <div class="time-block">
+                                            <span class="time-label">Dự kiến:</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">23:30 - 00:45</span>
+                                        </div>
+                                        <div class="time-block">
+                                            <span class="time-label">Thực tế:</span>
+                                            <span class="time-value">23:30 - 00:45</span>
+                                        </div>
+                                        <div class="time-status on-time">
+                                            <i class="fa-solid fa-check-circle"></i> Đúng giờ
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

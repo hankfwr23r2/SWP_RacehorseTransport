@@ -290,3 +290,4 @@ function showToast(message, type) {
 
 updateCounts();
 paginateTable();
+

@@ -155,7 +155,7 @@ body {
 /* --- Dashboard Grid --- */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     margin-bottom: 32px;
 }
@@ -250,82 +250,7 @@ body {
     width: 100%;
 }
 
-/* --- Personnel List --- */
-.personnel-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.personnel-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.personnel-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.personnel-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.personnel-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #cbd5e1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: var(--text-main);
-    font-size: 0.9rem;
-}
-
-.personnel-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.personnel-name {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text-main);
-}
-
-.personnel-role {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.badge-working {
-    background-color: #dcfce7;
-    color: #166534;
-}
-
-.badge-idle {
-    background-color: #f1f5f9;
-    color: #475569;
-}
-
-.badge-off {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
+/* Removed Personnel List styles as they are no longer needed */
 
 /* --- Footer --- */
 .main-footer {
