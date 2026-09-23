@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>Lập Lộ trình Vận chuyển</title>
+  <link rel="stylesheet" href="OPS-05.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="fleet_route_sidebar.css">
+
+  <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+  <div class="ops-layout">
+    <aside class="ops-sidebar">
+      <div class="ops-brand">
+        <div class="logo-circle">EQ</div>
+        <span>Điều hành</span>
+      </div>
+      <nav class="ops-nav">
+        <a href="OPS-03.html" class="nav-item">
+          Đánh giá Khả thi
+        </a>
+
+        <a href="OPS-04.html" class="nav-item">
+          Sự cố
+        </a>
+
+        <a href="OPS-05.html" class="nav-item active">
+          Lộ trình
+        </a>
+
+        <a href="OPS-06.html" class="nav-item">
+          Giám sát
+        </a>
+
+        <a href="OPS-07.html" class="nav-item">
+          Đội xe
+        </a>
+
+        <a href="OPS-08.html" class="nav-item">
+          Nhân sự
+        </a>
+      </nav>
+      <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+    </aside>
+    <div class="ops-main">
+
+
+
+
+      <div class="page active" id="page-ops05">
+        <div class="breadcrumb-bar">
+          <div class="dot"></div>
+          <span>Đội xe Hub / Lập Lộ trình Vận chuyển Xuyên Quốc gia</span>
+        </div>
+        <div class="workspace">
+          <div class="page-title">Lập Lộ trình Vận chuyển</div>
+          <div class="page-subtitle">Thiết lập lộ trình đa phương tiện (xe, tàu, máy bay), phân công nhân sự từng chặng,
+            quản lý điểm trung chuyển & đổi phương tiện.</div>
+
+          <div class="card">
+            <div class="card-title">Chuyến vận chuyển chờ lập lộ trình</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Mã chuyến</th>
+                  <th>Khách hàng</th>
+                  <th>Tuyến đường</th>
+                  <th>Số ngựa</th>
+                  <th>Ngày khởi hành</th>
+                  <th>Trạng thái</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="code">#TR-9021</td>
+                  <td>CLB Ngựa Đức Hòa</td>
+                  <td>Hà Nội → Hồng Kông</td>
+                  <td>2</td>
+                  <td>25/10/2026</td>
+                  <td><span class="badge badge-info">Đã duyệt, chờ lập LT</span></td>
+                  <td><a class="action-link">Lập lộ trình</a></td>
+                </tr>
+                <tr>
+                  <td class="code">#TR-9035</td>
+                  <td>Trang trại Long Thành</td>
+                  <td>TP.HCM → Singapore</td>
+                  <td>1</td>
+                  <td>02/11/2026</td>
+                  <td><span class="badge badge-info">Đã duyệt, chờ lập LT</span></td>
+                  <td><a class="action-link">Lập lộ trình</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <div class="icon"></div> Lập Lộ trình Chuyến đi — #TR-9021 (Hà Nội → Hồng Kông)
+            </div>
+            <div class="divider"></div>
+
+            <!-- Alert: multi-modal notice -->
+            <div class="alert-bar alert-info" style="margin-bottom:20px;">
+              ℹ Chuyến vận chuyển xuyên quốc gia — Lộ trình bao gồm nhiều chặng với phương tiện khác nhau. Tại các điểm
+              trung chuyển có thể cần đổi xe theo quy định quốc gia đích.
+            </div>
+
+            <!-- === LEG-BY-LEG TUYẾN ĐƯỜNG === -->
+            <div style="font-size:14px;font-weight:600;margin-bottom:16px;">Các chặng Lộ trình (Legs)</div>
+
+            <!-- LEG 1 -->
+            <div style="border:1px solid #E8EAED;border-radius:8px;padding:16px;margin-bottom:12px;background:#FAFBFC;">
+              <div class="flex-between" style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span
+                    style="background:#F97316;color:#fff;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700;">Chặng
+                    1</span>
+                  <span style="font-weight:600;font-size:14px;">Đường bộ — Xe thùng chuyên dụng</span>
+                </div>
+                <div class="badge badge-success">Nội địa Việt Nam</div>
+              </div>
+              <div class="grid-2" style="gap:24px;">
+                <div>
+                  <div class="info-row"><span class="info-label">Xuất phát:</span><span class="info-value">Hà Nội (Trang
+                      trại CLB)</span></div>
+                  <div class="info-row"><span class="info-label">Đến:</span><span class="info-value">Sân bay Nội Bài
+                      (Kho hàng cargo)</span></div>
+                  <div class="info-row"><span class="info-label">Khoảng cách:</span><span class="info-value">~45 km • Dự
+                      kiến 1.5h</span></div>
+                  <div class="info-row"><span class="info-label">Điểm kiểm dịch:</span><span class="info-value">Trạm
+                      kiểm dịch Nội Bài (APHIS)</span></div>
+                </div>
+                <div>
+                  <div class="form-group"><label class="form-label">Phương tiện (đã gắn tài xế)</label><select
+                      class="form-input">
+                      <option>VH-001 — Xe Thùng VIP 29H-12345 (TX: Nguyễn Văn A)</option>
+                      <option>VH-004 — Xe Thùng Lạnh 30A-55678 (TX: Phạm Văn D)</option>
+                    </select></div>
+                  <div class="form-group"><label class="form-label">Nhân viên chăm sóc</label><select
+                      class="form-input">
+                      <option>Lê Thị C - 5 năm KN</option>
+                    </select></div>
+                  <button class="btn btn-outline" style="margin-top:8px;padding:6px 12px;font-size:12px;">📍 Báo cáo đã
+                    tới chặng</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TRANSFER POINT 1 -->
+            <div
+              style="text-align:center;margin:8px 0;color:#64748B;font-size:12px;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <div style="flex:1;height:1px;background:#D9DBDE;"></div>
+              <span
+                style="background:#FFF2E0;color:#D97706;padding:4px 12px;border-radius:12px;font-weight:600;white-space:nowrap;">Trung
+                chuyển — Nội Bài: Xe → Khoang Cargo hàng không</span>
+              <div style="flex:1;height:1px;background:#D9DBDE;"></div>
+            </div>
+
+            <!-- LEG 2 -->
+            <div
+              style="border:1px solid #E8EAED;border-radius:8px;padding:16px;margin-bottom:12px;margin-top:12px;background:#FAFBFC;">
+              <div class="flex-between" style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span
+                    style="background:#2563EB;color:#fff;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700;">Chặng
+                    2</span>
+                  <span style="font-weight:600;font-size:14px;">Hàng không — Air Cargo</span>
+                </div>
+                <div class="badge badge-info">Quốc tế VN → HKG</div>
+              </div>
+              <div class="grid-2" style="gap:24px;">
+                <div>
+                  <div class="info-row"><span class="info-label">Xuất phát:</span><span class="info-value">Sân bay Nội
+                      Bài (HAN)</span></div>
+                  <div class="info-row"><span class="info-label">Đến:</span><span class="info-value">Sân bay Chek Lap
+                      Kok (HKG)</span></div>
+                  <div class="info-row"><span class="info-label">Thời gian bay:</span><span
+                      class="info-value">~2.5h</span></div>
+                  <div class="info-row"><span class="info-label">Hải quan:</span><span class="info-value">Thông quan
+                      xuất VN + Nhập HKG</span></div>
+                </div>
+                <div>
+                  <div class="form-group"><label class="form-label">Phương tiện</label><select class="form-input">
+                      <option>Air Cargo VN Airlines - Stall 3 vị trí</option>
+                    </select></div>
+                  <div class="grid-2">
+                    <div class="form-group"><label class="form-label">Nhân viên chăm sóc (bay cùng)</label><select
+                        class="form-input">
+                        <option>Lê Thị C - 5 năm KN</option>
+                      </select></div>
+                    <div class="form-group"><label class="form-label">Tài xế phụ (tùy chọn)</label><select
+                        class="form-input">
+                        <option style="color:#A0A5AD;">— Không cần —</option>
+                      </select></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TRANSFER POINT 2 -->
+            <div
+              style="text-align:center;margin:8px 0;color:#64748B;font-size:12px;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <div style="flex:1;height:1px;background:#D9DBDE;"></div>
+              <span
+                style="background:#FFE8E8;color:#DC2626;padding:4px 12px;border-radius:12px;font-weight:600;white-space:nowrap;">Đổi
+                xe — HKG: Chuyển sang xe địa phương (quy định HK)</span>
+              <div style="flex:1;height:1px;background:#D9DBDE;"></div>
+            </div>
+
+            <!-- LEG 3 -->
+            <div
+              style="border:1px solid #E8EAED;border-radius:8px;padding:16px;margin-bottom:16px;margin-top:12px;background:#FAFBFC;">
+              <div class="flex-between" style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span
+                    style="background:#16A34A;color:#fff;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700;">Chặng
+                    3</span>
+                  <span style="font-weight:600;font-size:14px;">Đường bộ — Xe địa phương Hồng Kông</span>
+                </div>
+                <div class="badge badge-danger">Xe đối tác HKG</div>
+              </div>
+              <div class="grid-2" style="gap:24px;">
+                <div>
+                  <div class="info-row"><span class="info-label">Xuất phát:</span><span class="info-value">Sân bay HKG
+                      (Kho cargo)</span></div>
+                  <div class="info-row"><span class="info-label">Đến:</span><span class="info-value">Sha Tin Racecourse,
+                      Hồng Kông</span></div>
+                  <div class="info-row"><span class="info-label">Khoảng cách:</span><span class="info-value">~35 km • Dự
+                      kiến 50 phút</span></div>
+                  <div class="info-row"><span class="info-label">Ghi chú:</span><span class="info-value">Xe do đối tác
+                      HKG cung cấp (quy định xe phải mang biển HK)</span></div>
+                </div>
+                <div>
+                  <div class="form-group"><label class="form-label">Phương tiện (đối tác)</label><input
+                      class="form-input" value="HK Horse Van - Plate: AB 1234 (Đối tác: HK Equine Logistics)" readonly
+                      style="background:#F8F9FA;"></div>
+                  <div class="grid-2">
+                    <div class="form-group"><label class="form-label">Tài xế (đối tác HKG)</label><input
+                        class="form-input" value="Mr. Chan Wing Kei" readonly style="background:#F8F9FA;"></div>
+                    <div class="form-group"><label class="form-label">NVCS (bay cùng từ chặng 2)</label><select
+                        class="form-input">
+                        <option>Lê Thị C - 5 năm KN</option>
+                      </select></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Map placeholder -->
+            <div
+              style="background:#F8F9FA;border-radius:8px;padding:16px;margin-bottom:20px;text-align:center;color:#94A3B8;height:160px;display:flex;align-items:center;justify-content:center;border:1px dashed #D9DBDE;">
+              [Bản đồ Lộ trình] Hà Nội → Nội Bài → HKG → Sha Tin Racecourse
+            </div>
+
+            <!-- Special requirements -->
+            <div
+              style="background:#FFF8F3;border:1px solid #FDDCBB;border-radius:6px;padding:12px;font-size:12px;color:#92400E;margin-bottom:16px;">
+              ⚠ <strong>Yêu cầu đặc biệt:</strong> Kiểm soát nhiệt khoang ≤ 22°C — Ngựa nhạy cảm tiếng ồn — Kiểm tra
+              nhịp tim mỗi 2h — Đảm bảo giấy kiểm dịch CITES tại mỗi chặng trung chuyển
+            </div>
+
+            <div class="form-group"><label class="form-label">Ghi chú cho toàn bộ hành trình:</label><textarea
+                class="form-input" rows="2"
+                placeholder="NVCS Lê Thị C sẽ đi cùng ngựa xuyên suốt 3 chặng. Tài xế chặng 3 do đối tác HKG bố trí..."></textarea>
+            </div>
+
+            <div class="flex-end mt-16">
+              <button class="btn btn-outline">Lưu nháp</button>
+              <button class="btn btn-primary">Xác nhận & Khởi hành Lộ trình</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FOOTER (giống CUS-02) ===== -->
+      <footer style="background:#0F172A;padding:32px 40px 16px;margin-top:0;">
+        <div class="flex-between" style="padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div
+              style="width:32px;height:32px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;">
+              EQ</div>
+            <span style="font-size:16px;font-weight:700;color:#fff;">Vận chuyển Ngựa</span>
+          </div>
+          <div style="display:flex;gap:24px;">
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Điều Khoản Dịch vụ</a>
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Chính sách Bảo mật</a>
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Hỗ trợ Khách hàng</a>
+          </div>
+        </div>
+        <div style="text-align:center;padding-top:16px;font-size:11px;color:#64748B;">
+          © 2026 EquinezLogistics — Hệ thống Vận chuyển Ngựa đua Xuyên quốc gia. Đồ án môn học SWP.
+        </div>
+      </footer>
+
+
+    </div>
+  </div>
+  <script src="../global_translate.js"></script>
+</body>
+
+</html>

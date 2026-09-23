@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>Giám sát Vận chuyển</title>
+  <link rel="stylesheet" href="OPS-06.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="fleet_route_sidebar.css">
+
+  <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+  <div class="ops-layout">
+    <aside class="ops-sidebar">
+      <div class="ops-brand">
+        <div class="logo-circle">EQ</div>
+        <span>Điều hành</span>
+      </div>
+      <nav class="ops-nav">
+        <a href="OPS-03.html" class="nav-item">
+          Đánh giá Khả thi
+        </a>
+
+        <a href="OPS-04.html" class="nav-item">
+          Sự cố
+        </a>
+
+        <a href="OPS-05.html" class="nav-item">
+          Lộ trình
+        </a>
+
+        <a href="OPS-06.html" class="nav-item active">
+          Giám sát
+        </a>
+
+        <a href="OPS-07.html" class="nav-item">
+          Đội xe
+        </a>
+
+        <a href="OPS-08.html" class="nav-item">
+          Nhân sự
+        </a>
+      </nav>
+      <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+    </aside>
+    <div class="ops-main">
+
+
+
+
+      <div class="page active" id="page-ops06">
+        <div class="breadcrumb-bar">
+          <div class="dot"></div>
+          <span>Đội xe Hub / Giám sát Vận chuyển Real-time</span>
+        </div>
+        <div class="workspace">
+          <div class="page-title">Giám sát Vận chuyển</div>
+          <div class="page-subtitle">Theo dõi trạng thái chuyến vận chuyển real-time, nhận cảnh báo bất thường từ hệ
+            thống sensor & GPS.</div>
+
+          <!-- Stats row -->
+          <div class="grid-4 mb-12">
+            <div class="stat-card">
+              <div class="stat-number">15</div>
+              <div class="stat-label">Tổng xe đang chạy</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number green">12</div>
+              <div class="stat-label">Bình thường</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number orange">2</div>
+              <div class="stat-label">Chậm trễ / Cảnh cáo</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number red">1</div>
+              <div class="stat-label">Sự cố khẩn cấp</div>
+            </div>
+          </div>
+
+          <!-- Map -->
+          <div class="card">
+            <div class="card-title">Bản đồ Giám sát Đội xe Tracking GPS Real-time</div>
+            <div
+              style="background:#F8F9FA;border-radius:8px;padding:16px;text-align:center;color:#94A3B8;height:300px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:1px dashed #D9DBDE;">
+              <div style="font-size:14px;font-weight:600;margin-bottom:8px;color:#64748B;">GPS</div>
+              [Hệ thống Giám sát Đội xe Tracking GPS Real-time]<br>Hiển thị vị trí thực của 15 xe chở chiến mã trên
+              Google Maps
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap:20px;">
+            <!-- LEFT: Active trips list -->
+            <div class="card">
+              <div class="card-title">Danh sách Chuyến đang Vận hành</div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mã chuyến</th>
+                    <th>Tuyến</th>
+                    <th>Xe (Tài xế)</th>
+                    <th>Tiến trình</th>
+                    <th>TG Dự kiến</th>
+                    <th>TG Thực tế</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="code">#TR-9021</td>
+                    <td>HN → HKG</td>
+                    <td>29H-12345 (Nguyễn Văn A)</td>
+                    <td><span class="badge badge-info">Chặng 1/3</span></td>
+                    <td>08:00</td>
+                    <td>08:15 <span style="color:#d97706;font-size:11px;">(+15p)</span></td>
+                    <td><span class="badge badge-danger">Sự cố</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TR-9035</td>
+                    <td>HCM → SIN</td>
+                    <td>51C-98765 (Trần Văn B)</td>
+                    <td><span class="badge badge-info">Chặng 2/3</span></td>
+                    <td>10:00</td>
+                    <td>10:05</td>
+                    <td><span class="badge badge-success">Bình thường</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TR-9042</td>
+                    <td>ĐN → HN</td>
+                    <td>30A-55678 (Lê Văn C)</td>
+                    <td><span class="badge badge-info">Chặng 1/1</span></td>
+                    <td>07:30</td>
+                    <td>08:00 <span style="color:#dc2626;font-size:11px;">(+30p)</span></td>
+                    <td><span class="badge badge-warning">Chậm 30p</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TR-9050</td>
+                    <td>HN → LP</td>
+                    <td>51D-11122 (Phạm Văn D)</td>
+                    <td><span class="badge badge-info">Chặng 1/2</span></td>
+                    <td>09:00</td>
+                    <td>09:00</td>
+                    <td><span class="badge badge-success">Bình thường</span></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Checkpoint photo upload -->
+              <div
+                style="margin-top: 16px; padding: 12px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px;">
+                <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">📸 Cập nhật Hình ảnh Chặng dừng
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                  <select class="form-input" style="flex: 1; font-size: 12px;">
+                    <option>#TR-9021 — Chặng 1: Hà Nội → Nội Bài</option>
+                    <option>#TR-9042 — Chặng 1: Đồng Nai → Hà Nội</option>
+                  </select>
+                  <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px; white-space: nowrap;">Tải
+                    ảnh lên</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Live alerts feed -->
+            <div class="card">
+              <div class="card-title">Cảnh báo & Thông báo Real-time</div>
+
+              <div class="alert-bar alert-danger">
+                <div>
+                  <div>⚠ <strong>10:30</strong> — Chuyến #TR-9021</div>
+                  <div style="font-weight:400;font-size:12px;margin-top:4px;">Nhịp tim ngựa EQ-04 bất thường (95 bpm).
+                    Sensor cabin cảnh báo.</div>
+                  <div style="margin-top:8px;"><a class="action-link" onclick="showPage('ops04')">→ Chuyển sang Xử lý Sự
+                      cố</a></div>
+                </div>
+              </div>
+
+              <div class="alert-bar alert-warning">
+                <div>
+                  <div>⏱ <strong>09:45</strong> — Chuyến #TR-9042</div>
+                  <div style="font-weight:400;font-size:12px;margin-top:4px;">Xe chậm tiến độ 30 phút so với kế hoạch.
+                    Nguyên nhân: tắc đường đoạn Ninh Bình.</div>
+                  <div style="margin-top:8px;"><span class="badge badge-muted">Tự động theo dõi</span></div>
+                </div>
+              </div>
+
+              <div class="alert-bar alert-info">
+                <div>
+                  <div>✓ <strong>08:00</strong> — Chuyến #TR-9050</div>
+                  <div style="font-weight:400;font-size:12px;margin-top:4px;">Khởi hành đúng lịch. Nhiệt khoang 21°C,
+                    ngựa ổn định.</div>
+                  <div style="margin-top:8px;"><span class="badge badge-success">OK</span></div>
+                </div>
+              </div>
+
+              <div style="text-align:center;margin-top:12px;">
+                <span class="more-link">Xem tất cả cảnh báo ▸</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FOOTER (giống CUS-02) ===== -->
+      <footer style="background:#0F172A;padding:32px 40px 16px;margin-top:0;">
+        <div class="flex-between" style="padding-bottom:20px;border-bottom:1px solid #1E293B;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div
+              style="width:32px;height:32px;border-radius:50%;background:#F97316;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;">
+              EQ</div>
+            <span style="font-size:16px;font-weight:700;color:#fff;">Vận chuyển Ngựa</span>
+          </div>
+          <div style="display:flex;gap:24px;">
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Điều Khoản Dịch vụ</a>
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Chính sách Bảo mật</a>
+            <a href="#" style="color:#94A3B8;font-size:13px;text-decoration:none;">Hỗ trợ Khách hàng</a>
+          </div>
+        </div>
+        <div style="text-align:center;padding-top:16px;font-size:11px;color:#64748B;">
+          © 2026 EquinezLogistics — Hệ thống Vận chuyển Ngựa đua Xuyên quốc gia. Đồ án môn học SWP.
+        </div>
+      </footer>
+
+
+    </div>
+  </div>
+  <script src="../global_translate.js"></script>
+</body>
+
+</html>
