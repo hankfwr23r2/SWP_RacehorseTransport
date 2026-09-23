@@ -3,14 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Nhật ký Sức khỏe - EquineLogistics</title>
-
-    <link rel="stylesheet" href="escort_style.css">
-    <link rel="stylesheet" href="../global_translate.css">
-=======
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Escort - EquineLogistics</title>
@@ -21,366 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 </head>
 
 <body>
 
-<<<<<<< HEAD
-    <!-- ================= HEADER ================= -->
-
-    <header class="topbar">
-
-        <div class="brand">
-            <div class="logo">EQ</div>
-            <span>EquineLogistics</span>
-        </div>
-
-        <div class="user-menu">
-            <span>Escort</span>
-            <span class="divider">|</span>
-            <a href="../index.html">Đăng xuất</a>
-        </div>
-
-    </header>
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main class="page">
-
-        <section class="health-card">
-
-            <h1>Nhật ký Sức khỏe</h1>
-
-
-            <!-- Shipment Information -->
-
-            <div class="shipment-box">
-
-                <div class="shipment-id">
-                    EQ-2026-9842
-                </div>
-
-                <div class="shipment-type">
-                    Kiểm tra Sức khỏe Ngựa
-                </div>
-
-            </div>
-
-
-            <!-- Ngày gửi + Temperature -->
-
-            <div class="form-row">
-
-                <div class="form-group date-group">
-
-                    <label for="date">
-                        Ngày & Giờ kiểm tra
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <span class="input-icon">▣</span>
-
-                        <input type="text" id="date" value="18 Oct 2026   09:30">
-
-                        <span class="dropdown">⌄</span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group temperature-group">
-
-                    <label for="temperature">
-                        Nhiệt độ Cơ thể
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <span class="temperature-icon">♨</span>
-
-                        <input type="text" id="temperature" value="38.5 °C">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= HEALTH TRẠNG THÁI ================= -->
-
-            <div class="form-group health-status">
-
-                <label>Tình trạng Sức khỏe</label>
-
-                <div class="radio-box">
-
-                    <!-- Normal -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="normal">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Bình thường</span>
-
-                    </label>
-
-
-                    <!-- Mild -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="mild">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Mệt nhẹ</span>
-
-                    </label>
-
-
-                    <!-- Sick -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="sick">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Mắc bệnh</span>
-
-                    </label>
-
-
-                    <!-- Serious -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="serious">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Căng thẳng nặng</span>
-
-                    </label>
-
-
-                    <!-- Deceased -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="critical">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Qua đời</span>
-
-                    </label>
-
-
-                    <!-- Other -->
-
-                    <label class="radio-option">
-
-                        <input type="radio" name="health" value="other" id="other-health">
-
-                        <span class="radio-circle"></span>
-
-                        <span>Khác</span>
-
-                    </label>
-
-
-                    <!-- Other Text -->
-
-                    <div class="other-input-container" id="other-input-container">
-
-                        <textarea id="other-health-text" maxlength="500"
-                            placeholder="Mô tả tình trạng sức khỏe..."></textarea>
-
-                        <span class="other-character-count">
-                            0/500
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= CẢNH BÁO SỨC KHỎE ================= -->
-
-            <div class="health-alert">
-
-                <div class="alert-icon">
-                    !
-                </div>
-
-                <div class="alert-content">
-
-                    <strong>
-                        CẢNH BÁO SỨC KHỎE
-                    </strong>
-
-                    <span>
-                        Hệ thống sẽ tự động tạo báo cáo khẩn cấp
-                        (Incident Report) gửi về trung tâm.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= NOTES ================= -->
-
-            <div class="form-group notes-group">
-
-                <label for="notes">
-                    Notes
-                </label>
-
-                <div class="textarea-wrapper">
-
-                    <textarea id="notes" maxlength="500" placeholder="Mô tả tình trạng..."></textarea>
-
-                    <span class="character-count">
-                        0/500
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ================= SUBMIT ================= -->
-
-            <button class="submit-button" type="button">
-
-                <span class="submit-icon">
-                    ➤
-                </span>
-
-                <span>
-                    GỬI NHẬT KÝ
-                </span>
-
-            </button>
-
-        </section>
-
-    </main>
-
-
-    <!-- ================= JAVASCRIPT ================= -->
-
-    <script>
-
-        const healthOptions =
-            document.querySelectorAll(
-                'input[name="health"]'
-            );
-
-        const otherInputContainer =
-            document.getElementById(
-                "other-input-container"
-            );
-
-
-        healthOptions.forEach(option => {
-
-            option.addEventListener("change", function () {
-
-                /*
-                 * Remove highlight from every option
-                 */
-
-                document
-                    .querySelectorAll(".radio-option")
-                    .forEach(item => {
-                        item.classList.remove("selected");
-                    });
-
-
-                /*
-                 * Highlight selected option
-                 */
-
-                this
-                    .closest(".radio-option")
-                    .classList.add("selected");
-
-
-                /*
-                 * Show Other textbox only
-                 * when Other is selected
-                 */
-
-                if (this.value === "other") {
-
-                    otherInputContainer.classList.add("show");
-
-                } else {
-
-                    otherInputContainer.classList.remove("show");
-
-                }
-
-            });
-
-        });
-
-
-        /*
-         * Character counter for Other
-         */
-
-        const otherText =
-            document.getElementById(
-                "other-health-text"
-            );
-
-        const otherCounter =
-            document.querySelector(
-                ".other-character-count"
-            );
-
-        otherText.addEventListener("input", function () {
-
-            otherCounter.textContent =
-                `${this.value.length}/500`;
-
-        });
-
-
-        /*
-         * Character counter for Notes
-         */
-
-        const notes =
-            document.getElementById("notes");
-
-        const notesCounter =
-            document.querySelector(".character-count");
-
-        notes.addEventListener("input", function () {
-
-            notesCounter.textContent =
-                `${this.value.length}/500`;
-
-        });
-
-    </script>
-
-<script src="../global_translate.js"></script>
-=======
     <div class="app-container">
 
         <!-- ================= HEADER ================= -->
@@ -774,7 +410,7 @@
                             </div>
 
                         </div>
-                        
+
                         <!-- ================= SUBMIT SUCCESS MESSAGE ================= -->
 
                         <div class="submit-message" id="submitMessage" role="status" aria-live="polite">
@@ -845,7 +481,8 @@
 
                     </div>
 
-                    <div class="delete-confirmation" id="deleteConfirmation" role="dialog" aria-labelledby="deleteConfirmationTitle" aria-hidden="true">
+                    <div class="delete-confirmation" id="deleteConfirmation" role="dialog"
+                        aria-labelledby="deleteConfirmationTitle" aria-hidden="true">
 
                         <div class="delete-confirmation-icon">
                             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -918,7 +555,6 @@
     <script src="escort.js"></script>
     <script src="../global_translate.js"></script>
 
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 </body>
 
 </html>

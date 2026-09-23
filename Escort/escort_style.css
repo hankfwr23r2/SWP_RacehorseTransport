@@ -6,8 +6,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-<<<<<<< HEAD
-=======
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -29,7 +27,6 @@
     --border-color: #dbe8f5;
 
     --green-color: #08b982;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -38,15 +35,6 @@
 ================================================== */
 
 body {
-<<<<<<< HEAD
-    font-family: Arial, Helvetica, sans-serif;
-
-    background: #f3f6fa;
-
-    color: #26364d;
-
-    font-size: 12px;
-=======
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     background: var(--bg-color);
     color: var(--text-main);
@@ -62,7 +50,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -71,21 +58,6 @@ body {
 ================================================== */
 
 .topbar {
-<<<<<<< HEAD
-    height: 55px;
-
-    background: #142b47;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 18px;
-
-    color: white;
-=======
     height: 60px;
 
     background: var(--primary-color);
@@ -99,51 +71,20 @@ body {
     padding: 0 20px;
 
     flex-shrink: 0;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .brand {
     display: flex;
-<<<<<<< HEAD
-
-    align-items: center;
-
-    gap: 9px;
-
-    font-size: 11px;
-
-    font-weight: bold;
-=======
     align-items: center;
     gap: 10px;
 
     font-size: 15px;
     font-weight: 600;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .logo {
-<<<<<<< HEAD
-    width: 17px;
-    height: 17px;
-
-    background: #ff6b00;
-
-    color: white;
-
-    border-radius: 3px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 8px;
-
-=======
     width: 32px;
     height: 32px;
 
@@ -156,25 +97,12 @@ body {
     justify-content: center;
 
     font-size: 12px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     font-weight: bold;
 }
 
 
 .user-menu {
     display: flex;
-<<<<<<< HEAD
-
-    align-items: center;
-
-    gap: 7px;
-
-    font-size: 12px;
-}
-
-
-.user-menu .divider {
-=======
     align-items: center;
     gap: 12px;
 
@@ -183,19 +111,10 @@ body {
 
 
 .divider {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     color: #60748b;
 }
 
 
-<<<<<<< HEAD
-.user-menu a {
-    color: #ff6b00;
-
-    text-decoration: none;
-
-    font-weight: bold;
-=======
 .logout-btn {
     border: none;
     background: none;
@@ -211,25 +130,10 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 /* ==================================================
-<<<<<<< HEAD
-   PAGE
-================================================== */
-
-.page {
-
-    min-height: calc(100vh - 55px);
-
-    padding: 14px 2.5% 30px;
-
-    display: flex;
-
-    justify-content: center;
-=======
    BODY LAYOUT
 ================================================== */
 
@@ -619,7 +523,6 @@ body {
 
     align-items: center;
     gap: 7px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -628,28 +531,6 @@ body {
 ================================================== */
 
 .health-card {
-<<<<<<< HEAD
-
-    /*
-     * Much wider than the previous 504px.
-     * This makes it cover almost the entire screen.
-     */
-
-    width: 95%;
-
-    min-height: calc(100vh - 85px);
-
-    background: white;
-
-    border: 1px solid #dbe8f5;
-
-    border-radius: 5px;
-
-    box-shadow:
-        0 2px 8px rgba(30, 60, 90, 0.05);
-
-    padding: 22px 24px 30px;
-=======
     background: white;
 
     border: 1px solid var(--border-color);
@@ -660,77 +541,10 @@ body {
 
     box-shadow:
         0 4px 8px rgba(30, 60, 90, 0.04);
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 /* ==================================================
-<<<<<<< HEAD
-   TITLE
-================================================== */
-
-.health-card h1 {
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    color: #263d5c;
-
-    margin-bottom: 12px;
-}
-
-
-/* ==================================================
-   SHIPMENT BOX
-================================================== */
-
-.shipment-box {
-
-    min-height: 65px;
-
-    border: 1px dashed #c6dff4;
-
-    border-radius: 4px;
-
-    padding: 13px;
-
-    margin-bottom: 17px;
-}
-
-
-.shipment-id {
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    color: #304563;
-
-    margin-bottom: 4px;
-}
-
-
-.shipment-type {
-
-    font-size: 10px;
-
-    color: #78a5cc;
-}
-
-
-/* ==================================================
-   FORM ROW
-================================================== */
-
-.form-row {
-
-    display: flex;
-
-    gap: 20px;
-
-    margin-bottom: 14px;
-=======
    FORM
 ================================================== */
 
@@ -742,46 +556,10 @@ body {
     gap: 18px;
 
     margin-bottom: 18px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .form-group {
-<<<<<<< HEAD
-
-    display: flex;
-
-    flex-direction: column;
-}
-
-
-.date-group {
-
-    width: 50%;
-}
-
-
-.temperature-group {
-
-    width: 50%;
-}
-
-
-/* ==================================================
-   LABELS
-================================================== */
-
-.form-group > label,
-.health-status > label {
-
-    font-size: 10px;
-
-    font-weight: bold;
-
-    color: #314969;
-
-    margin-bottom: 6px;
-=======
     display: flex;
     flex-direction: column;
 
@@ -840,81 +618,10 @@ select:disabled {
     color: #94a3b8;
 
     cursor: not-allowed;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 /* ==================================================
-<<<<<<< HEAD
-   INPUT
-================================================== */
-
-.input-wrapper {
-
-    height: 34px;
-
-    border: 1px solid #d6e5f2;
-
-    border-radius: 4px;
-
-    display: flex;
-
-    align-items: center;
-
-    background: white;
-}
-
-
-.input-wrapper input {
-
-    width: 100%;
-
-    height: 100%;
-
-    border: none;
-
-    outline: none;
-
-    background: transparent;
-
-    color: #52647a;
-
-    font-size: 10px;
-}
-
-
-.input-icon {
-
-    font-size: 10px;
-
-    color: #6594c1;
-
-    margin-left: 10px;
-
-    margin-right: 8px;
-}
-
-
-.temperature-icon {
-
-    font-size: 12px;
-
-    color: #ed4a4a;
-
-    margin-left: 10px;
-
-    margin-right: 8px;
-}
-
-
-.dropdown {
-
-    color: #6d91b3;
-
-    font-size: 13px;
-
-    margin-right: 9px;
-=======
    TEMPERATURE
 ================================================== */
 
@@ -954,7 +661,6 @@ select:disabled {
 
 .temperature-input span {
     color: var(--text-muted);
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -962,60 +668,6 @@ select:disabled {
    HEALTH STATUS
 ================================================== */
 
-<<<<<<< HEAD
-.health-status {
-
-    margin-bottom: 12px;
-}
-
-
-.radio-box {
-
-    border: 1px solid #d6e5f2;
-
-    border-radius: 4px;
-
-    padding: 7px 9px;
-}
-
-
-/* ==================================================
-   RADIO OPTION
-================================================== */
-
-.radio-option {
-
-    min-height: 31px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    color: #516277;
-
-    font-size: 10px;
-
-    cursor: pointer;
-
-    padding: 0 7px;
-
-    border-radius: 4px;
-
-    transition:
-        background 0.15s ease,
-        border 0.15s ease;
-}
-
-
-/*
- * Hover
- */
-
-.radio-option:hover {
-
-=======
 .radio-box {
     border: 1px solid #d6e5f2;
 
@@ -1046,58 +698,25 @@ select:disabled {
 
 
 .radio-option:hover {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     background: #f2f8fc;
 }
 
 
-<<<<<<< HEAD
-/*
- * IMPORTANT:
- * Only the currently selected option
- * gets this class.
- */
-
 .radio-option.selected {
-
-=======
-.radio-option.selected {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     background: #e1f1fc;
 
     color: #315b7d;
 }
 
 
-<<<<<<< HEAD
-/* ==================================================
-   REAL RADIO BUTTON
-================================================== */
-
 .radio-option input {
-
-=======
-.radio-option input {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     display: none;
 }
 
 
-<<<<<<< HEAD
-/* ==================================================
-   CUSTOM RADIO
-================================================== */
-
-.radio-circle {
-
-    width: 12px;
-
-    height: 12px;
-=======
 .radio-circle {
     width: 14px;
     height: 14px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     border: 1px solid #a9c7e0;
 
@@ -1106,52 +725,20 @@ select:disabled {
     position: relative;
 
     flex-shrink: 0;
-<<<<<<< HEAD
-
-    background: white;
-}
-
-
-/*
- * Selected radio circle
- */
-
-.radio-option input:checked + .radio-circle {
-
-=======
 }
 
 
 .radio-option input:checked+.radio-circle {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     border-color: #65a8d9;
 }
 
 
-<<<<<<< HEAD
-.radio-option input:checked
-+ .radio-circle::after {
-
-=======
 .radio-option input:checked+.radio-circle::after {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     content: "";
 
     position: absolute;
 
     width: 6px;
-<<<<<<< HEAD
-
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: #68b0e6;
-
-    top: 2px;
-
-    left: 2px;
-=======
     height: 6px;
 
     background: #68b0e6;
@@ -1160,101 +747,36 @@ select:disabled {
 
     top: 3px;
     left: 3px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 /* ==================================================
-<<<<<<< HEAD
-   OTHER INPUT
-================================================== */
-
-.other-input-container {
-
-=======
    OTHER
 ================================================== */
 
 .other-input-container {
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     display: none;
 
     position: relative;
 
-<<<<<<< HEAD
-    margin: 5px 7px 7px 27px;
-=======
     margin: 6px 8px 8px 32px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .other-input-container.show {
-<<<<<<< HEAD
-
-=======
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     display: block;
 }
 
 
 .other-input-container textarea {
-<<<<<<< HEAD
-
-    width: 100%;
-
-    height: 65px;
-=======
     width: 100%;
 
     height: 75px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     resize: vertical;
 
     border: 1px solid #d6e5f2;
 
-<<<<<<< HEAD
-    border-radius: 4px;
-
-    padding: 9px;
-
-    outline: none;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    font-size: 10px;
-
-    color: #4d6077;
-}
-
-
-.other-input-container textarea:focus {
-
-    border-color: #8bbbe0;
-}
-
-
-.other-input-container textarea::placeholder {
-
-    color: #a5b9ce;
-}
-
-
-.other-character-count {
-
-    position: absolute;
-
-    right: 7px;
-
-    bottom: 6px;
-
-    color: #8fa3b7;
-
-    font-size: 8px;
-
-    pointer-events: none;
-=======
     border-radius: 6px;
 
     padding: 10px;
@@ -1264,7 +786,6 @@ select:disabled {
     font-family: inherit;
 
     font-size: 12px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -1273,10 +794,6 @@ select:disabled {
 ================================================== */
 
 .health-alert {
-<<<<<<< HEAD
-
-    min-height: 52px;
-=======
     display: flex;
     align-items: center;
 
@@ -1285,66 +802,23 @@ select:disabled {
     padding: 10px 13px;
 
     margin-bottom: 18px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     border: 1px solid #ffb5b5;
 
     background: #fff1f1;
 
-<<<<<<< HEAD
-    border-radius: 4px;
-
-    display: flex;
-
-    align-items: center;
-
-    padding: 8px 11px;
-
-    margin-bottom: 14px;
-=======
     border-radius: 6px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .alert-icon {
-<<<<<<< HEAD
-
-    width: 26px;
-
-    height: 26px;
-=======
     width: 28px;
     height: 28px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     background: #f23636;
 
     color: white;
 
-<<<<<<< HEAD
-    clip-path: polygon(
-        50% 0%,
-        100% 100%,
-        0% 100%
-    );
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    padding-top: 4px;
-
-    flex-shrink: 0;
-
-    margin-right: 11px;
-=======
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1358,18 +832,11 @@ select:disabled {
     margin-right: 12px;
 
     flex-shrink: 0;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .alert-content {
-<<<<<<< HEAD
-
     display: flex;
-
-=======
-    display: flex;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     flex-direction: column;
 
     gap: 3px;
@@ -1377,26 +844,13 @@ select:disabled {
 
 
 .alert-content strong {
-<<<<<<< HEAD
-
-    color: #f23636;
-
-    font-size: 9px;
-=======
     color: #f23636;
 
     font-size: 10px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .alert-content span {
-<<<<<<< HEAD
-
-    color: #e56c6c;
-
-    font-size: 8px;
-=======
     color: #e56c6c;
 
     font-size: 10px;
@@ -1523,7 +977,6 @@ select:disabled {
     color: white;
 
     cursor: pointer;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
@@ -1532,68 +985,25 @@ select:disabled {
 ================================================== */
 
 .notes-group {
-<<<<<<< HEAD
-
-    margin-bottom: 14px;
-=======
     margin-bottom: 18px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .textarea-wrapper {
-<<<<<<< HEAD
-
-    position: relative;
-
-    height: 85px;
-=======
     position: relative;
 
     height: 100px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .textarea-wrapper textarea {
-<<<<<<< HEAD
-
     width: 100%;
-
-=======
-    width: 100%;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     height: 100%;
 
     resize: vertical;
 
     border: 1px solid #d6e5f2;
 
-<<<<<<< HEAD
-    border-radius: 4px;
-
-    padding: 10px;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    font-size: 10px;
-
-    color: #4d6077;
-
-    outline: none;
-}
-
-
-.textarea-wrapper textarea:focus {
-
-    border-color: #8bbbe0;
-}
-
-
-.textarea-wrapper textarea::placeholder {
-
-    color: #a5b9ce;
-=======
     border-radius: 6px;
 
     padding: 11px;
@@ -1603,43 +1013,10 @@ select:disabled {
     font-family: inherit;
 
     font-size: 12px;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 .character-count {
-<<<<<<< HEAD
-
-    position: absolute;
-
-    right: 8px;
-
-    bottom: 5px;
-
-    color: #8fa3b7;
-
-    font-size: 8px;
-
-    pointer-events: none;
-}
-
-
-/* ==================================================
-   SUBMIT BUTTON
-================================================== */
-
-.submit-button {
-
-    width: 100%;
-
-    height: 38px;
-
-    border: none;
-
-    border-radius: 4px;
-
-    background: #08b982;
-=======
     position: absolute;
 
     right: 9px;
@@ -1737,13 +1114,10 @@ select:disabled {
     border-radius: 6px;
 
     background: var(--green-color);
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     color: white;
 
     display: flex;
-<<<<<<< HEAD
-=======
     align-items: center;
     justify-content: center;
 
@@ -1941,41 +1315,11 @@ select:disabled {
     color: var(--accent-orange);
 
     display: flex;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 
     align-items: center;
 
     justify-content: center;
 
-<<<<<<< HEAD
-    gap: 9px;
-
-    font-size: 9px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: background 0.15s ease;
-}
-
-
-.submit-button:hover {
-
-    background: #06a874;
-}
-
-
-.submit-button:active {
-
-    transform: translateY(1px);
-}
-
-
-.submit-icon {
-
-    font-size: 11px;
-=======
     font-size: 25px;
 
     margin-bottom: 15px;
@@ -2000,21 +1344,10 @@ select:disabled {
 
     color: var(--text-muted);
 
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
 }
 
 
 /* ==================================================
-<<<<<<< HEAD
-   RESPONSIVE
-================================================== */
-
-@media (max-width: 700px) {
-
-    .page {
-
-        padding: 10px;
-=======
    CLICKABLE HISTORY CARD
 ================================================== */
 
@@ -2322,32 +1655,10 @@ select:disabled {
         gap: 0;
 
         margin-bottom: 0;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     }
 
 
     .health-card {
-<<<<<<< HEAD
-
-        width: 100%;
-
-        padding: 16px;
-    }
-
-
-    .form-row {
-
-        flex-direction: column;
-
-        gap: 12px;
-    }
-
-
-    .date-group,
-    .temperature-group {
-
-        width: 100%;
-=======
         padding: 17px;
 
         border-radius: 8px;
@@ -2377,7 +1688,6 @@ select:disabled {
 
     .status {
         align-self: flex-start;
->>>>>>> d3724358bc95ad14fd280bfbbce372290d11ef5c
     }
 
 }
