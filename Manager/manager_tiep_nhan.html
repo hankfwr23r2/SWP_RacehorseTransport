@@ -30,27 +30,41 @@
                 <span class="text-orange">Tiếp nhận Đơn hàng</span>
             </div>
             <h1>Tiếp nhận Đơn hàng</h1>
-            <p class="subtitle">Đơn khách hàng vừa gửi (đã có báo giá tự động). Xác nhận phân công Kiểm dịch viên &amp; Điều phối viên để chuyển xử lý, hoặc từ chối sớm đơn không hợp lệ.</p>
+            <p class="subtitle">Đơn khách hàng vừa gửi (đã có báo giá tự động). Xác nhận phân công Kiểm dịch viên &amp;
+                Điều phối viên để chuyển xử lý, hoặc từ chối sớm đơn không hợp lệ.</p>
         </div>
 
         <div class="card table-card">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <h2 style="margin: 0;">Danh sách Đơn hàng</h2>
                 <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
                     <div class="search-bar" style="position: relative;">
-                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng, Tuyến..." oninput="searchTable()" style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
-                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
+                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng, Tuyến..."
+                            oninput="searchTable()"
+                            style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
                     </div>
                 </div>
             </div>
 
             <!-- Tabs Trạng thái -->
-            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end;">
-                <div class="status-tab active-tab" data-tab="new" onclick="switchTab('new')" style="padding-bottom: 12px; cursor: pointer;">Đơn mới (<span id="count-new">0</span>)</div>
-                <div class="status-tab" data-tab="inspecting" onclick="switchTab('inspecting')" style="padding-bottom: 12px; cursor: pointer;">Đang kiểm dịch (<span id="count-inspecting">0</span>)</div>
-                <div class="status-tab" data-tab="routing" onclick="switchTab('routing')" style="padding-bottom: 12px; cursor: pointer;">Đang lập lộ trình (<span id="count-routing">0</span>)</div>
-                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')" style="padding-bottom: 12px; cursor: pointer;">Từ chối sớm (<span id="count-rejected">0</span>)</div>
-                <a href="manager_phe_duyet.html" class="next-step-link">Sang Phê duyệt Đơn hàng <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="status-tabs"
+                style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end;">
+                <div class="status-tab active-tab" data-tab="new" onclick="switchTab('new')"
+                    style="padding-bottom: 12px; cursor: pointer;">Đơn mới (<span id="count-new">0</span>)</div>
+                <div class="status-tab" data-tab="inspecting" onclick="switchTab('inspecting')"
+                    style="padding-bottom: 12px; cursor: pointer;">Đang kiểm dịch (<span id="count-inspecting">0</span>)
+                </div>
+                <div class="status-tab" data-tab="routing" onclick="switchTab('routing')"
+                    style="padding-bottom: 12px; cursor: pointer;">Đang lập lộ trình (<span id="count-routing">0</span>)
+                </div>
+                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')"
+                    style="padding-bottom: 12px; cursor: pointer;">Từ chối sớm (<span id="count-rejected">0</span>)
+                </div>
+                <a href="manager_phe_duyet.html" class="next-step-link">Sang Phê duyệt Đơn hàng <i
+                        class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
@@ -74,7 +88,8 @@
             </div>
 
             <!-- Phân trang (Pagination) -->
-            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
+            <div class="pagination-container"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
                 <span id="pagination-info" class="text-muted" style="font-size: 0.85rem;"></span>
                 <div id="pagination-buttons" class="pagination" style="display: flex; gap: 4px;"></div>
             </div>
@@ -109,7 +124,8 @@
                 <!-- 2. Ngựa & hồ sơ khách nộp -->
                 <section class="approval-section">
                     <h3 class="section-title"><span class="section-num">2</span> Ngựa &amp; hồ sơ khách đã nộp</h3>
-                    <p class="section-by"><i class="fa-solid fa-circle-info"></i> Kiểm dịch viên sẽ xác minh tính hợp lệ của giấy tờ ở bước sau.</p>
+                    <p class="section-by"><i class="fa-solid fa-circle-info"></i> Kiểm dịch viên sẽ xác minh tính hợp lệ
+                        của giấy tờ ở bước sau.</p>
                     <div id="m-horses" class="horse-list"></div>
                     <div id="m-customer-note" class="staff-note"></div>
                 </section>
@@ -139,12 +155,16 @@
                 <select id="reject-type" class="action-input">
                     <option value="Đơn trùng lặp">Đơn trùng lặp</option>
                     <option value="Thông tin khai báo không khớp hồ sơ">Thông tin khai báo không khớp hồ sơ</option>
-                    <option value="Ngựa không thuộc diện vận chuyển">Ngựa không thuộc diện vận chuyển (không phải ngựa đua / không khỏe mạnh)</option>
+                    <option value="Ngựa không thuộc diện vận chuyển">Ngựa không thuộc diện vận chuyển (không phải ngựa
+                        đua / không khỏe mạnh)</option>
                     <option value="Khác">Khác</option>
                 </select>
-                <label class="action-label" style="margin-top: 10px;">Ghi chú gửi khách hàng <span class="required">*</span></label>
-                <textarea id="reject-note" class="action-input" rows="3" placeholder="Nhập chi tiết lý do từ chối..."></textarea>
-                <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Khách chưa thanh toán nên không phát sinh hoàn tiền. Chỗ xe giữ tạm sẽ được nhả.</p>
+                <label class="action-label" style="margin-top: 10px;">Ghi chú gửi khách hàng <span
+                        class="required">*</span></label>
+                <textarea id="reject-note" class="action-input" rows="3"
+                    placeholder="Nhập chi tiết lý do từ chối..."></textarea>
+                <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Khách chưa thanh toán nên không phát sinh
+                    hoàn tiền. Chỗ xe giữ tạm sẽ được nhả.</p>
                 <div class="action-box-buttons">
                     <button class="btn btn-light" onclick="hideRejectBox()">Hủy</button>
                     <button class="btn btn-red" onclick="confirmReject()">Xác nhận Từ chối</button>
@@ -154,8 +174,10 @@
             <div class="approval-actions">
                 <button class="btn btn-light" onclick="closeModal()">Đóng</button>
                 <div class="approval-actions-right" id="decision-buttons">
-                    <button class="btn btn-red-outline" onclick="showRejectBox()"><i class="fa-solid fa-xmark"></i> Từ chối sớm</button>
-                    <button id="btn-accept" class="btn btn-orange" onclick="acceptOrder()"><i class="fa-solid fa-check"></i> Tiếp nhận &amp; chuyển xử lý</button>
+                    <button class="btn btn-red-outline" onclick="showRejectBox()"><i class="fa-solid fa-xmark"></i> Từ
+                        chối sớm</button>
+                    <button id="btn-accept" class="btn btn-orange" onclick="acceptOrder()"><i
+                            class="fa-solid fa-check"></i> Tiếp nhận &amp; chuyển xử lý</button>
                 </div>
             </div>
         </div>
@@ -182,6 +204,7 @@
     </footer>
 
     <script src="manager_tiep_nhan.js"></script>
-<script src="../global_translate.js"></script>
+    <script src="../global_translate.js"></script>
 </body>
+
 </html>

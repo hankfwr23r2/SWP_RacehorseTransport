@@ -24,17 +24,16 @@
             <nav class="main-nav" aria-label="Menu chính">
                 <ul>
                     <li><a href="index.html" class="active" aria-current="page">Trang chủ</a></li>
-                    <li><a href="#dich-vu">Dịch vụ Vận chuyển</a></li>
-                    <li><a href="#quy-trinh">Quy trình Vận hành</a></li>
-                    <li><a href="#tuyen-duong">Lịch trình & Bảng cước</a></li>
-                    <li><a href="#tra-cuu">Tra cứu Hành trình</a></li>
+                    <li><a href="CUS/login.html">Đặt chuyến ngay</a></li>
+                    <li><a href="CUS/login.html">Tra cứu lộ trình</a></li>
+                    <li><a href="CUS/login.html">Báo giá của tôi</a></li>
                 </ul>
             </nav>
             <div class="user-actions">
                 <a href="CUS/login.html" class="btn btn-outline" style="color: #cbd5e1; border-color: rgba(255, 255, 255, 0.25); padding: 7px 16px; font-size: 0.85rem;">
                     <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng nhập
                 </a>
-                <a href="CUS/create_request.html" class="btn btn-primary" style="padding: 7px 18px; font-size: 0.85rem;">
+                <a href="CUS/login.html" class="btn btn-primary" style="padding: 7px 18px; font-size: 0.85rem;">
                     <i class="fa-solid fa-paper-plane"></i> Đặt chuyến ngay
                 </a>
             </div>
@@ -44,8 +43,8 @@
     <!-- Main Container -->
     <main class="container main-content" style="padding-top: 28px;">
         <!-- Hero Section (Manager Aesthetic) -->
-        <section class="hero-manager">
-            <div class="hero-content">
+        <section class="hero-manager" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 32px;">
+            <div class="hero-content" style="display: flex; flex-direction: column; align-items: center;">
                 <div style="margin-bottom: 16px;">
                     <span class="badge" style="background: rgba(234, 88, 12, 0.2); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.4); font-size: 0.8rem; padding: 6px 12px;">
                         <i class="fa-solid fa-award"></i> Chuẩn Thú y Quốc tế OIE • IATA Live Animals Certified
@@ -54,247 +53,68 @@
                 <h1>Vận chuyển Ngựa đua Xuyên quốc gia <span>Đẳng cấp & An toàn</span></h1>
                 <p>Giải pháp logistics đường không (Air Cargo) & đường bộ chuyên biệt dành riêng cho ngựa đua thuần chủng. Giám sát sinh trắc học 24/7, xe tải ổn nhiệt giảm chấn khí nén và thủ tục kiểm dịch hải quan trọn gói.</p>
                 <div class="hero-actions">
-                    <a href="CUS/create_request.html" class="btn btn-primary btn-large">
+                    <a href="CUS/login.html" class="btn btn-primary btn-large">
                         <i class="fa-solid fa-paper-plane"></i> Tạo Yêu cầu Vận chuyển ngay
                     </a>
-                    <a href="#tra-cuu" class="btn btn-outline-light btn-large">
+                    <a href="CUS/login.html" class="btn btn-outline-light btn-large">
                         <i class="fa-solid fa-magnifying-glass"></i> Tra cứu Hành trình
                     </a>
                 </div>
             </div>
+        </section>
 
-            <!-- Hero Right: Live Status Simulator -->
-            <div class="hero-status-card">
-                <div class="status-card-header">
-                    <span class="live-indicator">
-                        <span class="pulse-dot"></span> ĐANG VẬN CHUYỂN LIVE
-                    </span>
-                    <span class="flight-no">Chuyên cơ #EQ-AIR-8910</span>
-                </div>
-
-                <div class="status-route">
-                    <div class="route-point">
-                        <div class="point-code">SGN</div>
-                        <div class="point-city">Tân Sơn Nhất</div>
-                    </div>
-                    <div class="route-line">
-                        <i class="fa-solid fa-plane"></i>
-                        <div class="line-bar"></div>
-                    </div>
-                    <div class="route-point">
-                        <div class="point-code">HKG</div>
-                        <div class="point-city">Chek Lap Kok</div>
-                    </div>
-                </div>
-
-                <div class="status-meta-grid">
-                    <div class="meta-item">
-                        <div class="meta-label">Cá thể ngựa</div>
-                        <div class="meta-val">Storm Runner (#VN-985211)</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Nhịp tim & Thân nhiệt</div>
-                        <div class="meta-val text-success">
-                            <i class="fa-solid fa-heart-pulse"></i> 38 bpm • 37.8°C (Ổn định)
-                        </div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Độ cao & Vận tốc</div>
-                        <div class="meta-val">FL340 (10,300m) • 860 km/h</div>
-                    </div>
-                    <div class="meta-item">
-                        <div class="meta-label">Dự kiến hạ cánh (ETA)</div>
-                        <div class="meta-val" style="color: #fbbf24;">14:30 (Đúng kế hoạch)</div>
-                    </div>
-                </div>
+        <!-- Statistics / Marketing Banner -->
+        <section class="marketing-stats" style="display: flex; justify-content: space-around; background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 40px 20px; border-radius: 12px; margin-bottom: 60px; box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.3);">
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">100%</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">An toàn Sinh học</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">18+</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Quốc gia Kết nối</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">24/7</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Bác sĩ Thú y Hộ tống</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">&lt; 24h</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Thẩm định Hồ sơ</div>
             </div>
         </section>
 
-        <!-- Quick Tracking Search Bar -->
-        <section id="tra-cuu" class="card tracking-card">
-            <div class="tracking-inner">
-                <div class="tracking-input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="track-input" placeholder="Nhập Mã Đơn hàng (VD: #EQ-8910, #EQ-8911) hoặc Mã Vi chip Microchip ID..." class="tracking-input" onkeypress="if(event.key === 'Enter') handleTrackSearch()">
-                </div>
-                <button type="button" class="btn btn-primary" onclick="handleTrackSearch()" style="padding: 12px 24px; white-space: nowrap;">
-                    <i class="fa-solid fa-location-crosshairs"></i> Tra cứu Lộ trình
-                </button>
-            </div>
-            <div class="tracking-chips">
-                <span class="chip-label"><i class="fa-solid fa-bolt text-orange"></i> Đơn mẫu:</span>
-                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-8910')">#EQ-8910 (Hà Nội &rarr; TP.HCM)</button>
-                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-8911')">#EQ-8911 (Dubai &rarr; London)</button>
-                <button type="button" class="tracking-chip" onclick="quickFillTrack('#EQ-8912')">#EQ-8912 (SGN &rarr; HKG)</button>
+        <!-- Core Services Section (Visual) -->
+        <section id="dich-vu" style="margin-bottom: 60px;">
+            <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2rem; color: var(--primary-color);">Dịch vụ Logistics Ngựa đua Chuyên nghiệp</h2>
+                <p style="max-width: 700px; margin: 0 auto; color: var(--text-muted);">Quy chuẩn vận tải được thiết kế chuyên biệt nhằm triệt tiêu stress, duy trì phong độ thể lực cao nhất cho các chiến mã thi đấu.</p>
             </div>
 
-            <!-- Dynamic Result Card -->
-            <div id="track-result-box" style="display: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-color);">
-                <!-- Rendered by JS -->
-            </div>
-        </section>
-
-        <!-- KPI Statistics (Manager Dashboard Grid) -->
-        <section class="dashboard-grid">
-            <div class="kpi-card">
-                <div class="kpi-title">
-                    <i class="fa-solid fa-shield-halved text-orange"></i> An toàn Sinh học
-                </div>
-                <div class="kpi-value">100%</div>
-                <div class="kpi-subtext">Tuân thủ nghiêm ngặt quy chế kiểm dịch OIE & Cục Thú y</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">
-                    <i class="fa-solid fa-earth-americas text-orange"></i> Mạng lưới Toàn cầu
-                </div>
-                <div class="kpi-value">18+</div>
-                <div class="kpi-subtext">Quốc gia & các trường đua đẳng cấp thế giới kết nối trực tiếp</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">
-                    <i class="fa-solid fa-user-doctor text-orange"></i> Chăm sóc Chuyên sâu
-                </div>
-                <div class="kpi-value">24/7</div>
-                <div class="kpi-subtext">Đội ngũ Bác sĩ Thú y (Escort) đi cùng suốt chuyến bay & đường bộ</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-title">
-                    <i class="fa-solid fa-bolt text-orange"></i> Thời gian Phê duyệt
-                </div>
-                <div class="kpi-value">&lt; 24h</div>
-                <div class="kpi-subtext">Báo giá tự động, đối soát điều kiện lịch bay và ký kết hợp đồng</div>
-            </div>
-        </section>
-
-        <!-- Core Services Section -->
-        <section id="dich-vu" style="margin-bottom: 48px;">
-            <div class="section-header">
-                <h2>Dịch vụ Logistics Ngựa đua Chuyên nghiệp</h2>
-                <p>Quy chuẩn vận tải được thiết kế chuyên biệt nhằm triệt tiêu stress, duy trì phong độ thể lực cao nhất cho các chiến mã thi đấu.</p>
-            </div>
-
-            <div class="service-grid">
-                <!-- Service 1 -->
-                <div class="service-card">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-plane-departure text-orange"></i> Air Cargo Chuyên dụng</h3>
-                    </div>
-                    <div class="card-body">
-                        <p>Hệ thống chuồng Stalls hàng không tiêu chuẩn quốc tế ATA Container, trang bị kiểm soát nhiệt độ, áp suất không khí và giảm tiếng ồn động cơ tối đa.</p>
-                        <ul class="service-features">
-                            <li><i class="fa-solid fa-check"></i> Chuyên cơ Charter riêng hoặc bay thương mại định kỳ</li>
-                            <li><i class="fa-solid fa-check"></i> Đệm sàn cao su giảm chấn hạn chế mỏi cơ</li>
-                            <li><i class="fa-solid fa-check"></i> Ưu tiên xếp dỡ luồng xanh tại ga hàng không quốc tế</li>
-                        </ul>
-                    </div>
-                </div>
-
+            <div class="service-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
                 <!-- Service 2 -->
-                <div class="service-card">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-truck-fast text-orange"></i> Đội xe tải Chuyên dụng</h3>
-                    </div>
-                    <div class="card-body">
-                        <p>Xe tải chuyên dụng 2 đến 9 khoang với hệ thống treo bóng hơi điện tử giảm chấn triệt để, vách ngăn bọc nệm dày và camera giám sát trực tiếp từng chuồng.</p>
-                        <ul class="service-features">
-                            <li><i class="fa-solid fa-check"></i> Điều hòa không khí 2 chiều ổn định 20 - 24°C</li>
-                            <li><i class="fa-solid fa-check"></i> Cầu dẫn thủy lực chống trơn trượt khi lên/xuống xe</li>
-                            <li><i class="fa-solid fa-check"></i> Hệ thống máng ăn tự động và bồn nước sạch di động</li>
+                <div class="service-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+                    <img src="CUS/images/truck.jpg" alt="Đội xe tải Chuyên dụng" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="card-body" style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column;">
+                        <h3 style="margin-top: 0; font-size: 1.25rem;"><i class="fa-solid fa-truck-fast text-orange"></i> Đội xe tải Chuyên dụng</h3>
+                        <p style="color: var(--text-main); font-size: 0.95rem;">Xe tải chuyên dụng 2 đến 9 khoang với hệ thống treo bóng hơi điện tử giảm chấn triệt để, vách ngăn bọc nệm dày và camera giám sát trực tiếp từng chuồng.</p>
+                        <ul class="service-features" style="list-style: none; padding: 0; margin-top: auto; padding-top: 16px;">
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Điều hòa không khí 2 chiều ổn định 20 - 24°C</li>
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Cầu dẫn thủy lực chống trơn trượt</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Service 3 -->
-                <div class="service-card">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-file-shield text-orange"></i> Pháp lý & Kiểm dịch OIE</h3>
-                    </div>
-                    <div class="card-body">
-                        <p>Đại diện chủ sở hữu hoàn tất trọn gói thủ tục hải quan xuất nhập cảnh, hộ chiếu ngựa (Horse Passport), kiểm tra vi chip và xét nghiệm thú y quốc tế.</p>
-                        <ul class="service-features">
-                            <li><i class="fa-solid fa-check"></i> Xin giấy phép nhập khẩu & xuất khẩu động vật sống</li>
-                            <li><i class="fa-solid fa-check"></i> Bố trí trạm cách ly thú y đạt chuẩn trước khi bay</li>
-                            <li><i class="fa-solid fa-check"></i> Bảo hiểm bồi thường rủi ro toàn diện đến 100% giá trị</li>
+                <div class="service-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+                    <img src="CUS/images/vet.jpg" alt="Pháp lý & Kiểm dịch OIE" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="card-body" style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column;">
+                        <h3 style="margin-top: 0; font-size: 1.25rem;"><i class="fa-solid fa-file-shield text-orange"></i> Pháp lý & Kiểm dịch OIE</h3>
+                        <p style="color: var(--text-main); font-size: 0.95rem;">Đại diện chủ sở hữu hoàn tất trọn gói thủ tục hải quan xuất nhập cảnh, hộ chiếu ngựa (Horse Passport), kiểm tra vi chip và xét nghiệm thú y quốc tế.</p>
+                        <ul class="service-features" style="list-style: none; padding: 0; margin-top: auto; padding-top: 16px;">
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Xin phép nhập khẩu & xuất khẩu động vật sống</li>
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Bố trí trạm cách ly thú y đạt chuẩn trước khi bay</li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Popular Routes Table (Manager Table Format) -->
-        <section id="tuyen-duong" class="card" style="margin-bottom: 48px;">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h2><i class="fa-solid fa-map-location-dot text-orange"></i> Tuyến Vận chuyển Phổ biến & Lịch trình Dự kiến</h2>
-                <span class="badge badge-info"><i class="fa-solid fa-calendar-check"></i> Lịch bay 2026</span>
-            </div>
-            <div class="card-body" style="padding: 0;">
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>TUYẾN ĐƯỜNG</th>
-                                <th class="nowrap">PHƯƠNG THỨC</th>
-                                <th class="nowrap">THỜI GIAN DỰ KIẾN</th>
-                                <th class="nowrap">TẦN SUẤT / LỊCH TRÌNH</th>
-                                <th class="nowrap">TRẠNG THÁI</th>
-                                <th class="text-right nowrap">HÀNH ĐỘNG</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="font-bold">TP. Hồ Chí Minh (SGN) &rarr; Hồng Kông (HKG)</div>
-                                    <div class="text-muted" style="font-size: 0.75rem;">Kho Cargo Tân Sơn Nhất &rarr; Trường đua Sha Tin</div>
-                                </td>
-                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
-                                <td class="font-semibold nowrap">3.5 Giờ bay</td>
-                                <td class="nowrap">Thứ 3 & Thứ 6 hàng tuần</td>
-                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
-                                <td class="text-right nowrap">
-                                    <a href="CUS/create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="font-bold">Hà Nội (HAN) &rarr; Tokyo (NRT)</div>
-                                    <div class="text-muted" style="font-size: 0.75rem;">Kho Cargo Nội Bài &rarr; Trung tâm Huấn luyện JRA Miho</div>
-                                </td>
-                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
-                                <td class="font-semibold nowrap">5.0 Giờ bay</td>
-                                <td class="nowrap">Chuyến bay Thứ 4 hàng tuần</td>
-                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
-                                <td class="text-right nowrap">
-                                    <a href="CUS/create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="font-bold">TP. Hồ Chí Minh (SGN) &rarr; Singapore (SIN)</div>
-                                    <div class="text-muted" style="font-size: 0.75rem;">Sân bay Tân Sơn Nhất &rarr; Singapore Turf Club</div>
-                                </td>
-                                <td class="nowrap"><span class="badge badge-warning"><i class="fa-solid fa-plane"></i> Air Cargo</span></td>
-                                <td class="font-semibold nowrap">2.0 Giờ bay</td>
-                                <td class="nowrap">3 Chuyến / tuần</td>
-                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
-                                <td class="text-right nowrap">
-                                    <a href="CUS/create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="font-bold">Kho Đồng Nai &rarr; Kho Long An / Hà Nội</div>
-                                    <div class="text-muted" style="font-size: 0.75rem;">Trang trại Long Thành &rarr; Trang trại Mỹ Quỳnh / Sóc Sơn</div>
-                                </td>
-                                <td class="nowrap"><span class="badge badge-info"><i class="fa-solid fa-truck"></i> Xe tải chuyên dụng</span></td>
-                                <td class="font-semibold nowrap">4 Giờ &mdash; 28 Giờ</td>
-                                <td class="nowrap">Khởi hành hàng ngày theo yêu cầu</td>
-                                <td class="nowrap"><span class="badge badge-success">Sẵn sàng nhận ngựa</span></td>
-                                <td class="text-right nowrap">
-                                    <a href="CUS/create_request.html" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.78rem;">Đặt tuyến này</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </section>
@@ -329,6 +149,29 @@
                 </div>
             </div>
         </section>
+        <!-- Company Terms Section -->
+        <section id="dieu-khoan" class="company-terms" style="margin-bottom: 60px; background: white; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem; color: var(--primary-color);"><i class="fa-solid fa-file-contract text-orange"></i> Điều khoản Công ty & Cam kết</h2>
+                <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">EquinezLogistics cam kết mang lại dịch vụ minh bạch, an toàn và tuân thủ tuyệt đối các quy định pháp luật quốc tế về vận chuyển động vật sống.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-shield-halved text-orange" style="margin-right: 8px;"></i> 1. Trách nhiệm Bảo hiểm</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Công ty chịu trách nhiệm bảo hiểm toàn diện 100% giá trị ngựa đua trong suốt quá trình vận chuyển. Mọi sự cố phát sinh do lỗi vận hành sẽ được đền bù theo hợp đồng đã ký kết.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-scale-balanced text-orange" style="margin-right: 8px;"></i> 2. Tuân thủ Pháp lý</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Khách hàng có trách nhiệm cung cấp đầy đủ thông tin y tế, nguồn gốc và Horse Passport hợp lệ. Công ty sẽ đại diện hoàn tất các thủ tục Hải quan và Kiểm dịch OIE.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-handshake text-orange" style="margin-right: 8px;"></i> 3. Chính sách Hủy & Hoàn tiền</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Yêu cầu hủy chuyến phải được thông báo trước 72 giờ (đối với đường bộ) và 7 ngày (đối với đường bay) để được hoàn 100% phí cọc. Quá hạn sẽ áp dụng phí phạt.</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer (Synced with Manager) -->
@@ -352,95 +195,6 @@
     </footer>
 
     <script src="./global_translate.js"></script>
-    <script>
-        const MOCK_TRACKS = {
-            '#EQ-8910': {
-                code: '#EQ-8910',
-                route: 'Kho Đồng Nai (VN) &rarr; Hà Nội (HAN)',
-                horse: 'Thunder Bolt (#VN-985212)',
-                status: 'Đang di chuyển trên Quốc lộ 1A (Nha Trang)',
-                type: 'Xe tải chuyên dụng 4 khoang',
-                health: 'Nhịp tim: 40 bpm • Thân nhiệt: 37.9°C (Bình thường)',
-                eta: 'Dự kiến đến: 08:30 ngày mai'
-            },
-            '#EQ-8911': {
-                code: '#EQ-8911',
-                route: 'Dubai (DXB) &rarr; London Heathrow (LHR)',
-                horse: 'Desert King (#UAE-7741)',
-                status: 'Đang bay qua không phận Thổ Nhĩ Kỳ',
-                type: 'Chuyên cơ Boeing 777F Air Cargo',
-                health: 'Nhịp tim: 36 bpm • Thân nhiệt: 37.7°C (Ổn định)',
-                eta: 'Dự kiến hạ cánh: 18:45 GMT'
-            },
-            '#EQ-8912': {
-                code: '#EQ-8912',
-                route: 'Tân Sơn Nhất (SGN) &rarr; Chek Lap Kok (HKG)',
-                horse: 'Storm Runner (#VN-985211)',
-                status: 'Đang làm thủ tục kiểm dịch tại kho Cargo Tân Sơn Nhất',
-                type: 'Chuyến bay Air Cargo chuyên dụng',
-                health: 'Đã hoàn tất tiêm phòng và kiểm tra vi chip',
-                eta: 'Giờ cất cánh dự kiến: 22:00 hôm nay'
-            }
-        };
-
-        function quickFillTrack(code) {
-            document.getElementById('track-input').value = code;
-            handleTrackSearch();
-        }
-
-        function handleTrackSearch() {
-            const query = document.getElementById('track-input').value.trim();
-            const box = document.getElementById('track-result-box');
-            if (!query) {
-                alert('Vui lòng nhập Mã Vận đơn hoặc Mã Vi chip.');
-                return;
-            }
-
-            const trackData = MOCK_TRACKS[query] || {
-                code: query,
-                route: 'Sân bay Tân Sơn Nhất (SGN) &rarr; Hồng Kông (HKG)',
-                horse: 'Chiến mã #VN-985211 (Thoroughbred)',
-                status: 'Yêu cầu vận chuyển đang được thẩm định lịch bay',
-                type: 'Vận chuyển Quốc tế Air Cargo',
-                health: 'Hồ sơ kiểm dịch OIE đã được tiếp nhận',
-                eta: 'Lịch bay dự kiến: 15/11/2026'
-            };
-
-            box.style.display = 'block';
-            box.innerHTML = `
-                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary-color);">
-                            <i class="fa-solid fa-file-lines text-orange" style="margin-right: 6px;"></i> Mã Vận đơn: ${trackData.code}
-                        </div>
-                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> ${trackData.status}</span>
-                    </div>
-                    <div class="review-grid" style="background: white; border: 1px solid #e2e8f0;">
-                        <div class="review-item">
-                            <div class="review-label">Tuyến đường</div>
-                            <div class="review-value font-semibold">${trackData.route}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Cá thể ngựa</div>
-                            <div class="review-value">${trackData.horse}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Phương tiện</div>
-                            <div class="review-value">${trackData.type}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Tình trạng sinh trắc học</div>
-                            <div class="review-value text-success font-semibold">${trackData.health}</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-                        <span><i class="fa-solid fa-clock text-orange"></i> ${trackData.eta}</span>
-                        <a href="CUS/create_request.html" style="color: var(--accent-orange); font-weight: 600; text-decoration: none;">Tạo đơn mới &rarr;</a>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
 </body>
 
 </html>

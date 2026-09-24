@@ -415,6 +415,24 @@ body {
     background-color: #dc2626;
 }
 
+.btn-outline-gray {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-outline-gray:hover {
+    background-color: #f1f5f9;
+}
+
 /* Footer */
 .main-footer {
     background-color: var(--primary-color);

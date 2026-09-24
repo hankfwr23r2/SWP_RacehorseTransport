@@ -23,15 +23,16 @@
 
     <!-- Main Content -->
     <main class="container main-content">
-        
+
         <!-- Page Title & Breadcrumb -->
         <div class="page-header">
             <h1>Báo cáo Chuyến đi & Nhật ký</h1>
-            <p class="subtitle">Xem xét các nhật ký vận chuyển đã hoàn thành, theo dõi sức khỏe ngựa và phản hồi của khách hàng.</p>
+            <p class="subtitle">Xem xét các nhật ký vận chuyển đã hoàn thành, theo dõi sức khỏe ngựa và phản hồi của
+                khách hàng.</p>
         </div>
 
         <div class="report-layout">
-            
+
             <!-- Left Column: Trip List -->
             <div class="card">
                 <div class="card-header" style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 0;">
@@ -39,10 +40,12 @@
                         <h2 style="margin: 0; font-size: 1.1rem;">Báo cáo Chuyến đi</h2>
                     </div>
                     <div class="search-bar" style="width: 100%;">
-                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng..." oninput="searchTable()" style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; font-family: Inter; outline: none; box-sizing: border-box;">
+                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng..."
+                            oninput="searchTable()"
+                            style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; font-family: Inter; outline: none; box-sizing: border-box;">
                     </div>
                 </div>
-                
+
                 <div class="table-responsive" style="margin-top: 16px; border-top: 1px solid #e2e8f0;">
                     <table class="data-table">
                         <thead>
@@ -141,9 +144,10 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Phân trang (Pagination) -->
-                <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-top: 1px solid #e2e8f0; font-size: 0.85rem;">
+                <div class="pagination-container"
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-top: 1px solid #e2e8f0; font-size: 0.85rem;">
                     <span id="pagination-info" class="text-muted" style="font-size: 0.8rem;"></span>
                     <div id="pagination-buttons" class="pagination" style="display: flex; gap: 4px;"></div>
                 </div>
@@ -153,10 +157,12 @@
             <div id="report-detail" class="card">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>Báo cáo Chi tiết: EQ-2026-9830</h2>
-                    <button class="btn btn-outline" onclick="exportPDF()" style="padding: 6px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-size: 0.85rem;"><i class="fa-solid fa-download"></i> Xuất PDF</button>
+                    <button class="btn btn-outline" onclick="exportPDF()"
+                        style="padding: 6px 12px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-size: 0.85rem;"><i
+                            class="fa-solid fa-download"></i> Xuất PDF</button>
                 </div>
                 <div class="card-body">
-                    
+
                     <div class="detail-grid">
                         <div class="info-item">
                             <span class="info-label">Khách hàng</span>
@@ -179,10 +185,12 @@
                     <!-- Logistics Details (Multi-leg Journey) -->
                     <div class="log-section" style="margin-top: 24px;">
                         <h3 style="font-size: 0.95rem; margin-bottom: 12px; color: #1e293b;">
-                            <i class="fa-solid fa-map-location-dot" style="color: #ea580c; margin-right: 6px;"></i> Hành trình Vận chuyển (Đa chặng)
+                            <i class="fa-solid fa-map-location-dot" style="color: #ea580c; margin-right: 6px;"></i> Hành
+                            trình Vận chuyển (Đa chặng)
                         </h3>
                         <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
-                            Tổng thời gian ước tính: <span style="font-weight: 600; color: #1e293b;">32 Giờ 15 Phút</span>
+                            Tổng thời gian ước tính: <span style="font-weight: 600; color: #1e293b;">32 Giờ 15
+                                Phút</span>
                         </div>
 
                         <div class="route-timeline">
@@ -200,7 +208,8 @@
                                     <div class="leg-time-stats">
                                         <div class="time-block">
                                             <span class="time-label">Dự kiến:</span>
-                                            <span class="time-value" style="color:#64748b; font-weight:500;">08:00 - 09:15</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">08:00 -
+                                                09:15</span>
                                         </div>
                                         <div class="time-block">
                                             <span class="time-label">Thực tế:</span>
@@ -212,7 +221,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Leg 2: Air -->
                             <div class="route-leg">
                                 <div class="route-leg-header">
@@ -223,11 +232,13 @@
                                     <span class="leg-meta">Chuyến bay: NH-Cargo 8511</span>
                                 </div>
                                 <div class="leg-details">
-                                    <div class="leg-route-text">Sân bay quốc tế Haneda ➔ Sân bay quốc tế Thủ đô Bắc Kinh</div>
+                                    <div class="leg-route-text">Sân bay quốc tế Haneda ➔ Sân bay quốc tế Thủ đô Bắc Kinh
+                                    </div>
                                     <div class="leg-time-stats">
                                         <div class="time-block">
                                             <span class="time-label">Dự kiến:</span>
-                                            <span class="time-value" style="color:#64748b; font-weight:500;">12:30 - 16:00</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">12:30 -
+                                                16:00</span>
                                         </div>
                                         <div class="time-block">
                                             <span class="time-label">Thực tế:</span>
@@ -250,11 +261,13 @@
                                     <span class="leg-meta">Chuyến bay: VN-Cargo 331</span>
                                 </div>
                                 <div class="leg-details">
-                                    <div class="leg-route-text">Sân bay quốc tế Thủ đô Bắc Kinh ➔ Sân bay quốc tế Nội Bài</div>
+                                    <div class="leg-route-text">Sân bay quốc tế Thủ đô Bắc Kinh ➔ Sân bay quốc tế Nội
+                                        Bài</div>
                                     <div class="leg-time-stats">
                                         <div class="time-block">
                                             <span class="time-label">Dự kiến:</span>
-                                            <span class="time-value" style="color:#64748b; font-weight:500;">18:00 - 22:00</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">18:00 -
+                                                22:00</span>
                                         </div>
                                         <div class="time-block">
                                             <span class="time-label">Thực tế:</span>
@@ -277,11 +290,13 @@
                                     <span class="leg-meta">Xe chuyên dụng: EQ-TRK-VN05</span>
                                 </div>
                                 <div class="leg-details">
-                                    <div class="leg-route-text">Nội Bài Cargo Terminal (ALSC) ➔ Trại ngựa cách ly Sóc Sơn</div>
+                                    <div class="leg-route-text">Nội Bài Cargo Terminal (ALSC) ➔ Trại ngựa cách ly Sóc
+                                        Sơn</div>
                                     <div class="leg-time-stats">
                                         <div class="time-block">
                                             <span class="time-label">Dự kiến:</span>
-                                            <span class="time-value" style="color:#64748b; font-weight:500;">23:30 - 00:45</span>
+                                            <span class="time-value" style="color:#64748b; font-weight:500;">23:30 -
+                                                00:45</span>
                                         </div>
                                         <div class="time-block">
                                             <span class="time-label">Thực tế:</span>
@@ -324,7 +339,8 @@
                         <div class="log-list">
                             <div class="log-item">
                                 <span class="log-time">09:15</span>
-                                <span class="log-event">Gặp nhiễu động nhẹ. Ngựa hơi lo lắng. Đã áp dụng quy trình làm dịu.</span>
+                                <span class="log-event">Gặp nhiễu động nhẹ. Ngựa hơi lo lắng. Đã áp dụng quy trình làm
+                                    dịu.</span>
                                 <span class="log-status status-warning">Ghi nhận</span>
                             </div>
                             <div class="log-item">
@@ -337,7 +353,8 @@
 
                     <!-- Khách hàng Feedback -->
                     <div style="margin-top: 24px;">
-                        <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main);">Đánh giá & Phản hồi từ Khách hàng</h3>
+                        <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: var(--text-main);">Đánh giá & Phản hồi
+                            từ Khách hàng</h3>
                         <div class="rating-stars">
                             <i class="fa-solid fa-star"></i>
                             <i class="fa-solid fa-star"></i>
@@ -346,7 +363,8 @@
                             <i class="fa-solid fa-star"></i>
                         </div>
                         <div class="feedback-text">
-                            "Dịch vụ xuất sắc. Đội ngũ thú y cực kỳ chuyên nghiệp và ngựa đến nơi trong tình trạng hoàn hảo. Chắc chắn chúng tôi sẽ tiếp tục sử dụng EQ Transport cho các giải đua sắp tới."
+                            "Dịch vụ xuất sắc. Đội ngũ thú y cực kỳ chuyên nghiệp và ngựa đến nơi trong tình trạng hoàn
+                            hảo. Chắc chắn chúng tôi sẽ tiếp tục sử dụng EQ Transport cho các giải đua sắp tới."
                         </div>
                     </div>
 
@@ -358,18 +376,25 @@
     </main>
 
     <!-- Modal Xuất PDF -->
-    <div id="pdfExportModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 9999; justify-content: center; align-items: center;">
-        <div style="background: white; border-radius: 12px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+    <div id="pdfExportModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 9999; justify-content: center; align-items: center;">
+        <div
+            style="background: white; border-radius: 12px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
             <h3 style="margin: 0 0 4px 0; font-size: 1rem; color: #1e293b;">Xuất báo cáo PDF</h3>
             <p style="margin: 0 0 16px 0; font-size: 0.85rem; color: #64748b;">Xác nhận tên file trước khi tải về.</p>
-            <label style="font-size: 0.8rem; font-weight: 600; color: #334155; display: block; margin-bottom: 6px;">Tên file</label>
+            <label style="font-size: 0.8rem; font-weight: 600; color: #334155; display: block; margin-bottom: 6px;">Tên
+                file</label>
             <div style="display: flex; align-items: center; gap: 4px;">
-                <input id="pdf-filename" type="text" style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: Inter; font-size: 0.9rem; outline: none;">
+                <input id="pdf-filename" type="text"
+                    style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: Inter; font-size: 0.9rem; outline: none;">
                 <span style="font-size: 0.9rem; color: #64748b;">.pdf</span>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
-                <button onclick="closePdfModal()" style="padding: 8px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer; font-family: Inter;">Hủy</button>
-                <button onclick="confirmExportPDF()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: pointer; font-family: Inter;"><i class="fa-solid fa-download"></i> Tải về</button>
+                <button onclick="closePdfModal()"
+                    style="padding: 8px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer; font-family: Inter;">Hủy</button>
+                <button onclick="confirmExportPDF()"
+                    style="padding: 8px 16px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: pointer; font-family: Inter;"><i
+                        class="fa-solid fa-download"></i> Tải về</button>
             </div>
         </div>
     </div>
@@ -394,7 +419,8 @@
         </div>
     </footer>
 
-<script src="manager_trip_reports.js"></script>
-<script src="../global_translate.js"></script>
+    <script src="manager_trip_reports.js"></script>
+    <script src="../global_translate.js"></script>
 </body>
+
 </html>

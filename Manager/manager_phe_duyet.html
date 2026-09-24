@@ -30,25 +30,35 @@
                 <span class="text-orange">Phê duyệt Đơn hàng</span>
             </div>
             <h1>Phê duyệt Đơn hàng</h1>
-            <p class="subtitle">Bước cuối trước khi khách thanh toán: duyệt các đơn đã được tiếp nhận, kiểm dịch xác nhận hồ sơ và điều phối lập lộ trình.</p>
+            <p class="subtitle">Bước cuối trước khi khách thanh toán: duyệt các đơn đã được tiếp nhận, kiểm dịch xác
+                nhận hồ sơ và điều phối lập lộ trình.</p>
         </div>
 
         <div class="card table-card">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div class="card-header"
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <h2 style="margin: 0;">Quản lý Phê duyệt Đơn hàng</h2>
                 <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
                     <div class="search-bar" style="position: relative;">
-                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng, Tuyến..." oninput="searchTable()" style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
-                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
+                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng, Tuyến..."
+                            oninput="searchTable()"
+                            style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
+                        <i class="fa-solid fa-search"
+                            style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
                     </div>
                 </div>
             </div>
 
             <!-- Tabs Trạng thái -->
-            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap;">
-                <div class="status-tab active-tab" data-tab="pending" onclick="switchTab('pending')" style="padding-bottom: 12px; cursor: pointer;">Chờ duyệt (<span id="count-pending">0</span>)</div>
-                <div class="status-tab" data-tab="approved" onclick="switchTab('approved')" style="padding-bottom: 12px; cursor: pointer;">Đã duyệt - Chờ thanh toán (<span id="count-approved">0</span>)</div>
-                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')" style="padding-bottom: 12px; cursor: pointer;">Từ chối (<span id="count-rejected">0</span>)</div>
+            <div class="status-tabs"
+                style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap;">
+                <div class="status-tab active-tab" data-tab="pending" onclick="switchTab('pending')"
+                    style="padding-bottom: 12px; cursor: pointer;">Chờ duyệt (<span id="count-pending">0</span>)</div>
+                <div class="status-tab" data-tab="approved" onclick="switchTab('approved')"
+                    style="padding-bottom: 12px; cursor: pointer;">Đã duyệt - Chờ thanh toán (<span
+                        id="count-approved">0</span>)</div>
+                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')"
+                    style="padding-bottom: 12px; cursor: pointer;">Từ chối (<span id="count-rejected">0</span>)</div>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
@@ -70,7 +80,8 @@
             </div>
 
             <!-- Phân trang (Pagination) -->
-            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
+            <div class="pagination-container"
+                style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
                 <span id="pagination-info" class="text-muted" style="font-size: 0.85rem;"></span>
                 <div id="pagination-buttons" class="pagination" style="display: flex; gap: 4px;"></div>
             </div>
@@ -126,7 +137,8 @@
                 <section class="approval-section">
                     <h3 class="section-title"><span class="section-num">4</span> Dịch vụ khách chọn</h3>
                     <div id="m-services" class="finance-box"></div>
-                    <p class="finance-hint"><i class="fa-solid fa-circle-info"></i> Khách chọn khi đặt đơn, giá đã báo cho khách và không thay đổi.</p>
+                    <p class="finance-hint"><i class="fa-solid fa-circle-info"></i> Khách chọn khi đặt đơn, giá đã báo
+                        cho khách và không thay đổi.</p>
                 </section>
             </div>
 
@@ -135,11 +147,13 @@
                 <label class="action-label">Lý do từ chối <span class="required">*</span></label>
                 <select id="reject-type" class="action-input">
                     <option value="Không đủ năng lực vận hành">Không đủ năng lực vận hành (xe / nhân sự)</option>
-                    <option value="Tuyến đường hoặc cửa khẩu không khả thi">Tuyến đường hoặc cửa khẩu không khả thi</option>
+                    <option value="Tuyến đường hoặc cửa khẩu không khả thi">Tuyến đường hoặc cửa khẩu không khả thi
+                    </option>
                     <option value="Khác">Khác</option>
                 </select>
                 <label class="action-label" style="margin-top: 10px;">Ghi chú <span class="required">*</span></label>
-                <textarea id="reject-note" class="action-input" rows="3" placeholder="Nhập chi tiết lý do từ chối..."></textarea>
+                <textarea id="reject-note" class="action-input" rows="3"
+                    placeholder="Nhập chi tiết lý do từ chối..."></textarea>
                 <div class="action-box-buttons">
                     <button class="btn btn-light" onclick="hideRejectBox()">Hủy</button>
                     <button class="btn btn-red" onclick="confirmReject()">Xác nhận Từ chối</button>
@@ -149,8 +163,10 @@
             <div id="modal-actions" class="approval-actions">
                 <button class="btn btn-light" onclick="closeModal()">Đóng</button>
                 <div class="approval-actions-right" id="decision-buttons">
-                    <button class="btn btn-red-outline" onclick="showRejectBox()"><i class="fa-solid fa-xmark"></i> Từ chối</button>
-                    <button class="btn btn-orange" onclick="approveOrder()"><i class="fa-solid fa-check"></i> Phê duyệt</button>
+                    <button class="btn btn-red-outline" onclick="showRejectBox()"><i class="fa-solid fa-xmark"></i> Từ
+                        chối</button>
+                    <button class="btn btn-orange" onclick="approveOrder()"><i class="fa-solid fa-check"></i> Phê
+                        duyệt</button>
                 </div>
             </div>
         </div>
@@ -180,59 +196,107 @@
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #f1f5f9;
             border-radius: 4px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
         .badge-success {
             background: #dcfce7;
             color: #16a34a;
         }
+
         .badge-danger {
             background: #fee2e2;
             color: #dc2626;
         }
+
         .status-tab {
             color: #64748b;
             transition: color 0.2s;
         }
+
         .status-tab:hover {
             color: #1e293b;
         }
+
         .status-tab.active-tab {
             color: #ea580c;
             border-bottom: 2px solid #ea580c;
             font-weight: 600;
         }
+
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-4px); }
-            80% { transform: translateX(4px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
         }
+
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
         }
     </style>
 
     <script src="manager_phe_duyet.js"></script>
-<script src="../global_translate.js"></script>
+    <script src="../global_translate.js"></script>
 </body>
+
 </html>
