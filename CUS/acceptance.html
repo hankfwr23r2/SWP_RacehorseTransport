@@ -25,10 +25,8 @@
                 <ul>
                     <li><a href="home_auth.html">Trang chủ</a></li>
                     <li><a href="create_request.html">Đặt chuyến ngay</a></li>
-                    <li><a href="tracking.html">Tra cứu lộ trình</a></li>
-                    <li><a href="bao_gia.html">Báo giá của tôi</a></li>
-
-
+                    <li><a href="don_cua_toi.html">Đơn của tôi</a></li>
+                    <li><a href="acceptance.html" class="active" aria-current="page">Nghiệm thu</a></li>
                 </ul>
             </nav>
             <div class="user-actions">
@@ -46,123 +44,110 @@
     <main class="container main-content" style="padding-top: 24px;">
         <div class="page-title">
             <div class="breadcrumb" style="margin-bottom: 8px;">
-                <a href="home_auth.html" style="color: var(--text-muted); text-decoration: none;"><i class="fa-solid fa-house"></i> Cổng Khách hàng</a> / 
-                <span class="text-orange font-semibold">Nghiệm thu Đơn hàng</span>
+                <a href="home_auth.html" style="color: var(--text-muted); text-decoration: none;"><i
+                        class="fa-solid fa-house"></i> Cổng Khách hàng</a> /
+                <a href="don_cua_toi.html" style="color: var(--text-muted); text-decoration: none;">Đơn của tôi</a> /
+                <span class="text-orange font-semibold">Nghiệm thu</span>
             </div>
-            <h1>Nghiệm thu & Bàn giao Ngựa</h1>
-            <p>Chuyến vận chuyển của bạn đã hoàn thành an toàn tại điểm đến. Vui lòng đối soát thể trạng ngựa, ảnh chụp thực tế và ký xác nhận nghiệm thu số.</p>
+            <div class="detail-title">
+                <h1 id="a-title">Nghiệm thu &amp; Bàn giao Ngựa</h1>
+                <span id="a-badge"></span>
+            </div>
         </div>
 
-        <div class="acceptance-layout">
-            <!-- Left Column -->
-            <div class="layout-left">
-                <div class="card">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-file-contract text-orange" style="margin-right: 6px;"></i> Chi tiết Đơn hàng Bàn giao</h3>
-                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Đã đến nơi an toàn</span>
-                    </div>
+        <div id="a-empty" style="display: none;"></div>
 
-                    <div class="info-row">
-                        <span class="label">Mã Vận đơn:</span>
-                        <span class="value font-bold text-orange">EQ-2026-9842</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Chiến mã bàn giao:</span>
-                        <span class="value font-semibold">Storm Runner (Microchip: #VN-985211)</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Thời điểm hoàn tất giao:</span>
-                        <span class="value font-semibold">22/10/2026 — 16:15</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Địa điểm bàn giao:</span>
-                        <span class="value">Khu cách ly Chuồng đua Sha Tin, Hồng Kông (HKJC Quarantine)</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Bác sĩ Thú y Hộ tống:</span>
-                        <span class="value">Dr. Michael Henderson (DVM — Equine Specialist)</span>
-                    </div>
-                </div>
+        <div id="a-content" style="display: none;">
+            <div id="a-banner"></div>
 
-                <div class="card">
-                    <div class="card-header" style="margin-bottom: 1rem;">
-                        <h3><i class="fa-solid fa-images text-orange" style="margin-right: 6px;"></i> Hình ảnh Nghiệm thu & Đối chiếu Thực tế</h3>
-                        <span class="badge badge-info"><i class="fa-solid fa-camera"></i> Chụp trực tiếp lúc 16:10</span>
-                    </div>
-
-                    <div class="image-compare">
-                        <div class="image-box">
-                            <img src="https://images.unsplash.com/photo-1598974357801-cbca100e65d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Cửa chuồng kiểm tra">
-                            <p class="font-semibold" style="margin-top: 6px;">1. Bàn giao tại Cửa Khoang Chuồng</p>
+            <div class="acceptance-layout">
+                <!-- Left Column -->
+                <div class="layout-left">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-file-contract text-orange"></i> Thông tin bàn giao</h3>
                         </div>
-                        <div class="image-box">
-                            <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Thể trạng ngựa">
-                            <p class="font-semibold" style="margin-top: 6px;">2. Thể trạng Chiến mã Storm Runner</p>
-                        </div>
+                        <div class="card-body" id="a-info"></div>
                     </div>
 
-                    <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main); font-weight: 700;">
-                        <i class="fa-solid fa-list-check text-orange" style="margin-right: 6px;"></i> Danh sách Cam kết Tiêu chuẩn Bàn giao
-                    </h4>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-heart-pulse text-orange"></i> Sức khỏe ngựa: lúc nhận so với lúc
+                                giao</h3>
+                        </div>
+                        <div class="table-responsive" id="a-health"></div>
+                    </div>
 
-                    <div class="checklist">
-                        <div class="check-item">
-                            <div class="check-icon">
-                                <i class="fa-solid fa-check" style="font-size: 11px;"></i>
-                            </div>
-                            <span><strong>Thể trạng nguyên vẹn:</strong> Ngựa ổn định thể lực, không chấn thương xương khớp, không trầy xước mô mềm.</span>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-images text-orange"></i> Hình ảnh bàn giao</h3><span
+                                id="a-photo-time" class="sub-text"></span>
                         </div>
-                        <div class="check-item">
-                            <div class="check-icon">
-                                <i class="fa-solid fa-check" style="font-size: 11px;"></i>
-                            </div>
-                            <span><strong>Chỉ số sinh trắc học bình thường:</strong> Nhịp tim 38 bpm, thân nhiệt 37.8°C, đã ăn uống tiêu hóa bình thường.</span>
-                        </div>
-                        <div class="check-item">
-                            <div class="check-icon">
-                                <i class="fa-solid fa-check" style="font-size: 11px;"></i>
-                            </div>
-                            <span><strong>Hồ sơ pháp lý đầy đủ:</strong> Bàn giao Hộ chiếu gốc (FEI/Horse Passport), tem kiểm dịch OIE và chứng thư hải quan HKJC.</span>
+                        <div class="card-body">
+                            <div class="image-compare" id="a-photos"></div>
+                            <div class="sub-title">Tiêu chuẩn bàn giao</div>
+                            <div class="checklist" id="a-checklist"></div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Column -->
-            <div class="layout-right">
-                <div class="card">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-receipt text-orange" style="margin-right: 6px;"></i> Quyết toán Hợp đồng</h3>
-                    </div>
-
-                    <div class="info-row">
-                        <span class="label">Tổng Cước Vận chuyển:</span>
-                        <span class="value font-semibold nowrap">185,000,000 ₫</span>
-                    </div>
-
-                    <div class="info-row payment-total">
-                        <span>Số dư cần thanh toán:</span>
-                        <span class="text-orange nowrap font-bold">185,000,000 ₫</span>
-                    </div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button class="btn btn-primary" style="padding: 10px 16px; font-size: 0.85rem; width: 100%;" onclick="alert('✅ Đã xác nhận nghiệm thu thành công! Biên bản bàn giao điện tử đã được lưu trữ vào hồ sơ khách hàng.')">
-                        <i class="fa-solid fa-signature"></i> Xác nhận Nghiệm thu & Ký nhận
-                    </button>
-                </div>
-
-                <div class="card" style="margin-top: 1.5rem; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 14px;">
-                    <div style="display: flex; gap: 10px; align-items: flex-start;">
-                        <i class="fa-solid fa-shield-halved text-success" style="margin-top: 3px; color: #059669;"></i>
-                        <div style="font-size: 0.82rem; color: #065f46;">
-                            Hợp đồng được bảo chứng bởi Equine Logistics. Mọi khiếu nại về thể trạng sau bàn giao được tiếp nhận trong vòng <strong>24 giờ</strong> qua hotline thú y khẩn cấp.
-                        </div>
-                    </div>
-                </div>
+                <!-- Right Column -->
+                <div class="layout-right" id="a-side"></div>
             </div>
         </div>
     </main>
+
+    <!-- Modal xác nhận nghiệm thu -->
+    <div id="acceptModal" class="pay-modal-overlay">
+        <div class="pay-modal">
+            <div class="pay-modal-header">
+                <h3>Xác nhận nghiệm thu đơn <span class="m-order"></span>?</h3>
+                <button class="pay-modal-close" onclick="closeModal('acceptModal')" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="pay-modal-body">
+                <p class="cancel-lead">Khi xác nhận, bạn đồng ý rằng:</p>
+                <ul class="cancel-effects">
+                    <li><i class="fa-solid fa-circle-check"></i> <span>Đã nhận đủ ngựa và giấy tờ như danh sách bàn
+                            giao.</span></li>
+                    <li><i class="fa-solid fa-circle-check"></i> <span>Tình trạng ngựa khi nhận khớp với chỉ số và hình
+                            ảnh trên trang.</span></li>
+                    <li><i class="fa-solid fa-circle-info" style="color: #1d4ed8;"></i> <span>Đơn chuyển sang
+                            <strong>Hoàn thành</strong>, biên bản nghiệm thu điện tử được gửi qua email. Sau khi xác
+                            nhận, không thể báo vấn đề cho đơn này nữa.</span></li>
+                </ul>
+            </div>
+            <div class="pay-modal-actions">
+                <button class="btn btn-light-outline" onclick="closeModal('acceptModal')">Xem lại</button>
+                <button class="btn btn-primary" onclick="confirmAccept()"><i class="fa-solid fa-signature"></i> Xác nhận
+                    nghiệm thu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal báo vấn đề -->
+    <div id="issueModal" class="pay-modal-overlay">
+        <div class="pay-modal">
+            <div class="pay-modal-header">
+                <h3>Báo vấn đề khi nhận ngựa · <span class="m-order"></span></h3>
+                <button class="pay-modal-close" onclick="closeModal('issueModal')" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="pay-modal-body" id="issue-box">
+                <label class="form-label-sm">Loại vấn đề <span class="text-orange">*</span></label>
+                <select id="issue-type" class="form-control"></select>
+                <label class="form-label-sm" style="margin-top: 12px;">Mô tả <span class="text-orange">*</span></label>
+                <textarea id="issue-note" class="form-control" rows="3"
+                    placeholder="Mô tả tình trạng bạn gặp khi nhận ngựa..."></textarea>
+                <label class="form-label-sm" style="margin-top: 12px;">Ảnh / video minh chứng</label>
+                <input type="file" id="issue-files" class="form-control" accept="image/*,video/*" multiple>
+                <p class="side-hint" id="issue-hint"></p>
+            </div>
+            <div class="pay-modal-actions">
+                <button class="btn btn-light-outline" onclick="closeModal('issueModal')">Hủy</button>
+                <button class="btn btn-danger-solid" onclick="confirmIssue()"><i class="fa-solid fa-flag"></i> Gửi báo
+                    cáo</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer (Synced with Manager) -->
     <footer class="main-footer">
@@ -184,6 +169,7 @@
         </div>
     </footer>
 
+    <script src="acceptance.js"></script>
     <script src="../global_translate.js"></script>
 </body>
 
