@@ -25,8 +25,7 @@
                 <ul>
                     <li><a href="home_auth.html" class="active" aria-current="page">Trang chủ</a></li>
                     <li><a href="create_request.html">Đặt chuyến ngay</a></li>
-                    <li><a href="#tra-cuu">Tra cứu lộ trình</a></li>
-                    <li><a href="bao_gia.html">Báo giá của tôi</a></li>
+                    <li><a href="don_cua_toi.html">Đơn của tôi</a></li>
                     <li><a href="acceptance.html">Nghiệm thu</a></li>
                 </ul>
             </nav>
@@ -57,8 +56,8 @@
                     <a href="create_request.html" class="btn btn-primary btn-large">
                         <i class="fa-solid fa-paper-plane"></i> Đặt Chuyến Vận Chuyển Mới
                     </a>
-                    <a href="bao_gia.html" class="btn btn-outline-light btn-large">
-                        <i class="fa-solid fa-file-invoice-dollar"></i> Xem Báo Giá Đang Chờ Duyệt (1)
+                    <a href="don_cua_toi.html" class="btn btn-outline-light btn-large">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Xem Đơn của tôi
                     </a>
                 </div>
             </div>
@@ -79,13 +78,13 @@
                 </div>
                 <div class="process-card">
                     <div class="process-number">2</div>
-                    <h3>Thẩm định & Báo giá</h3>
-                    <p>Quản lý kiểm tra điều kiện bay, đối soát yêu cầu thú y và gửi bảng Báo giá chính thức trong vòng 24h.</p>
+                    <h3>Thẩm định & Duyệt đơn</h3>
+                    <p>Quản lý tiếp nhận, kiểm dịch viên xác minh hồ sơ thú y, điều phối viên lập kế hoạch đường bộ. Đơn được duyệt, bạn thanh toán trong 48 giờ.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">3</div>
                     <h3>Kiểm dịch & Điều phối</h3>
-                    <p>Bộ phận vận hành xin cấp phép OIE, bố trí xe tải giảm chấn và lắp đặt khoang chuồng Stalls hàng không.</p>
+                    <p>Kiểm tra sức khỏe ngựa tại chỗ trước khi lên xe, hoàn tất thủ tục cửa khẩu khi đi Lào, Campuchia, bố trí xe tải giảm chấn và khoang chuồng tiêu chuẩn.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">4</div>
@@ -117,107 +116,6 @@
     </footer>
 
     <script src="../global_translate.js"></script>
-    <script>
-        const MOCK_TRACKS = {
-            '#EQ-2026-9842': {
-                code: '#EQ-2026-9842',
-                route: 'Kho Đồng Nai (VN) &rarr; Tân Sơn Nhất (SGN) &rarr; Chek Lap Kok (HKG)',
-                horse: 'Storm Runner (#VN-985211 - 520kg)',
-                status: 'Đã hoàn tất lập phương án bay • Đang chờ khách duyệt Báo giá',
-                type: 'Air Cargo Quốc tế + Xe tải chuyên dụng',
-                health: 'Đã tiêm phòng Cúm ngựa (Equine Influenza) & cấp giấy OIE',
-                eta: 'Dự kiến cất cánh: 25/11/2026',
-                actionLink: 'bao_gia.html',
-                actionText: 'Xem Báo Giá Chính Thức'
-            },
-            '#EQ-8910': {
-                code: '#EQ-AIR-8910',
-                route: 'Tân Sơn Nhất (SGN) &rarr; Chek Lap Kok (HKG)',
-                horse: 'Thunder Bolt (#VN-985212 - 490kg)',
-                status: 'Đang bay qua không phận biển Đông (FL340)',
-                type: 'Chuyên cơ Air Cargo Boeing 777F',
-                health: 'Nhịp tim: 38 bpm • Thân nhiệt: 37.8°C (Ổn định, không hoảng loạn)',
-                eta: 'Hạ cánh dự kiến: 14:30 hôm nay (Đúng giờ)',
-                actionLink: '#',
-                actionText: 'Xem Camera Live Buồng Chuồng'
-            },
-            '#EQ-8911': {
-                code: '#EQ-8911',
-                route: 'Trang trại Long Thành (Đồng Nai) &rarr; Hà Nội (HAN)',
-                horse: 'Desert King (#UAE-7741 - 505kg)',
-                status: 'Đang di chuyển qua trạm dừng nghỉ Nha Trang (Quốc lộ 1A)',
-                type: 'Xe tải chuyên dụng bóng hơi giảm chấn',
-                health: 'Thân nhiệt: 37.9°C • Đã ăn khẩu phần cỏ Timothy Hay đợt 2',
-                eta: 'Dự kiến đến kho Sóc Sơn: 08:30 ngày mai',
-                actionLink: '#',
-                actionText: 'Xem Định Vị GPS'
-            }
-        };
-
-        function quickFillTrack(code) {
-            document.getElementById('track-input').value = code;
-            handleTrackSearch();
-            const el = document.getElementById('tra-cuu');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function handleTrackSearch() {
-            const query = document.getElementById('track-input').value.trim();
-            const box = document.getElementById('track-result-box');
-            if (!query) {
-                alert('Vui lòng nhập Mã Vận đơn hoặc Mã Vi chip.');
-                return;
-            }
-
-            const trackData = MOCK_TRACKS[query] || {
-                code: query,
-                route: 'Kho Đồng Nai (VN) &rarr; Sân bay Quốc tế',
-                horse: 'Chiến mã thuộc Trang trại Long Thành',
-                status: 'Đang tra cứu hệ thống điều phối vệ tinh',
-                type: 'Vận chuyển Tiêu chuẩn',
-                health: 'Hồ sơ sức khỏe định kỳ đạt tiêu chuẩn',
-                eta: 'Đang cập nhật lịch trình',
-                actionLink: 'create_request.html',
-                actionText: 'Tạo Yêu Cầu Mới'
-            };
-
-            box.style.display = 'block';
-            box.innerHTML = `
-                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary-color);">
-                            <i class="fa-solid fa-file-lines text-orange" style="margin-right: 6px;"></i> Mã Vận đơn: ${trackData.code}
-                        </div>
-                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> ${trackData.status}</span>
-                    </div>
-                    <div class="review-grid" style="background: white; border: 1px solid #e2e8f0;">
-                        <div class="review-item">
-                            <div class="review-label">Tuyến đường</div>
-                            <div class="review-value font-semibold">${trackData.route}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Cá thể ngựa</div>
-                            <div class="review-value">${trackData.horse}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Phương tiện</div>
-                            <div class="review-value">${trackData.type}</div>
-                        </div>
-                        <div class="review-item">
-                            <div class="review-label">Tình trạng sinh trắc học</div>
-                            <div class="review-value text-success font-semibold">${trackData.health}</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <span><i class="fa-solid fa-clock text-orange"></i> ${trackData.eta}</span>
-                        <a href="${trackData.actionLink}" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.82rem;">
-                            ${trackData.actionText} &rarr;
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
 </body>
 
 </html>
