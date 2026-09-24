@@ -75,92 +75,10 @@
             </div>
 
             <form action="create_request_step4.html" method="GET">
-                <!-- 1. Hồ sơ Pháp lý & Thú y -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2><i class="fa-solid fa-file-shield text-orange"></i> 1. Hồ sơ Pháp lý & Giấy tờ Thú y OIE</h2>
-                        <span class="badge badge-info"><i class="fa-solid fa-certificate"></i> Bắt buộc thẩm định</span>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label><i class="fa-solid fa-passport text-muted"></i> Hộ chiếu Ngựa (Horse Passport) <span class="required">*</span></label>
-                                <div class="upload-area">
-                                    <div class="upload-icon"><i class="fa-solid fa-file-pdf"></i></div>
-                                    <div class="upload-text">Kéo thả file Hộ chiếu hoặc <strong>Chọn tệp</strong></div>
-                                    <div class="upload-hint">Định dạng PDF, JPG hoặc PNG (Tối đa 5MB)</div>
-                                    <div style="margin-top: 8px;">
-                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> passport_storm_runner.pdf (2.4 MB)</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label><i class="fa-solid fa-syringe text-muted"></i> Sổ Tiêm chủng / Chứng nhận Kiểm dịch <span class="required">*</span></label>
-                                <div class="upload-area">
-                                    <div class="upload-icon"><i class="fa-solid fa-file-medical"></i></div>
-                                    <div class="upload-text">Kéo thả sổ tiêm hoặc <strong>Chọn tệp</strong></div>
-                                    <div class="upload-hint">Yêu cầu vacxin cúm ngựa (Equine Influenza) trong 6 tháng</div>
-                                    <div style="margin-top: 8px;">
-                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> vaccination_card_2026.pdf (1.8 MB)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Tiền sử Bệnh lý & Cách ly -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2><i class="fa-solid fa-heart-pulse text-orange"></i> 2. Tiền sử Bệnh lý & Chế độ Cách ly</h2>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="has_disease">Ngựa có tiền sử bệnh lý không? <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select class="form-control" id="has_disease">
-                                        <option value="no" selected>Không — Thể trạng hoàn toàn bình thường</option>
-                                        <option value="yes">Có — Khai báo chi tiết bên dưới</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="has_medication">Có đang điều trị thuốc đặc biệt không? <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select class="form-control" id="has_medication">
-                                        <option value="no" selected>Không dùng thuốc</option>
-                                        <option value="yes">Có — Cần chuyên viên y tế cho uống thuốc định kỳ</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label for="disease_detail">Mô tả bệnh lý / Phác đồ thuốc đi kèm (nếu có)</label>
-                            <textarea id="disease_detail" class="form-control" placeholder="VD: Ngựa có tiền sử mỏi khớp nhẹ sau giải đấu, cần uống glucosamine bổ sung sau bữa ăn trưa..."></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="need_isolation">Yêu cầu ngăn chuồng cách ly chuyên biệt? <span class="required">*</span></label>
-                            <div class="select-wrapper">
-                                <select class="form-control" id="need_isolation">
-                                    <option value="no" selected>Không — Vận chuyển trong cụm chuồng tiêu chuẩn</option>
-                                    <option value="yes">Có — Chuồng cách ly độc lập có màng kháng khuẩn (Phụ phí)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- 3. Chăm sóc Dinh dưỡng & Chuồng Stalls -->
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="fa-solid fa-bowl-food text-orange"></i> 3. Chăm sóc Dinh dưỡng & Khoang Vận chuyển Stalls</h2>
+                        <h2><i class="fa-solid fa-bowl-food text-orange"></i> 1. Chăm sóc Dinh dưỡng & Khoang Vận chuyển Stalls</h2>
                     </div>
 
                     <div class="card-body">
@@ -217,7 +135,7 @@
                 <!-- 4. Gói Bảo hiểm Vận chuyển -->
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="fa-solid fa-shield-halved text-orange"></i> 4. Gói Bảo hiểm Vận chuyển Chuyên biệt</h2>
+                        <h2><i class="fa-solid fa-shield-halved text-orange"></i> 2. Gói Bảo hiểm Vận chuyển Chuyên biệt</h2>
                         <span class="badge badge-warning"><i class="fa-solid fa-shield-virus"></i> Bảo lãnh bồi thường</span>
                     </div>
 
@@ -254,7 +172,7 @@
                 <!-- 5. Ghi chú thêm -->
                 <div class="card">
                     <div class="card-header">
-                        <h2><i class="fa-solid fa-clipboard-user text-orange"></i> 5. Ghi chú Hướng dẫn cho Đội ngũ Hộ tống (Escort / Groom)</h2>
+                        <h2><i class="fa-solid fa-clipboard-user text-orange"></i> 3. Ghi chú Hướng dẫn cho Đội ngũ Hộ tống (Escort / Groom)</h2>
                     </div>
 
                     <div class="card-body">

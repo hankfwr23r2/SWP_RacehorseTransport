@@ -13,68 +13,16 @@ const COUNTRY_LOCATIONS = {
         { id: 'KHO-DN', name: 'Kho Đồng Nai — Trang trại Đua ngựa Long Thành', type: 'farm' },
         { id: 'KHO-LA', name: 'Kho Long An — Trang trại Huấn luyện Mỹ Quỳnh (Đức Hòa)', type: 'farm' },
         { id: 'KHO-BD', name: 'Kho Bình Dương — Trung tâm Cưỡi ngựa Đức Hòa', type: 'farm' },
-        { id: 'SGN', name: 'Sân bay Quốc tế Tân Sơn Nhất (SGN) — Ga Cargo Động vật sống', type: 'airport' },
-        { id: 'HAN', name: 'Sân bay Quốc tế Nội Bài (HAN) — Ga Cargo Quốc tế', type: 'airport' },
-        { id: 'DAD', name: 'Sân bay Quốc tế Đà Nẵng (DAD) — Ga Hàng hóa Miền Trung', type: 'airport' },
         { id: 'CLB-SG', name: 'CLB Cưỡi ngựa Sài Gòn (Saigon Pony Club - Q.2, TP.HCM)', type: 'club' }
     ],
-    'HK': [
-        { id: 'HKG', name: 'Sân bay Quốc tế Chek Lap Kok (HKG) — Kho Hàng không Cargo', type: 'airport' },
-        { id: 'SHA-TIN', name: 'Trường đua Sha Tin (Sha Tin Racecourse) — Kho tiếp nhận & Chuồng cách ly', type: 'racecourse' },
-        { id: 'HAPPY-VALLEY', name: 'Trường đua Happy Valley (Happy Valley Racecourse) — Trạm trung chuyển', type: 'racecourse' },
-        { id: 'CONGHUA', name: 'Trung tâm Huấn luyện Tùng Hóa (Conghua Racecourse - HKJC Depot)', type: 'racecourse' }
+    'KH': [
+        { id: 'KHO-PNH', name: 'Kho Phnom Penh — Trung tâm Kiểm dịch Động vật Phnom Penh', type: 'farm' },
+        { id: 'KHO-SR', name: 'Kho Siem Reap — Trại Ngựa & Vật nuôi Angkor', type: 'farm' },
+        { id: 'SAI-PNH', name: 'CLB Cưỡi ngựa Hoàng gia Phnom Penh (Phnom Penh Equestrian Club)', type: 'club' }
     ],
-    'JP': [
-        { id: 'NRT', name: 'Sân bay Quốc tế Narita (NRT) — Ga Hàng Hóa Chiba (Live Animals)', type: 'airport' },
-        { id: 'HND', name: 'Sân bay Quốc tế Haneda (HND) — Ga Cargo Quốc tế Tokyo', type: 'airport' },
-        { id: 'KIX', name: 'Sân bay Quốc tế Kansai (KIX) — Khu Vận chuyển Động vật Osaka', type: 'airport' },
-        { id: 'JRA-MIHO', name: 'Trung tâm Huấn luyện JRA Miho (Ibaraki) — Trạm cách ly thú y', type: 'quarantine' },
-        { id: 'JRA-RITTO', name: 'Trung tâm Huấn luyện JRA Ritto (Shiga) — Trạm tiếp nhận ngựa đua', type: 'quarantine' },
-        { id: 'TOKYO-RC', name: 'Trường đua Tokyo (Tokyo Racecourse - Fuchu, Tokyo)', type: 'racecourse' }
-    ],
-    'SG': [
-        { id: 'SIN', name: 'Sân bay Quốc tế Changi (SIN) — Changi Airfreight Live Animals Centre', type: 'airport' },
-        { id: 'SG-TURF', name: 'Câu lạc bộ Đua ngựa Singapore (Singapore Turf Club - Kranji)', type: 'racecourse' },
-        { id: 'SG-EQUEST', name: 'Trung tâm Cưỡi ngựa Quốc gia Singapore (National Equestrian Centre)', type: 'club' },
-        { id: 'SG-BUKIT', name: 'Câu lạc bộ Cưỡi ngựa Bukit Timah Saddle Club', type: 'club' }
-    ],
-    'AU': [
-        { id: 'MEL', name: 'Sân bay Quốc tế Melbourne (MEL) — Live Animal Cargo Terminal', type: 'airport' },
-        { id: 'SYD', name: 'Sân bay Quốc tế Sydney Kingsford Smith (SYD) — Ga Hàng Hóa Quốc tế', type: 'airport' },
-        { id: 'BNE', name: 'Sân bay Quốc tế Brisbane (BNE) — Ga Cargo Hàng không', type: 'airport' },
-        { id: 'FLEMINGTON', name: 'Trường đua Flemington (Flemington Racecourse, Victoria)', type: 'racecourse' },
-        { id: 'RANDWICK', name: 'Trường đua Royal Randwick (Sydney, New South Wales)', type: 'racecourse' },
-        { id: 'MICKLEHAM', name: 'Trạm Kiểm dịch Động vật Mickleham (Post-Entry Quarantine Facility)', type: 'quarantine' }
-    ],
-    'NZ': [
-        { id: 'AKL', name: 'Sân bay Quốc tế Auckland (AKL) — Auckland Cargo Live Animals Hub', type: 'airport' },
-        { id: 'CHC', name: 'Sân bay Quốc tế Christchurch (CHC) — Ga Hàng Hóa Đảo Nam', type: 'airport' },
-        { id: 'ELLERSLIE', name: 'Trường đua Ellerslie (Ellerslie Racecourse, Auckland)', type: 'racecourse' },
-        { id: 'TRENTHAM', name: 'Trường đua Trentham (Wellington Racing Club)', type: 'racecourse' },
-        { id: 'KARAKA', name: 'Tổ hợp Đấu giá & Kiểm dịch Thú y Karaka (Karaka Sales Complex)', type: 'quarantine' }
-    ],
-    'AE': [
-        { id: 'DXB', name: 'Sân bay Quốc tế Dubai (DXB) — Dnata Live Animal Facility', type: 'airport' },
-        { id: 'DWC', name: 'Sân bay Quốc tế Al Maktoum (DWC) — Dubai South Aviation Cargo Hub', type: 'airport' },
-        { id: 'AUH', name: 'Sân bay Quốc tế Abu Dhabi (AUH) — Ga Hàng hóa Chuyên dụng', type: 'airport' },
-        { id: 'MEYDAN', name: 'Trường đua Meydan (Meydan Racecourse Stables, Dubai)', type: 'racecourse' },
-        { id: 'DUBAI-POLO', name: 'Câu lạc bộ Polo & Đua ngựa Dubai (Dubai Polo & Equestrian Club)', type: 'club' },
-        { id: 'ABU-DHABI-EQ', name: 'Trường đua Abu Dhabi Equestrian Club', type: 'racecourse' }
-    ],
-    'GB': [
-        { id: 'LHR', name: 'Sân bay London Heathrow (LHR) — Heathrow Animal Reception Centre (HARC)', type: 'airport' },
-        { id: 'STN', name: 'Sân bay London Stansted (STN) — Ga Cargo Hàng không Chuyên dụng', type: 'airport' },
-        { id: 'NEWMARKET', name: 'Trường đua Newmarket (Newmarket Racecourses & Equine Hospital, Suffolk)', type: 'racecourse' },
-        { id: 'ASCOT', name: 'Trường đua Ascot (Ascot Racecourse, Berkshire)', type: 'racecourse' },
-        { id: 'CHELTENHAM', name: 'Trường đua Cheltenham (Cheltenham Racecourse, Gloucestershire)', type: 'racecourse' },
-        { id: 'DONCASTER', name: 'Khu Kiểm dịch Thú y Doncaster Equine Centre', type: 'quarantine' }
-    ],
-    'FR': [
-        { id: 'CDG', name: 'Sân bay Paris Charles de Gaulle (CDG) — Station Animalière Cargo', type: 'airport' },
-        { id: 'LONGCHAMP', name: 'Trường đua ParisLongchamp (Hippodrome de ParisLongchamp, Paris)', type: 'racecourse' },
-        { id: 'CHANTILLY', name: 'Trung tâm Huấn luyện & Trường đua Chantilly (France Galop, Chantilly)', type: 'racecourse' },
-        { id: 'DEAUVILLE', name: 'Trung tâm Huấn luyện Deauville-La Touques (Normandie)', type: 'racecourse' },
-        { id: 'PAU-PYRENEES', name: 'Khu Chuồng cách ly Thú y Quốc tế Pau Pyrenees', type: 'quarantine' }
+    'LA': [
+        { id: 'KHO-VTE', name: 'Kho Viêng Chăn — Trang trại Chăn nuôi & Kiểm dịch Vientiane', type: 'farm' },
+        { id: 'CLB-VTE', name: 'CLB Mã cầu & Cưỡi ngựa Viêng Chăn (Vientiane Equestrian Club)', type: 'club' }
     ]
 };
 
@@ -92,46 +40,83 @@ function populateLocations(selectId, countryCode, selectedId = null) {
     const selectElem = document.getElementById(selectId);
     if (!selectElem) return;
 
+    // Xóa dữ liệu cũ
     selectElem.innerHTML = '';
+
+    // Nếu chưa chọn quốc gia
+    if (!countryCode) {
+        const defaultOpt = document.createElement('option');
+        defaultOpt.value = '';
+        defaultOpt.textContent = 'Vui lòng chọn quốc gia trước';
+        defaultOpt.selected = true;
+        defaultOpt.disabled = true;
+
+        selectElem.appendChild(defaultOpt);
+
+        // Khóa ô chọn địa điểm
+        selectElem.disabled = true;
+
+        return;
+    }
+
+    // Đã chọn quốc gia -> mở ô chọn địa điểm
+    selectElem.disabled = false;
+
     const locations = COUNTRY_LOCATIONS[countryCode] || [];
 
+    // Nếu quốc gia không có dữ liệu
     if (locations.length === 0) {
         const defaultOpt = document.createElement('option');
         defaultOpt.value = '';
-        defaultOpt.textContent = '— Không có dữ liệu kho/sân bay —';
+        defaultOpt.textContent = '— Không có dữ liệu địa điểm —';
+        defaultOpt.selected = true;
+
         selectElem.appendChild(defaultOpt);
         return;
     }
 
+    // Placeholder sau khi đã chọn quốc gia
     const placeholderOpt = document.createElement('option');
+
     placeholderOpt.value = '';
-    placeholderOpt.textContent = selectId === 'origin_location' ? '— Chọn điểm xuất phát —' : '— Chọn điểm đến nhận ngựa —';
+    placeholderOpt.textContent =
+        selectId === 'origin_location'
+            ? '— Chọn điểm xuất phát —'
+            : '— Chọn điểm đến nhận ngựa —';
+
+    placeholderOpt.selected = true;
+    placeholderOpt.disabled = true;
+
     selectElem.appendChild(placeholderOpt);
 
-    let isSelectedApplied = false;
+    // Thêm danh sách địa điểm
     locations.forEach(loc => {
         const opt = document.createElement('option');
+
         opt.value = loc.id;
         opt.textContent = loc.name;
+
         if (selectedId && loc.id === selectedId) {
             opt.selected = true;
-            isSelectedApplied = true;
         }
+
         selectElem.appendChild(opt);
     });
-
-    // Nếu chưa chọn mục nào, chọn mục đầu tiên hợp lệ
-    if (!isSelectedApplied && locations.length > 0) {
-        selectElem.selectedIndex = 1;
-    }
 }
 
 /**
  * Cập nhật danh sách điểm đón khi đổi Quốc gia Xuất phát
  */
 function updateOriginLocations(selectedLocationId = null) {
-    const originCountry = document.getElementById('origin_country')?.value || 'VN';
-    populateLocations('origin_location', originCountry, selectedLocationId);
+    const originCountry =
+        document.getElementById('origin_country')?.value || '';
+
+    populateLocations(
+        'origin_location',
+        originCountry,
+        selectedLocationId
+    );
+
     detectTransportType();
 }
 
@@ -139,8 +124,15 @@ function updateOriginLocations(selectedLocationId = null) {
  * Cập nhật danh sách điểm giao khi đổi Quốc gia Đến
  */
 function updateDestLocations(selectedLocationId = null) {
-    const destCountry = document.getElementById('dest_country')?.value || 'HK';
-    populateLocations('dest_location', destCountry, selectedLocationId);
+    const destCountry =
+        document.getElementById('dest_country')?.value || '';
+
+    populateLocations(
+        'dest_location',
+        destCountry,
+        selectedLocationId
+    );
+
     detectTransportType();
 }
 
@@ -219,45 +211,39 @@ function saveRequestData(partialData) {
 function getDefaultRequestData() {
     return {
         // Bước 1
-        originCountry: 'VN',
-        originLocation: 'KHO-DN',
-        originLocationName: 'Kho Đồng Nai — Trang trại Đua ngựa Long Thành',
-        destCountry: 'HK',
-        destLocation: 'HKG',
-        destLocationName: 'Sân bay Quốc tế Chek Lap Kok (HKG) — Kho Hàng không Cargo',
-        isInternational: true,
-        departureDate: '2026-11-15',
-        quantity: 1,
-        urgency: 'standard',
+        originCountry: '',
+        originLocation: '',
+        originLocationName: '',
+
+        destCountry: '',
+        destLocation: '',
+        destLocationName: '',
+
+        isInternational: false,
+
+        departureDate: '',
+        quantity: '',
+
+        urgency: '',
+
         // Bước 2
-        horses: [
-            {
-                id: 1,
-                name: 'Storm Runner',
-                microchip: '#VN-985211',
-                breed: 'Thoroughbred (Thuần chủng Anh)',
-                gender: 'Thiến (Gelding)',
-                age: 5,
-                weight: 520,
-                color: 'Nâu đỏ (Bay)',
-                marks: 'Sao trắng trán, tất trắng chân sau'
-            }
-        ],
+        horses: [],
+
         // Bước 3
-        hasDisease: 'no',
-        hasMedication: 'no',
+        hasDisease: '',
+        hasMedication: '',
         diseaseDetail: '',
-        needIsolation: 'no',
-        feeding: 'yes',
-        foodType: 'hay',
-        foodTypeName: 'Cỏ khô Timothy Hay cao cấp',
-        stallType: 'standard',
-        stallTypeName: 'Khoang Tiêu chuẩn (1.2m × 2.4m)',
-        waterSupplement: 'electrolyte',
-        waterSupplementName: 'Nước khoáng tinh khiết + Bổ sung điện giải',
-        insurance: 'basic',
-        insuranceName: 'Gói Cơ bản (2% giá trị khai báo)',
-        horseValue: 2000000000,
+        needIsolation: '',
+        feeding: '',
+        foodType: '',
+        foodTypeName: '',
+        stallType: '',
+        stallTypeName: '',
+        waterSupplement: '',
+        waterSupplementName: '',
+        insurance: '',
+        insuranceName: '',
+        horseValue: '',
         specialCare: ''
     };
 }
@@ -274,22 +260,41 @@ function initStep1() {
 
     const data = getStoredRequest();
 
-    // Set initial values
-    if (data.originCountry) originCountrySelect.value = data.originCountry;
-    if (data.destCountry) destCountrySelect.value = data.destCountry;
+    // Set initial values only if user has already entered data
+    if (data.originCountry) {
+        originCountrySelect.value = data.originCountry;
+    }
+
+    if (data.destCountry) {
+        destCountrySelect.value = data.destCountry;
+    }
+
     if (data.departureDate && document.getElementById('date')) {
         document.getElementById('date').value = data.departureDate;
     }
+
     if (data.quantity && document.getElementById('quantity')) {
         document.getElementById('quantity').value = data.quantity;
     }
+
     if (data.urgency && document.getElementById('urgency')) {
         document.getElementById('urgency').value = data.urgency;
     }
 
-    // Populate initial dropdowns
-    updateOriginLocations(data.originLocation);
-    updateDestLocations(data.destLocation);
+    // Chỉ load danh sách địa điểm nếu người dùng đã chọn quốc gia
+    // Load điểm xuất phát
+    if (data.originCountry) {
+        updateOriginLocations(data.originLocation || null);
+    } else {
+        populateLocations('origin_location', '');
+    }
+
+    // Load điểm đến
+    if (data.destCountry) {
+        updateDestLocations(data.destLocation || null);
+    } else {
+        populateLocations('dest_location', '');
+    }
 
     // Form submit listener
     if (form) {
@@ -308,7 +313,7 @@ function initStep1() {
                 destLocationName: destLocText,
                 isInternational: originCountrySelect.value !== destCountrySelect.value,
                 departureDate: document.getElementById('date')?.value || '2026-11-15',
-                quantity: parseInt(document.getElementById('quantity')?.value, 10) || 1,
+                quantity: parseInt(document.getElementById('quantity')?.value, 10) || 0,
                 urgency: document.getElementById('urgency')?.value || 'standard'
             });
         });
@@ -316,77 +321,649 @@ function initStep1() {
 }
 
 // ==========================================
-// 5. KHỞI TẠO BƯỚC 2 (Thông tin Ngựa)
+// 5. KHỞI TẠO BƯỚC 2 (THÔNG TIN NGỰA)
 // ==========================================
+
+let currentHorseId = 1;
+
+
+/**
+ * Tạo danh sách các cá thể ngựa dựa trên
+ * số lượng khách đã chọn ở Bước 1.
+ */
+function initializeHorseList(quantity, existingHorses = []) {
+
+    const horses = [];
+
+    for (let i = 1; i <= quantity; i++) {
+
+        // Tìm dữ liệu cũ nếu đã tồn tại
+        const existingHorse = existingHorses.find(
+            horse => Number(horse.id) === i
+        );
+
+        horses.push(
+            existingHorse || {
+                id: i,
+                name: '',
+                microchip: '',
+                breed: '',
+                gender: '',
+                age: '',
+                weight: '',
+                color: '',
+                marks: '',
+                completed: false
+            }
+        );
+    }
+
+    return horses;
+}
+
+
+/**
+ * Tạo menu dropdown Ngựa #1 -> Ngựa #N
+ */
+function renderHorseSelector(horses) {
+
+    const selector =
+        document.getElementById('horse_selector');
+
+    if (!selector) return;
+
+    selector.innerHTML = '';
+
+    horses.forEach(horse => {
+
+        const option =
+            document.createElement('option');
+
+        option.value = horse.id;
+
+        const horseNumber =
+            String(horse.id).padStart(2, '0');
+
+        const horseName =
+            horse.name
+                ? ` — ${horse.name}`
+                : ' — Chưa khai báo';
+
+        const status =
+            horse.completed
+                ? ' ✓'
+                : '';
+
+        option.textContent =
+            `Ngựa #${horseNumber}${horseName}${status}`;
+
+        option.dataset.completed =
+            horse.completed ? 'true' : 'false';
+
+        selector.appendChild(option);
+    });
+
+    selector.value = currentHorseId;
+}
+
+
+/**
+ * Load dữ liệu của một con ngựa vào form
+ */
+function loadHorseToForm(horse) {
+
+    if (!horse) return;
+
+    const nameInput = document.getElementById('horse_name_1');
+    const microchipInput = document.getElementById('microchip_1');
+    const breedSelect = document.getElementById('breed_1');
+    const genderSelect = document.getElementById('gender_1');
+    const ageInput = document.getElementById('age_1');
+    const weightInput = document.getElementById('weight_1');
+    const colorSelect = document.getElementById('color_1');
+    const marksInput = document.getElementById('marks_1');
+
+    // -----------------------------
+    // Name
+    // -----------------------------
+    if (nameInput) {
+        nameInput.value = horse.name || '';
+    }
+
+    // -----------------------------
+    // Microchip
+    // -----------------------------
+    if (microchipInput) {
+        microchipInput.value = horse.microchip || '';
+    }
+
+    // -----------------------------
+    // Breed
+    // -----------------------------
+    if (breedSelect) {
+
+        if (horse.breedValue) {
+            breedSelect.value = horse.breedValue;
+        } else {
+            setSelectByText(
+                breedSelect,
+                horse.breed
+            );
+        }
+    }
+
+    // -----------------------------
+    // Gender
+    // -----------------------------
+    if (genderSelect) {
+
+        if (horse.genderValue) {
+            genderSelect.value = horse.genderValue;
+        } else {
+            setSelectByText(
+                genderSelect,
+                horse.gender
+            );
+        }
+    }
+
+    // -----------------------------
+    // Age
+    // -----------------------------
+    if (ageInput) {
+        ageInput.value = horse.age || '';
+    }
+
+    // -----------------------------
+    // Weight
+    // -----------------------------
+    if (weightInput) {
+        weightInput.value = horse.weight || '';
+    }
+
+    // -----------------------------
+    // Color
+    // -----------------------------
+    if (colorSelect) {
+
+        if (horse.colorValue) {
+            colorSelect.value = horse.colorValue;
+        } else {
+            setSelectByText(
+                colorSelect,
+                horse.color
+            );
+        }
+    }
+
+    // -----------------------------
+    // Marks
+    // -----------------------------
+    if (marksInput) {
+        marksInput.value = horse.marks || '';
+    }
+
+    updateHorseCardTitle(horse);
+}
+
+
+/**
+ * Chọn option của select dựa vào text
+ */
+function setSelectByText(selectElement, text) {
+
+    if (!selectElement || !text) return;
+
+    const option = Array.from(
+        selectElement.options
+    ).find(
+        opt => opt.text === text
+    );
+
+    if (option) {
+        selectElement.value = option.value;
+    }
+}
+
+
+/**
+ * Lấy dữ liệu hiện tại trên form
+ */
+function collectCurrentHorse() {
+
+    const breedSelect =
+        document.getElementById('breed_1');
+
+    const genderSelect =
+        document.getElementById('gender_1');
+
+    const colorSelect =
+        document.getElementById('color_1');
+
+    const name =
+        document.getElementById('horse_name_1')?.value.trim() || '';
+
+    const microchip =
+        document.getElementById('microchip_1')?.value.trim() || '';
+
+    const breed =
+        breedSelect
+            ? breedSelect.options[breedSelect.selectedIndex]?.text || ''
+            : '';
+
+    const gender =
+        genderSelect
+            ? genderSelect.options[genderSelect.selectedIndex]?.text || ''
+            : '';
+
+    const color =
+        colorSelect
+            ? colorSelect.options[colorSelect.selectedIndex]?.text || ''
+            : '';
+
+    const horse = {
+
+        id: currentHorseId,
+
+        name: name,
+
+        microchip: microchip,
+
+        breed: breed,
+
+        breedValue: breedSelect?.value || '',
+
+        gender: gender,
+
+        genderValue: genderSelect?.value || '',
+
+        age:
+            document.getElementById('age_1')?.value || '',
+
+        weight:
+            document.getElementById('weight_1')?.value || '',
+
+        color: color,
+
+        colorValue: colorSelect?.value || '',
+
+        marks:
+            document.getElementById('marks_1')?.value.trim() || '',
+
+        completed:
+            !!(
+                name &&
+                microchip &&
+                breedSelect?.value &&
+                genderSelect?.value &&
+                document.getElementById('weight_1')?.value &&
+                colorSelect?.value
+            )
+    };
+
+    return horse;
+}
+
+
+/**
+ * Lưu dữ liệu ngựa hiện tại
+ */
+function saveCurrentHorse() {
+
+    const data = getStoredRequest();
+
+    let horses = data.horses || [];
+
+    const horse = collectCurrentHorse();
+
+    const index = horses.findIndex(
+        h => Number(h.id) === currentHorseId
+    );
+
+    if (index >= 0) {
+        horses[index] = horse;
+    } else {
+        horses.push(horse);
+    }
+
+    horses.sort(
+        (a, b) => Number(a.id) - Number(b.id)
+    );
+
+    saveRequestData({
+        horses: horses
+    });
+
+    return horses;
+}
+
+
+/**
+ * Chuyển sang một con ngựa khác
+ */
+function switchHorse(horseId) {
+
+    // Lưu con hiện tại trước
+    saveCurrentHorse();
+
+    currentHorseId = Number(horseId);
+
+    const data = getStoredRequest();
+
+    const horses = data.horses || [];
+
+    let horse = horses.find(
+        h => Number(h.id) === currentHorseId
+    );
+
+    if (!horse) {
+
+        horse = {
+            id: currentHorseId,
+            name: '',
+            microchip: '',
+            breed: '',
+            gender: '',
+            age: '',
+            weight: '',
+            color: '',
+            marks: '',
+            completed: false
+        };
+    }
+
+    loadHorseToForm(horse);
+
+    updateHorseProgress(
+        horses,
+        data.quantity || horses.length || 1
+    );
+}
+
+
+/**
+ * Cập nhật tiêu đề card
+ */
+function updateHorseCardTitle(horse) {
+
+    const title =
+        document.getElementById('horse-card-title');
+
+    if (!title) return;
+
+    const horseName =
+        horse.name
+            ? ` — ${horse.name}`
+            : '';
+
+    title.innerHTML = `
+        <i class="fa-solid fa-horse-head text-orange"></i>
+        Cá thể Ngựa #${horse.id}${horseName} — Thông tin Nhận dạng
+    `;
+}
+
+
+/**
+ * Cập nhật tiến độ:
+ * Đã khai báo X / Tổng số ngựa
+ */
+function updateHorseProgress(horses, total) {
+
+    const progress =
+        document.getElementById('horse-progress');
+
+    if (!progress) return;
+
+    const completedCount =
+        horses.filter(
+            horse => horse.completed
+        ).length;
+
+    progress.textContent =
+        `Đã khai báo ${completedCount} / ${total}`;
+}
+
+
+// ==========================================
+// DỮ LIỆU DEMO CÁC CÁ THỂ NGỰA
+// Dùng để minh họa giao diện Step 2
+// ==========================================
+
+const DEMO_HORSES = [
+    {
+        id: 1,
+        name: 'Storm Runner',
+        microchip: '#VN-985211',
+        breed: 'Thoroughbred (Anh)',
+        breedValue: 'thoroughbred',
+        gender: 'Thiến (Gelding)',
+        genderValue: 'gelding',
+        age: '5',
+        weight: '520',
+        color: 'Nâu đỏ (Bay)',
+        colorValue: 'bay',
+        marks: 'Sao trắng trán, tất trắng chân sau',
+        completed: true
+    },
+
+    {
+        id: 2,
+        name: 'Silver Arrow',
+        microchip: '#VN-985212',
+        breed: 'Arabian (Ả Rập)',
+        breedValue: 'arabian',
+        gender: 'Đực (Stallion)',
+        genderValue: 'stallion',
+        age: '7',
+        weight: '480',
+        color: 'Xám tro (Grey)',
+        colorValue: 'grey',
+        marks: 'Đốm trắng nhỏ trên mũi',
+        completed: true
+    },
+
+    {
+        id: 3,
+        name: 'Golden Wind',
+        microchip: '#VN-985213',
+        breed: 'Warmblood',
+        breedValue: 'warmblood',
+        gender: 'Cái (Mare)',
+        genderValue: 'mare',
+        age: '6',
+        weight: '550',
+        color: 'Vàng kim (Palomino)',
+        colorValue: 'palomino',
+        marks: 'Vệt trắng dài giữa trán',
+        completed: true
+    }
+];
+
+const DEMO_MODE = true;
+
+/**
+ * Khởi tạo Step 2
+ */
 function initStep2() {
-    const form = document.querySelector('form[action="create_request_step3.html"]');
+
+    const form =
+        document.querySelector(
+            'form[action="create_request_step3.html"]'
+        );
+
     if (!form) return;
 
     const data = getStoredRequest();
 
-    // Check if horse quantity > 1, auto-show horse 2
-    if (data.quantity > 1 || (data.horses && data.horses.length > 1)) {
-        toggleHorse2(true);
-    }
+    // ------------------------------------------
+    // Số lượng ngựa từ Bước 1
+    // ------------------------------------------
 
-    form.addEventListener('submit', function (e) {
-        const breedSelect = document.getElementById('breed_1');
-        const genderSelect = document.getElementById('gender_1');
-        const colorSelect = document.getElementById('color_1');
+    const quantity = DEMO_MODE
+        ? 3
+        : Math.max(
+            1,
+            Number(data.quantity) || 1
+        );
 
-        const horse1 = {
-            id: 1,
-            name: document.getElementById('horse_name_1')?.value || 'Storm Runner',
-            microchip: document.getElementById('microchip_1')?.value || '#VN-985211',
-            breed: breedSelect ? breedSelect.options[breedSelect.selectedIndex].text : 'Thoroughbred',
-            gender: genderSelect ? genderSelect.options[genderSelect.selectedIndex].text : 'Thiến (Gelding)',
-            age: parseInt(document.getElementById('age_1')?.value, 10) || 5,
-            weight: parseInt(document.getElementById('weight_1')?.value, 10) || 520,
-            color: colorSelect ? colorSelect.options[colorSelect.selectedIndex].text : 'Nâu đỏ (Bay)',
-            marks: document.getElementById('marks_1')?.value || ''
-        };
+    // ------------------------------------------
+    // Tạo danh sách ngựa
+    // ------------------------------------------
 
-        const horses = [horse1];
+    let horses;
 
-        // Horse 2 check
-        const horse2Section = document.getElementById('horse-2-section');
-        if (horse2Section && horse2Section.style.display !== 'none') {
-            const breed2 = document.getElementById('breed_2');
-            const gender2 = document.getElementById('gender_2');
-            const color2 = document.getElementById('color_2');
-            const horse2 = {
-                id: 2,
-                name: document.getElementById('horse_name_2')?.value || 'Thunder Bolt',
-                microchip: document.getElementById('microchip_2')?.value || '#VN-985212',
-                breed: breed2 ? breed2.options[breed2.selectedIndex].text : 'Thoroughbred',
-                gender: gender2 ? gender2.options[gender2.selectedIndex].text : 'Đực (Stallion)',
-                age: parseInt(document.getElementById('age_2')?.value, 10) || 4,
-                weight: parseInt(document.getElementById('weight_2')?.value, 10) || 490,
-                color: color2 ? color2.options[color2.selectedIndex].text : 'Hạt dẻ (Chestnut)',
-                marks: ''
-            };
-            horses.push(horse2);
-        }
+    if (DEMO_MODE) {
 
-        saveRequestData({
-            horses: horses,
-            quantity: horses.length
-        });
-    });
-}
+        horses = DEMO_HORSES.slice(0, quantity);
 
-function toggleHorse2(show) {
-    const section = document.getElementById('horse-2-section');
-    const btn = document.getElementById('btn-add-horse');
-    if (!section) return;
-
-    if (show) {
-        section.style.display = 'block';
-        if (btn) btn.style.display = 'none';
     } else {
-        section.style.display = 'none';
-        if (btn) btn.style.display = 'flex';
+
+        horses = initializeHorseList(
+            quantity,
+            data.horses || []
+        );
     }
+
+    // Lưu danh sách ban đầu
+    saveRequestData({
+        horses: horses,
+        quantity: quantity
+    });
+
+    // ------------------------------------------
+    // Render dropdown
+    // ------------------------------------------
+
+    currentHorseId = 1;
+
+    renderHorseSelector(horses);
+
+    // ------------------------------------------
+    // Load ngựa đầu tiên
+    // ------------------------------------------
+
+    const firstHorse =
+        horses.find(
+            horse => Number(horse.id) === 1
+        );
+
+    if (firstHorse) {
+        loadHorseToForm(firstHorse);
+    }
+
+    updateHorseProgress(
+        horses,
+        quantity
+    );
+
+    // ------------------------------------------
+    // Khi khách chọn ngựa khác
+    // ------------------------------------------
+
+    const selector =
+        document.getElementById('horse_selector');
+
+    if (selector) {
+
+        selector.addEventListener(
+            'change',
+            function () {
+
+                switchHorse(
+                    this.value
+                );
+
+                // Render lại option để cập nhật tên
+                const latestData =
+                    getStoredRequest();
+
+                renderHorseSelector(
+                    latestData.horses || []
+                );
+
+                selector.value =
+                    currentHorseId;
+            }
+        );
+    }
+
+    // ------------------------------------------
+    // Submit Step 2
+    // ------------------------------------------
+
+    form.addEventListener(
+        'submit',
+        function (e) {
+
+            // Lưu con đang mở
+            saveCurrentHorse();
+
+            const latestData =
+                getStoredRequest();
+
+            const latestHorses =
+                latestData.horses || [];
+
+            // --------------------------------------
+            // Kiểm tra đã nhập đủ tất cả ngựa chưa
+            // --------------------------------------
+
+            const incompleteHorses =
+                latestHorses.filter(
+                    horse => !horse.completed
+                );
+
+            if (incompleteHorses.length > 0) {
+
+                e.preventDefault();
+
+                const firstIncomplete =
+                    incompleteHorses[0];
+
+                alert(
+                    `Vui lòng hoàn thành thông tin Ngựa #${firstIncomplete.id} trước khi tiếp tục.`
+                );
+
+                // Chuyển tới con ngựa chưa hoàn thành
+                currentHorseId =
+                    Number(firstIncomplete.id);
+
+                renderHorseSelector(
+                    latestHorses
+                );
+
+                const selector =
+                    document.getElementById(
+                        'horse_selector'
+                    );
+
+                if (selector) {
+                    selector.value =
+                        currentHorseId;
+                }
+
+                loadHorseToForm(
+                    firstIncomplete
+                );
+
+                updateHorseProgress(
+                    latestHorses,
+                    quantity
+                );
+
+                return;
+            }
+
+            // --------------------------------------
+            // Đủ thông tin
+            // --------------------------------------
+
+            saveRequestData({
+                horses: latestHorses,
+                quantity: latestHorses.length
+            });
+        }
+    );
 }
 
 // ==========================================
@@ -537,109 +1114,372 @@ function initStep4() {
 }
 
 function recalculateStep4Quotation(data) {
-    const isDomestic = data.originCountry === data.destCountry && data.originCountry === 'VN';
-    const quantity = data.horses ? data.horses.length : (data.quantity || 1);
 
-    // Tính toán cước phí
-    let baseFreight = isDomestic ? 25000000 * quantity : 120000000 * quantity;
-    let quarantineFee = isDomestic ? 3000000 * quantity : 15000000 * quantity;
-    let feedFee = 500000 * 3 * quantity; // 3 ngày
-    let stallFee = data.stallType === 'vip' ? 12000000 * quantity : 0;
-    
-    // Bảo hiểm
+    // ==========================================
+    // 1. XÁC ĐỊNH LOẠI TUYẾN
+    // ==========================================
+    const isDomestic =
+        data.originCountry === data.destCountry &&
+        data.originCountry === 'VN';
+
+    // ==========================================
+    // 2. XÁC ĐỊNH SỐ LƯỢNG NGỰA
+    // ==========================================
+    // Không được chỉ kiểm tra data.horses,
+    // vì [] vẫn là truthy.
+    const horseCount =
+        Array.isArray(data.horses) && data.horses.length > 0
+            ? data.horses.length
+            : Number(data.quantity) || 1;
+
+    const quantity = Math.max(1, horseCount);
+
+    // ==========================================
+    // 3. TÍNH CƯỚC VẬN CHUYỂN
+    // ==========================================
+    let baseFreight;
+
+    if (isDomestic) {
+        baseFreight = 25_000_000 * quantity;
+    } else {
+        baseFreight = 120_000_000 * quantity;
+    }
+
+    // ==========================================
+    // 4. PHÍ KIỂM DỊCH
+    // ==========================================
+    let quarantineFee;
+
+    if (isDomestic) {
+        quarantineFee = 3_000_000 * quantity;
+    } else {
+        quarantineFee = 15_000_000 * quantity;
+    }
+
+    // ==========================================
+    // 5. PHÍ THỨC ĂN
+    // 500.000/ngày × 3 ngày × số ngựa
+    // ==========================================
+    const feedFee =
+        500_000 * 3 * quantity;
+
+    // ==========================================
+    // 6. PHÍ KHOANG VẬN CHUYỂN
+    // ==========================================
+    const stallFee =
+        data.stallType === 'vip'
+            ? 12_000_000 * quantity
+            : 0;
+
+    // ==========================================
+    // 7. PHÍ BẢO HIỂM
+    // ==========================================
     let insuranceRate = 0;
-    if (data.insurance === 'basic') insuranceRate = 0.02;
-    else if (data.insurance === 'premium') insuranceRate = 0.035;
-    else if (data.insurance === 'full') insuranceRate = 0.05;
-    let insuranceFee = (data.horseValue || 2000000000) * insuranceRate;
 
-    let escortFee = 8500000;
-    if (data.needIsolation === 'yes') baseFreight += 10000000;
+    if (data.insurance === 'basic') {
+        insuranceRate = 0.02;
+    } else if (data.insurance === 'premium') {
+        insuranceRate = 0.035;
+    } else if (data.insurance === 'full') {
+        insuranceRate = 0.05;
+    }
 
-    const totalCost = baseFreight + quarantineFee + feedFee + stallFee + insuranceFee + escortFee;
-    const depositCost = totalCost * 0.5;
+    const horseValue =
+        Number(data.horseValue) || 2_000_000_000;
 
-    // Tìm bảng và cập nhật
-    const tbody = document.querySelector('.data-table tbody');
-    const tfoot = document.querySelector('.data-table tfoot');
+    const insuranceFee =
+        horseValue * insuranceRate;
 
+    // ==========================================
+    // 8. PHÍ CHUYÊN VIÊN HỘ TỐNG
+    // ==========================================
+    const escortFee = 8_500_000;
+
+    // ==========================================
+    // 9. CÁCH LY
+    // ==========================================
+    if (data.needIsolation === 'yes') {
+        baseFreight += 10_000_000;
+    }
+
+    // ==========================================
+    // 10. TỔNG CHI PHÍ
+    // ==========================================
+    const totalCost =
+        baseFreight +
+        quarantineFee +
+        feedFee +
+        stallFee +
+        insuranceFee +
+        escortFee;
+
+    // ==========================================
+    // 11. TIỀN ĐẶT CỌC 50%
+    // ==========================================
+    const depositCost =
+        totalCost * 0.5;
+
+    // ==========================================
+    // 12. TÌM BẢNG
+    // ==========================================
+    const tbody =
+        document.querySelector('.data-table tbody');
+
+    const tfoot =
+        document.querySelector('.data-table tfoot');
+
+    // ==========================================
+    // 13. CẬP NHẬT CÁC DÒNG CHI PHÍ
+    // ==========================================
     if (tbody) {
+
         tbody.innerHTML = `
+
+            <!-- CƯỚC VẬN CHUYỂN -->
             <tr>
                 <td>
-                    <div class="font-semibold">${isDomestic ? 'Cước vận chuyển Nội địa đường bộ chuyên dụng' : 'Cước vận chuyển Quốc tế Đa phương thức'}</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">${data.originLocationName} &rarr; ${data.destLocationName}</div>
+                    <div class="font-semibold">
+                        ${isDomestic
+                ? 'Cước vận chuyển Nội địa đường bộ chuyên dụng'
+                : 'Cước vận chuyển Quốc tế Đa phương thức'
+            }
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        ${data.originLocationName || ''
+            }
+                        &rarr;
+                        ${data.destLocationName || ''
+            }
+                    </div>
                 </td>
-                <td class="text-right font-semibold">${(baseFreight / quantity).toLocaleString('vi-VN')} ₫</td>
-                <td class="text-center">${quantity} Cá thể</td>
-                <td class="text-right font-bold">${baseFreight.toLocaleString('vi-VN')} ₫</td>
+
+                <td class="text-right font-semibold">
+                    ${(baseFreight / quantity)
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
+
+                <td class="text-center">
+                    ${quantity} Cá thể
+                </td>
+
+                <td class="text-right font-bold">
+                    ${baseFreight
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
             </tr>
+
+
+            <!-- KIỂM DỊCH -->
             <tr>
                 <td>
-                    <div class="font-semibold">${isDomestic ? 'Phí Kiểm dịch Thú y Thú cưng / Gia súc liên tỉnh' : 'Phí Kiểm dịch Thú y Quốc tế & Thủ tục Hải quan OIE'}</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">Chứng nhận an toàn sinh học và kiểm tra cửa khẩu</div>
+                    <div class="font-semibold">
+                        ${isDomestic
+                ? 'Phí Kiểm dịch Thú y liên tỉnh'
+                : 'Phí Kiểm dịch Thú y Quốc tế & Thủ tục Hải quan OIE'
+            }
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        Chứng nhận an toàn sinh học và kiểm tra cửa khẩu
+                    </div>
                 </td>
-                <td class="text-right font-semibold">${(quarantineFee / quantity).toLocaleString('vi-VN')} ₫</td>
-                <td class="text-center">${quantity} Đơn</td>
-                <td class="text-right font-bold">${quarantineFee.toLocaleString('vi-VN')} ₫</td>
+
+                <td class="text-right font-semibold">
+                    ${(quarantineFee / quantity)
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
+
+                <td class="text-center">
+                    ${quantity} Đơn
+                </td>
+
+                <td class="text-right font-bold">
+                    ${quarantineFee
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
             </tr>
+
+
+            <!-- THỨC ĂN -->
             <tr>
                 <td>
-                    <div class="font-semibold">Khẩu phần dinh dưỡng (${data.foodTypeName || 'Cỏ khô Timothy Hay'})</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">Dự phòng 3 ngày hành trình và thời gian trung chuyển</div>
+                    <div class="font-semibold">
+                        Khẩu phần dinh dưỡng
+                        (${data.foodTypeName ||
+            'Cỏ khô Timothy Hay'
+            })
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        Dự phòng 3 ngày hành trình và thời gian trung chuyển
+                    </div>
                 </td>
-                <td class="text-right font-semibold">500,000 ₫/ngày</td>
-                <td class="text-center">${3 * quantity} Khẩu phần</td>
-                <td class="text-right font-bold">${feedFee.toLocaleString('vi-VN')} ₫</td>
+
+                <td class="text-right font-semibold">
+                    500,000 ₫/ngày
+                </td>
+
+                <td class="text-center">
+                    ${3 * quantity} Khẩu phần
+                </td>
+
+                <td class="text-right font-bold">
+                    ${feedFee
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
             </tr>
+
+
+            <!-- KHOANG -->
             <tr>
                 <td>
-                    <div class="font-semibold">Quy cách khoang vận chuyển: ${data.stallTypeName || 'Khoang Tiêu chuẩn'}</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">Sàn đệm cao su giảm chấn, thông khí đa chiều</div>
+                    <div class="font-semibold">
+                        Quy cách khoang vận chuyển:
+                        ${data.stallTypeName ||
+            'Khoang Tiêu chuẩn'
+            }
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        Sàn đệm cao su giảm chấn, thông khí đa chiều
+                    </div>
                 </td>
-                <td class="text-right font-semibold">${stallFee > 0 ? (stallFee / quantity).toLocaleString('vi-VN') + ' ₫' : '—'}</td>
-                <td class="text-center">${quantity} Khoang</td>
-                <td class="text-right font-bold" style="${stallFee > 0 ? '' : 'color: #059669;'}">${stallFee > 0 ? stallFee.toLocaleString('vi-VN') + ' ₫' : 'Đã bao gồm'}</td>
+
+                <td class="text-right font-semibold">
+                    ${stallFee > 0
+                ? (stallFee / quantity)
+                    .toLocaleString('vi-VN') + ' ₫'
+                : '—'
+            }
+                </td>
+
+                <td class="text-center">
+                    ${quantity} Khoang
+                </td>
+
+                <td
+                    class="text-right font-bold"
+                    style="${stallFee > 0
+                ? ''
+                : 'color: #059669;'
+            }"
+                >
+                    ${stallFee > 0
+                ? stallFee.toLocaleString('vi-VN') + ' ₫'
+                : 'Đã bao gồm'
+            }
+                </td>
             </tr>
+
+
+            <!-- BẢO HIỂM -->
             <tr>
                 <td>
-                    <div class="font-semibold">Bảo hiểm vận chuyển (${data.insuranceName || 'Gói Cơ bản'})</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">Giá trị ngựa khai báo: ${(data.horseValue || 2000000000).toLocaleString('vi-VN')} ₫</div>
+                    <div class="font-semibold">
+                        Bảo hiểm vận chuyển
+                        (${data.insuranceName ||
+            'Gói Cơ bản'
+            })
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        Giá trị ngựa khai báo:
+                        ${horseValue.toLocaleString('vi-VN')
+            } ₫
+                    </div>
                 </td>
-                <td class="text-right font-semibold">${(insuranceRate * 100).toFixed(1)}% giá trị</td>
-                <td class="text-center">1 Hợp đồng</td>
-                <td class="text-right font-bold">${insuranceFee.toLocaleString('vi-VN')} ₫</td>
+
+                <td class="text-right font-semibold">
+                    ${(insuranceRate * 100).toFixed(1)
+            }% giá trị
+                </td>
+
+                <td class="text-center">
+                    1 Hợp đồng
+                </td>
+
+                <td class="text-right font-bold">
+                    ${insuranceFee
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
             </tr>
+
+
+            <!-- ESCORT -->
             <tr>
                 <td>
-                    <div class="font-semibold">Chuyên viên Hộ tống & Giám sát Y tế Sức khỏe 24/7 (Escort)</div>
-                    <div class="text-muted" style="font-size: 0.8rem;">Theo dõi sinh trắc, nhịp tim và báo cáo GPS theo thời gian thực</div>
+                    <div class="font-semibold">
+                        Chuyên viên Hộ tống & Giám sát Y tế Sức khỏe 24/7 (Escort)
+                    </div>
+
+                    <div class="text-muted" style="font-size: 0.8rem;">
+                        Theo dõi sinh trắc, nhịp tim và báo cáo GPS theo thời gian thực
+                    </div>
                 </td>
-                <td class="text-right font-semibold">${escortFee.toLocaleString('vi-VN')} ₫</td>
-                <td class="text-center">1 Chuyên viên</td>
-                <td class="text-right font-bold">${escortFee.toLocaleString('vi-VN')} ₫</td>
+
+                <td class="text-right font-semibold">
+                    ${escortFee
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
+
+                <td class="text-center">
+                    1 Chuyên viên
+                </td>
+
+                <td class="text-right font-bold">
+                    ${escortFee
+                .toLocaleString('vi-VN')
+            } ₫
+                </td>
             </tr>
         `;
     }
 
+    // ==========================================
+    // 14. TỔNG + TIỀN ĐẶT CỌC
+    // ==========================================
     if (tfoot) {
+
         tfoot.innerHTML = `
+
             <tr style="background: #0f172a; color: white;">
-                <td colspan="3" style="padding: 14px 16px; font-weight: 700; font-size: 1rem;">
+
+                <td
+                    colspan="3"
+                    style="
+                        padding: 14px 16px;
+                        font-weight: 700;
+                        font-size: 1rem;
+                    "
+                >
                     TỔNG CHI PHÍ DỰ TOÁN TỰ ĐỘNG
                 </td>
-                <td class="text-right" style="padding: 14px 16px; font-weight: 800; font-size: 1.2rem; color: #fb923c;">
-                    ${totalCost.toLocaleString('vi-VN')} VND
+
+                <td
+                    class="text-right"
+                    style="
+                        padding: 14px 16px;
+                        font-weight: 800;
+                        font-size: 1.2rem;
+                        color: #fb923c;
+                    "
+                >
+                    ${totalCost.toLocaleString('vi-VN')
+            } VND
                 </td>
+
             </tr>
-            <tr style="background: #1e293b; color: #cbd5e1;">
-                <td colspan="3" style="padding: 10px 16px; font-size: 0.85rem;">
-                    Tiền đặt cọc giữ chỗ & thẩm định lịch bay (50%)
-                </td>
-                <td class="text-right font-bold" style="padding: 10px 16px; font-size: 0.95rem; color: #fbbf24;">
-                    ${depositCost.toLocaleString('vi-VN')} VND
-                </td>
-            </tr>
+
+
+            
         `;
     }
 }
