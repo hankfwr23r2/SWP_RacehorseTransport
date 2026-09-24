@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Manager</title>
     <link rel="stylesheet" href="manager_dashboard.css">
+    <link rel="stylesheet" href="manager_navbar.css">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts for typography -->
@@ -18,23 +19,9 @@
 
 <body>
 
-    <div class="ops-layout">
-        <aside class="ops-sidebar">
-            <div class="ops-brand">
-                <div class="logo-circle">EQ</div>
-                <span>Quản lý</span>
-            </div>
-            <nav class="ops-nav">
-                <a href="manager_dashboard.html" class="nav-item active">Bảng điều khiển</a>
-                <a href="manager_phe_duyet.html" class="nav-item">Phê duyệt Đơn hàng</a>
-                <a href="manager_phan_cong.html" class="nav-item">Phân công</a>
-                <a href="manager_trip_reports.html" class="nav-item">Báo cáo Chuyến đi</a>
-                <a href="manager_tiep_nhan.html" class="nav-item">Duyệt & Báo Giá</a>
-                <a href="manager_duyet_su_co.html" class="nav-item">Sự cố & Chi Phí</a>
-            </nav>
-            <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
-        </aside>
-        <div class="ops-main">
+    <!-- Header -->
+    <div id="manager-navbar"></div>
+    <script src="manager_navbar.js"></script>
 
     <!-- Main Content -->
     <main class="container main-content">
@@ -53,19 +40,22 @@
                 <div class="kpi-subtext"><i class="fa-solid fa-arrow-trend-up"></i> Tăng 12% so với năm trước</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-title"><i class="fa-solid fa-money-bill-transfer text-orange"></i> Tổng Chi Phí Vận Hành</div>
+                <div class="kpi-title"><i class="fa-solid fa-money-bill-transfer text-orange"></i> Tổng Chi Phí Vận Hành
+                </div>
                 <div class="kpi-value">31.2 Tỷ</div>
                 <div class="kpi-subtext negative"><i class="fa-solid fa-arrow-trend-up"></i> Tăng 5% (do sự cố)</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title"><i class="fa-solid fa-vault text-orange"></i> Lợi Nhuận Ròng</div>
                 <div class="kpi-value">15.3 Tỷ</div>
-                <div class="kpi-subtext positive"><i class="fa-solid fa-arrow-trend-up"></i> Biên lợi nhuận đạt 33%</div>
+                <div class="kpi-subtext positive"><i class="fa-solid fa-arrow-trend-up"></i> Biên lợi nhuận đạt 33%
+                </div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title"><i class="fa-solid fa-check-double text-orange"></i> On-Time Delivery (OTD)</div>
                 <div class="kpi-value">94.5%</div>
-                <div class="kpi-subtext positive"><i class="fa-solid fa-arrow-trend-up"></i> Tăng 2.1% so với quý trước</div>
+                <div class="kpi-subtext positive"><i class="fa-solid fa-arrow-trend-up"></i> Tăng 2.1% so với quý trước
+                </div>
             </div>
         </div>
 
@@ -88,27 +78,36 @@
                 <div class="card-header">
                     <h2>Chỉ số Hiệu suất Hoàn thành (OTD)</h2>
                 </div>
-                <div class="card-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 350px;">
+                <div class="card-body"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 350px;">
                     <div class="chart-container" style="height: 250px; width: 100%; position: relative;">
                         <canvas id="otdChart"></canvas>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                            <span style="display: block; font-size: 1.8rem; font-weight: 700; color: #1e293b;">94.5%</span>
+                        <div
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                            <span
+                                style="display: block; font-size: 1.8rem; font-weight: 700; color: #1e293b;">94.5%</span>
                             <span style="font-size: 0.75rem; color: #64748b; font-weight: 500;">Đúng giờ</span>
                         </div>
                     </div>
                     <div style="width: 100%; margin-top: 24px; display: flex; justify-content: space-around;">
                         <div style="text-align: center;">
-                            <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; display: inline-block; margin-bottom: 4px;"></div>
+                            <div
+                                style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; display: inline-block; margin-bottom: 4px;">
+                            </div>
                             <div style="font-size: 0.75rem; color: #64748b;">Đúng giờ</div>
                             <div style="font-weight: 600; font-size: 0.9rem; color: #1e293b;">210 chuyến</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; display: inline-block; margin-bottom: 4px;"></div>
+                            <div
+                                style="width: 12px; height: 12px; background: #3b82f6; border-radius: 50%; display: inline-block; margin-bottom: 4px;">
+                            </div>
                             <div style="font-size: 0.75rem; color: #64748b;">Sớm</div>
                             <div style="font-weight: 600; font-size: 0.9rem; color: #1e293b;">18 chuyến</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; display: inline-block; margin-bottom: 4px;"></div>
+                            <div
+                                style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; display: inline-block; margin-bottom: 4px;">
+                            </div>
                             <div style="font-size: 0.75rem; color: #64748b;">Trễ</div>
                             <div style="font-weight: 600; font-size: 0.9rem; color: #1e293b;">12 chuyến</div>
                         </div>
@@ -125,7 +124,8 @@
             <div class="table-responsive">
                 <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: Inter;">
                     <thead>
-                        <tr style="border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 0.75rem; background: #f8fafc;">
+                        <tr
+                            style="border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 0.75rem; background: #f8fafc;">
                             <th style="padding: 12px 16px;">MÃ CHUYẾN</th>
                             <th style="padding: 12px 16px;">TUYẾN ĐƯỜNG</th>
                             <th style="padding: 12px 16px;">THỜI GIAN HOÀN THÀNH</th>
@@ -137,29 +137,43 @@
                         <tr style="border-bottom: 1px solid #f1f5f9;">
                             <td style="padding: 12px 16px; font-weight: 600; color: #1e293b;">#TR-9102</td>
                             <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">HN → HP</td>
-                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">10:30 25/08 <br><span style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 11:00</span></td>
-                            <td style="padding: 12px 16px;"><span style="background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Sớm (30p)</span></td>
+                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">10:30 25/08 <br><span
+                                    style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 11:00</span></td>
+                            <td style="padding: 12px 16px;"><span
+                                    style="background: #dbeafe; color: #1d4ed8; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Sớm
+                                    (30p)</span></td>
                             <td style="padding: 12px 16px; color: #94a3b8; font-size: 0.9rem;">-</td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
                             <td style="padding: 12px 16px; font-weight: 600; color: #1e293b;">#TR-9101</td>
                             <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">TP.HCM → Đà Nẵng</td>
-                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">14:15 25/08 <br><span style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 14:10</span></td>
-                            <td style="padding: 12px 16px;"><span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Đúng giờ</span></td>
+                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">14:15 25/08 <br><span
+                                    style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 14:10</span></td>
+                            <td style="padding: 12px 16px;"><span
+                                    style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Đúng
+                                    giờ</span></td>
                             <td style="padding: 12px 16px; color: #94a3b8; font-size: 0.9rem;">-</td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
                             <td style="padding: 12px 16px; font-weight: 600; color: #1e293b;">#TR-9100</td>
                             <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">Đà Nẵng → TP.HCM</td>
-                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">16:20 24/08 <br><span style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 13:20</span></td>
-                            <td style="padding: 12px 16px;"><span style="background: #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Trễ (3h)</span></td>
-                            <td style="padding: 12px 16px; color: #ea580c; font-weight: 500; font-size: 0.9rem;">1,500,000 VND <br><span style="font-size: 0.75rem; color: #94a3b8;">(Tắc đường)</span></td>
+                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">16:20 24/08 <br><span
+                                    style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 13:20</span></td>
+                            <td style="padding: 12px 16px;"><span
+                                    style="background: #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Trễ
+                                    (3h)</span></td>
+                            <td style="padding: 12px 16px; color: #ea580c; font-weight: 500; font-size: 0.9rem;">
+                                1,500,000 VND <br><span style="font-size: 0.75rem; color: #94a3b8;">(Tắc đường)</span>
+                            </td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
                             <td style="padding: 12px 16px; font-weight: 600; color: #1e293b;">#TR-9099</td>
                             <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">Hà Nội → Đà Nẵng</td>
-                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">08:45 24/08 <br><span style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 08:30</span></td>
-                            <td style="padding: 12px 16px;"><span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Đúng giờ</span></td>
+                            <td style="padding: 12px 16px; color: #475569; font-size: 0.9rem;">08:45 24/08 <br><span
+                                    style="font-size: 0.75rem; color: #94a3b8;">Dự kiến: 08:30</span></td>
+                            <td style="padding: 12px 16px;"><span
+                                    style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">Đúng
+                                    giờ</span></td>
                             <td style="padding: 12px 16px; color: #94a3b8; font-size: 0.9rem;">-</td>
                         </tr>
                     </tbody>
@@ -190,7 +204,7 @@
     </footer>
 
     <!-- Chart.js Initialization -->
-        </div>
+    </div>
     </div>
     <script>
         // --- 1. Financial Combo Chart (Revenue vs Costs) ---

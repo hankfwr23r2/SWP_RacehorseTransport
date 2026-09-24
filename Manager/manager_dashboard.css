@@ -34,101 +34,12 @@ body {
     padding: 0 24px;
 }
 
-/* --- Header --- */
-.main-header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 16px 0;
-    border-bottom: 2px solid var(--accent-orange);
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
 .logo-icon-eq {
     background-color: var(--accent-orange);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.9rem;
-}
-
-.main-nav {
-    display: flex;
-}
-
-.main-nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 16px;
-    flex-wrap: nowrap;
-}
-
-.main-nav a {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    font-weight: 500;
-    padding-bottom: 4px;
-    border-bottom: 2px solid transparent;
-}
-
-.main-nav a:hover {
-    color: white;
-}
-
-.main-nav a.active {
-    color: white;
-    font-weight: 600;
-    border-bottom-color: var(--accent-orange);
-}
-
-.user-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.85rem;
-}
-
-.avatar {
-    width: 30px;
-    height: 30px;
-    background-color: #475569;
-    border-radius: 50%;
-}
-
-.greeting {
-    color: #f8fafc;
-}
-
-.divider {
-    color: #475569;
-}
-
-.btn-logout {
-    background: transparent;
-    border: none;
-    color: var(--accent-orange);
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 500;
-}
-.btn-logout:hover {
-    text-decoration: underline;
 }
 
 /* --- Main Content --- */
