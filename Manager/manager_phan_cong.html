@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân công & Personnel - Manager</title>
+    <title>Nhân sự & Điều chuyển - Manager</title>
     <link rel="stylesheet" href="manager_phan_cong.css">
+    <link rel="stylesheet" href="manager_navbar.css">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts for typography -->
@@ -16,146 +17,97 @@
 <body>
 
     <!-- Header -->
-    <header class="main-header">
-        <div class="container header-container">
-            <a href="manager_dashboard.html" class="logo" style="text-decoration: none; color: inherit;">
-                <div class="logo-icon-eq">EQ</div>
-                <span>Vận chuyển Ngựa</span>
-            </a>
-            <nav class="main-nav" aria-label="Menu chính">
-                <ul>
-                    <li><a href="manager_dashboard.html">Bảng điều khiển</a></li>
-                    <li><a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a></li>
-                    <li><a href="manager_phan_cong.html" class="active" aria-current="page">Phân công</a></li>
-                    <li><a href="manager_trip_reports.html">Báo cáo Chuyến đi</a></li>
-                    <li><a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a></li>
-                    <li><a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a></li>
-                </ul>
-            </nav>
-            <div class="user-actions">
-                <div class="avatar"></div>
-                <span class="greeting">Quản lý</span>
-                <span class="divider">|</span>
-                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
-            </div>
-        </div>
-    </header>
+    <div id="manager-navbar"></div>
+    <script src="manager_navbar.js"></script>
 
     <!-- Main Content -->
     <main class="container main-content">
+
+        <!-- Page Title & Breadcrumb -->
         <div class="page-header">
-            <h1>Phân công & Personnel</h1>
+            <div class="breadcrumb">
+                <span class="text-muted">Hệ thống Vận hành</span> /
+                <span class="text-orange">Nhân sự &amp; Điều chuyển</span>
+            </div>
+            <h1>Nhân sự &amp; Điều chuyển</h1>
+            <p class="subtitle">Theo dõi hạn xử lý của Kiểm dịch viên và Điều phối viên. Đơn trễ hạn hoặc có người phụ trách nghỉ được hệ thống tự động chuyển cho người ít đơn nhất; manager chỉ xử lý khi không còn ai để chuyển.</p>
         </div>
 
-        <!-- Tuyến xe cần phân công -->
-        <div class="card mb-4">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                <h2 style="margin: 0;">Quản lý Phân công Nhân sự</h2>
-                <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
-                    <select style="padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; outline: none; font-family: Inter; color: #334155; cursor: pointer;">
-                        <option value="all">Khu vực: Tất cả</option>
-                        <option value="north">Miền Bắc</option>
-                        <option value="south">Miền Nam</option>
-                    </select>
-                    <div class="search-bar" style="position: relative;">
-                        <input type="text" placeholder="Tìm Mã đơn, Khách hàng..." style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
-                        <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
-                    </div>
-                </div>
+        <!-- Quy tắc SLA -->
+        <details class="card rules-card">
+            <summary><i class="fa-solid fa-book"></i> Quy tắc hạn xử lý &amp; tự động chuyển</summary>
+            <div id="rules-content" class="rules-content"></div>
+        </details>
+
+        <!-- Thống kê nhanh -->
+        <div class="stat-grid">
+            <div class="stat-card"><span class="stat-label">Nhân sự đang nghỉ</span><span class="stat-value" id="stat-off">0</span></div>
+            <div class="stat-card"><span class="stat-label">Đơn đang xử lý</span><span class="stat-value" id="stat-tasks">0</span></div>
+            <div class="stat-card stat-info"><span class="stat-label">Đã tự động chuyển</span><span class="stat-value" id="stat-auto">0</span></div>
+            <div class="stat-card stat-danger"><span class="stat-label">Cần manager xử lý</span><span class="stat-value" id="stat-manager">0</span></div>
+        </div>
+
+        <!-- Đơn cần xử lý / Nhật ký -->
+        <div class="card table-card">
+            <div class="status-tabs" style="padding: 0 24px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap;">
+                <div class="status-tab issue-tab active-tab" data-issue="manager" onclick="switchIssueTab('manager')" style="padding-bottom: 12px; cursor: pointer;"><i class="fa-solid fa-triangle-exclamation text-amber"></i> Cần manager xử lý (<span id="count-manager">0</span>)</div>
+                <div class="status-tab issue-tab" data-issue="log" onclick="switchIssueTab('log')" style="padding-bottom: 12px; cursor: pointer;"><i class="fa-solid fa-robot"></i> Nhật ký tự động chuyển (<span id="count-log">0</span>)</div>
             </div>
-            
-            <!-- Tabs Trạng thái -->
-            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
-                <div style="padding-bottom: 12px; border-bottom: 2px solid #ea580c; color: #ea580c; font-weight: 600; cursor: pointer;">Chờ phân công (5)</div>
-                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Đang thực hiện (12)</div>
-                <div style="padding-bottom: 12px; color: #64748b; font-weight: 500; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#1e293b'" onmouseout="this.style.color='#64748b'">Hoàn thành (80)</div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead id="issue-table-head"></thead>
+                    <tbody id="issue-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Danh sách nhân sự -->
+        <div class="card table-card" style="margin-top: 24px;">
+            <div class="card-header">
+                <h2>Danh sách Nhân sự</h2>
+            </div>
+            <div class="status-tabs" style="padding: 0 24px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
+                <div class="status-tab staff-tab active-tab" data-tab="inspector" onclick="switchTab('inspector')" style="padding-bottom: 12px; cursor: pointer;">Kiểm dịch viên (<span id="count-inspector">0</span>)</div>
+                <div class="status-tab staff-tab" data-tab="coordinator" onclick="switchTab('coordinator')" style="padding-bottom: 12px; cursor: pointer;">Điều phối viên (<span id="count-coordinator">0</span>)</div>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>MÃ ĐƠN & KHÁCH HÀNG</th>
-                            <th>TUYẾN ĐƯỜNG</th>
-                            <th>NGÀY KHỞI HÀNH</th>
-                            <th>ĐẶC ĐIỂM NGỰA</th>
-                            <th>TRẠNG THÁI</th>
-                            <th class="text-right">HÀNH ĐỘNG</th>
+                            <th>Mã NV</th>
+                            <th>Họ tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Trạng thái</th>
+                            <th>Đơn đang xử lý</th>
+                            <th>Trễ hạn (tháng)</th>
+                            <th>Bị chuyển đơn (tháng)</th>
+                            <th class="text-right">Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="font-semibold" style="color: #ea580c;">#TR-9022</div>
-                                <div class="text-muted" style="font-size: 0.85rem;"><i class="fa-solid fa-user" style="margin-right: 4px;"></i>Hoàng Anh T.</div>
-                            </td>
-                            <td class="text-muted">Thanh Hóa &rarr; Hải Phòng</td>
-                            <td class="text-muted">28/08/2026</td>
-                            <td class="text-muted">Royal British Steed, nhạy cảm nhiệt</td>
-                            <td><span class="badge badge-warning">Chờ phân công</span></td>
-                            <td class="text-right">
-                                <button class="btn btn-primary" onclick="openAssignModal('TR-9022')" style="padding: 6px 12px; border-radius: 4px; border: none; font-weight: 600; font-family: Inter; cursor: pointer; background: #ea580c; color: white;"><i class="fa-solid fa-user-plus"></i> Phân công</button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="staff-table-body"></tbody>
                 </table>
-            </div>
-            
-            <!-- Phân trang (Pagination) -->
-            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
-                <span class="text-muted" style="font-size: 0.85rem;">Hiển thị 1-10 của 17 Đơn hàng</span>
-                <div class="pagination" style="display: flex; gap: 4px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang trước</button>
-                    <button class="btn btn-primary" style="padding: 6px 12px; border: none; border-radius: 4px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">1</button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">2</button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; cursor: pointer; color: #64748b;">Trang sau</button>
-                </div>
             </div>
         </div>
 
     </main>
-    
-    <!-- Modal Phân công -->
-    <div id="assignModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
-        <div class="modal-content" style="background: white; border-radius: 8px; width: 100%; max-width: 600px; padding: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 20px;">
-                <h2 style="margin: 0; font-size: 1.25rem; color: #1e293b;"><i class="fa-solid fa-user-plus text-orange" style="margin-right: 8px;"></i>Phân công Nhân sự <span id="modal-assign-id" style="color: #ea580c;">#TR-9022</span></h2>
-                <button onclick="closeAssignModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748b;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="form-grid" style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px;">
-                <div class="form-group">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #475569;">Chọn Điều phối viên (Coordinator)</label>
-                    <select class="form-control" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-family: Inter;">
-                        <option>Trần Minh</option>
-                        <option>Lê Quang</option>
-                        <option>Phạm Tâm</option>
-                    </select>
+
+    <!-- Modal dùng chung: Xem đơn / Chuyển người phụ trách / Báo nghỉ -->
+    <div id="staffModal" class="modal-overlay">
+        <div class="modal-content approval-modal">
+            <div class="approval-modal-header">
+                <div>
+                    <h2 class="modal-title" id="m-title"></h2>
+                    <p class="modal-subtitle" id="m-subtitle"></p>
                 </div>
-                <div class="form-group">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #475569;">Chọn Chuyên viên Y tế / Pháp lý</label>
-                    <select class="form-control" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-family: Inter;">
-                        <option>Phạm Văn Hưng</option>
-                        <option>Nguyễn Thị Thu</option>
-                    </select>
-                </div>
+                <button class="modal-close" onclick="closeModal()" aria-label="Đóng">&times;</button>
             </div>
-            
-            <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 12px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
-                <button class="btn btn-outline" onclick="closeAssignModal()" style="padding: 8px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; cursor: pointer;">Hủy bỏ</button>
-                <button class="btn btn-primary" onclick="closeAssignModal()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #ea580c; color: white; font-weight: 600; cursor: pointer;">Xác nhận Phân công</button>
+            <div id="m-body"></div>
+            <div class="approval-actions">
+                <button class="btn btn-light" onclick="closeModal()">Đóng</button>
+                <div class="approval-actions-right" id="m-actions"></div>
             </div>
         </div>
     </div>
-    
-    <script>
-        function openAssignModal(id) {
-            document.getElementById('modal-assign-id').innerText = '#' + id;
-            document.getElementById('assignModal').style.display = 'flex';
-        }
-        function closeAssignModal() {
-            document.getElementById('assignModal').style.display = 'none';
-        }
-    </script>
 
     <!-- Footer -->
     <footer class="main-footer">
@@ -177,6 +129,7 @@
         </div>
     </footer>
 
+    <script src="manager_phan_cong.js"></script>
 <script src="../global_translate.js"></script>
 </body>
 </html>

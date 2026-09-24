@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo cáo Chuyến đi - Manager</title>
     <link rel="stylesheet" href="manager_trip_reports.css">
+    <link rel="stylesheet" href="manager_navbar.css">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts for typography -->
@@ -17,30 +18,8 @@
 <body>
 
     <!-- Header -->
-    <header class="main-header">
-        <div class="container header-container">
-            <a href="manager_dashboard.html" class="logo" style="text-decoration: none; color: inherit;">
-                <div class="logo-icon-eq">EQ</div>
-                <span>Vận chuyển Ngựa</span>
-            </a>
-            <nav class="main-nav" aria-label="Menu chính">
-                <ul>
-                    <li><a href="manager_dashboard.html">Bảng điều khiển</a></li>
-                    <li><a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a></li>
-                    <li><a href="manager_phan_cong.html">Phân công</a></li>
-                    <li><a href="manager_trip_reports.html" class="active" aria-current="page">Báo cáo Chuyến đi</a></li>
-                    <li><a href="manager_tiep_nhan.html">Duyệt & Báo Giá</a></li>
-                    <li><a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a></li>
-                </ul>
-            </nav>
-            <div class="user-actions">
-                <div class="avatar"></div>
-                <span class="greeting">Quản lý</span>
-                <span class="divider">|</span>
-                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
-            </div>
-        </div>
-    </header>
+    <div id="manager-navbar"></div>
+    <script src="manager_navbar.js"></script>
 
     <!-- Main Content -->
     <main class="container main-content">
