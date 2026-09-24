@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duyệt & Báo Giá - Manager</title>
+    <title>Tiếp nhận Đơn hàng - Manager</title>
     <link rel="stylesheet" href="manager_tiep_nhan.css">
+    <link rel="stylesheet" href="manager_navbar.css">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts for typography -->
@@ -16,169 +17,63 @@
 <body>
 
     <!-- Header -->
-    <header class="main-header">
-        <div class="container header-container">
-            <a href="manager_dashboard.html" class="logo" style="text-decoration: none; color: inherit;">
-                <div class="logo-icon-eq">EQ</div>
-                <span>Vận chuyển Ngựa</span>
-            </a>
-            <nav class="main-nav" aria-label="Menu chính">
-                <ul>
-                    <li><a href="manager_dashboard.html">Bảng điều khiển</a></li>
-                    <li><a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a></li>
-                    <li><a href="manager_phan_cong.html">Phân công</a></li>
-                    <li><a href="manager_trip_reports.html">Báo cáo Chuyến đi</a></li>
-                    <li><a href="manager_tiep_nhan.html" class="active" aria-current="page">Duyệt & Báo Giá</a></li>
-                    <li><a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a></li>
-                </ul>
-            </nav>
-            <div class="user-actions">
-                <div class="avatar"></div>
-                <span class="greeting">Quản lý</span>
-                <span class="divider">|</span>
-                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
-            </div>
-        </div>
-    </header>
+    <div id="manager-navbar"></div>
+    <script src="manager_navbar.js"></script>
 
     <!-- Main Content -->
     <main class="container main-content">
+
+        <!-- Page Title & Breadcrumb -->
         <div class="page-header">
-            <h1>Duyệt & Báo Giá</h1>
-            <p class="subtitle">Quản lý duyệt báo giá tự động dựa trên các tùy chọn của khách hàng.</p>
+            <div class="breadcrumb">
+                <span class="text-muted">Hệ thống Vận hành</span> /
+                <span class="text-orange">Tiếp nhận Đơn hàng</span>
+            </div>
+            <h1>Tiếp nhận Đơn hàng</h1>
+            <p class="subtitle">Đơn khách hàng vừa gửi (đã có báo giá tự động). Xác nhận phân công Kiểm dịch viên &amp; Điều phối viên để chuyển xử lý, hoặc từ chối sớm đơn không hợp lệ.</p>
         </div>
 
-        <!-- Yêu cầu chờ duyệt báo giá -->
-        <div class="card mb-4">
+        <div class="card table-card">
             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                <h2 style="margin: 0;">Quản lý Yêu cầu Báo giá</h2>
+                <h2 style="margin: 0;">Danh sách Đơn hàng</h2>
                 <div class="filter-actions" style="display: flex; gap: 12px; align-items: center;">
                     <div class="search-bar" style="position: relative;">
-                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng..." oninput="searchTable()" style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
+                        <input id="search-input" type="text" placeholder="Tìm Mã đơn, Khách hàng, Tuyến..." oninput="searchTable()" style="padding: 8px 16px 8px 36px; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; font-family: Inter; outline: none;">
                         <i class="fa-solid fa-search" style="position: absolute; left: 12px; top: 10.5px; color: #94a3b8;"></i>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Tabs Trạng thái -->
-            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px;">
-                <div class="status-tab active-tab" data-tab="pending" onclick="switchTab('pending')" style="padding-bottom: 12px; font-weight: 600; cursor: pointer;">Chờ duyệt (<span id="count-pending">0</span>)</div>
-                <div class="status-tab" data-tab="approved" onclick="switchTab('approved')" style="padding-bottom: 12px; font-weight: 500; cursor: pointer;">Đã gửi Báo giá (<span id="count-approved">0</span>)</div>
-                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')" style="padding-bottom: 12px; font-weight: 500; cursor: pointer;">Từ chối (<span id="count-rejected">0</span>)</div>
+            <div class="status-tabs" style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end;">
+                <div class="status-tab active-tab" data-tab="new" onclick="switchTab('new')" style="padding-bottom: 12px; cursor: pointer;">Đơn mới (<span id="count-new">0</span>)</div>
+                <div class="status-tab" data-tab="inspecting" onclick="switchTab('inspecting')" style="padding-bottom: 12px; cursor: pointer;">Đang kiểm dịch (<span id="count-inspecting">0</span>)</div>
+                <div class="status-tab" data-tab="routing" onclick="switchTab('routing')" style="padding-bottom: 12px; cursor: pointer;">Đang lập lộ trình (<span id="count-routing">0</span>)</div>
+                <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')" style="padding-bottom: 12px; cursor: pointer;">Từ chối sớm (<span id="count-rejected">0</span>)</div>
+                <a href="manager_phe_duyet.html" class="next-step-link">Sang Phê duyệt Đơn hàng <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>MÃ ĐƠN</th>
-                            <th>KHÁCH HÀNG</th>
-                            <th>TUYẾN ĐƯỜNG</th>
-                            <th>CHI PHÍ TỰ ĐỘNG</th>
-                            <th>TRẠNG THÁI</th>
-                            <th class="text-right">HÀNH ĐỘNG</th>
+                            <th>Mã Đơn hàng</th>
+                            <th>Khách hàng</th>
+                            <th>Tuyến đường</th>
+                            <th>Số ngựa</th>
+                            <th>Gửi lúc</th>
+                            <th>Khởi hành</th>
+                            <th class="text-right">Giá đã báo</th>
+                            <th id="col-assignee">Phụ trách</th>
+                            <th class="text-right">Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8910</td>
-                            <td class="text-muted">Nguyễn Văn A</td>
-                            <td class="text-muted">Hà Nội → TP.HCM</td>
-                            <td class="font-bold text-orange">25,500,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8911</td>
-                            <td class="text-muted">Trần Thị B</td>
-                            <td class="text-muted">Dubai (DXB) → London (LHR)</td>
-                            <td class="font-bold text-orange">612,500,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8912</td>
-                            <td class="text-muted">Lê Hoàng C</td>
-                            <td class="text-muted">Đà Nẵng → Hà Nội</td>
-                            <td class="font-bold text-orange">18,200,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8913</td>
-                            <td class="text-muted">Phạm Văn D</td>
-                            <td class="text-muted">Tokyo (NRT) → Hà Nội (HAN)</td>
-                            <td class="font-bold text-orange">480,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8914</td>
-                            <td class="text-muted">Võ Thị E</td>
-                            <td class="text-muted">Seoul (ICN) → TP.HCM (SGN)</td>
-                            <td class="font-bold text-orange">350,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8915</td>
-                            <td class="text-muted">Hoàng Minh F</td>
-                            <td class="text-muted">Singapore (SIN) → Đà Nẵng (DAD)</td>
-                            <td class="font-bold text-orange">290,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8916</td>
-                            <td class="text-muted">Ngô Văn G</td>
-                            <td class="text-muted">Hà Nội → Đà Nẵng</td>
-                            <td class="font-bold text-orange">15,800,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8917</td>
-                            <td class="text-muted">Đặng Thị H</td>
-                            <td class="text-muted">Melbourne (MEL) → Hà Nội (HAN)</td>
-                            <td class="font-bold text-orange">520,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8918</td>
-                            <td class="text-muted">Bùi Văn I</td>
-                            <td class="text-muted">Paris (CDG) → TP.HCM (SGN)</td>
-                            <td class="font-bold text-orange">680,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8919</td>
-                            <td class="text-muted">Trương Thị K</td>
-                            <td class="text-muted">Hong Kong (HKG) → Hà Nội (HAN)</td>
-                            <td class="font-bold text-orange">410,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8920</td>
-                            <td class="text-muted">Lý Văn L</td>
-                            <td class="text-muted">TP.HCM → Hà Nội</td>
-                            <td class="font-bold text-orange">22,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
-                        <tr data-status="pending">
-                            <td class="font-semibold">#EQ-8921</td>
-                            <td class="text-muted">Mai Thị M</td>
-                            <td class="text-muted">London (LHR) → Đà Nẵng (DAD)</td>
-                            <td class="font-bold text-orange">750,000,000 VND</td>
-                            <td><span class="badge badge-warning">Chờ duyệt</span></td>
-                            <td class="text-right"><button class="btn btn-outline" onclick="openQuoteModal(this)" style="padding: 6px 12px;">Xem chi tiết</button></td>
-                        </tr>
+                    <tbody id="order-table-body">
+                        <!-- Render từ dữ liệu trong manager_tiep_nhan.js -->
                     </tbody>
                 </table>
             </div>
-            
+
+            <!-- Phân trang (Pagination) -->
             <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid #e2e8f0;">
                 <span id="pagination-info" class="text-muted" style="font-size: 0.85rem;"></span>
                 <div id="pagination-buttons" class="pagination" style="display: flex; gap: 4px;"></div>
@@ -187,74 +82,81 @@
 
     </main>
 
-    <!-- Modal Chi tiết Báo giá -->
-    <div id="quoteDetailModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content" style="background: white; border-radius: 8px; width: 100%; max-width: 600px; padding: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px;">
-                <h2 style="margin: 0; font-size: 1.25rem; color: #1e293b;">Chi tiết Báo giá Tự động <span id="modal-order-id" style="color: #ea580c;">#EQ-8910</span></h2>
-                <button onclick="closeQuoteModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748b;"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-                <h3 style="font-size: 1rem; color: #334155; margin-bottom: 8px;">1. Tùy chọn của Khách hàng</h3>
-                <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; color: #475569; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <li><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Số lượng: 2 ngựa</li>
-                    <li><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Dịch vụ Thú y: Có</li>
-                    <li><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Khu vực cách ly: Có</li>
-                    <li><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Bảo hiểm: Tiêu chuẩn</li>
-                </ul>
+    <!-- Modal Tiếp nhận Đơn hàng -->
+    <div id="intakeModal" class="modal-overlay">
+        <div class="modal-content approval-modal">
+            <div class="approval-modal-header">
+                <div>
+                    <h2 class="modal-title">Đơn <span id="m-order-id"></span></h2>
+                    <p class="modal-subtitle" id="m-order-sub"></p>
+                </div>
+                <button class="modal-close" onclick="closeModal()" aria-label="Đóng">&times;</button>
             </div>
 
-            <div style="margin-bottom: 24px;">
-                <h3 style="font-size: 1rem; color: #334155; margin-bottom: 8px;">2. Phân tách Chi phí (Tự động)</h3>
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-                        <span style="color: #475569;">Chi phí Vận chuyển (Air)</span>
-                        <span style="font-weight: 500; color: #1e293b;">500,000,000 VND</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-                        <span style="color: #475569;">Chi phí Y tế & Cách ly</span>
-                        <span style="font-weight: 500; color: #1e293b;">75,000,000 VND</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-                        <span style="color: #475569;">Bảo hiểm & Thủ tục</span>
-                        <span style="font-weight: 500; color: #1e293b;">37,500,000 VND</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding-top: 8px; border-top: 1px dashed #cbd5e1; font-size: 1.05rem;">
-                        <span style="font-weight: 600; color: #1e293b;">Tổng Cộng</span>
-                        <span style="font-weight: 700; color: #ea580c;">612,500,000 VND</span>
-                    </div>
+            <!-- Tiến trình xử lý đơn -->
+            <div id="m-stepper" class="stepper"></div>
+
+            <!-- Trạng thái (chỉ hiện với đơn đã xử lý) -->
+            <div id="m-status-banner" class="status-banner" style="display: none;"></div>
+
+            <div class="approval-modal-body">
+                <!-- 1. Thông tin chuyến -->
+                <section class="approval-section">
+                    <h3 class="section-title"><span class="section-num">1</span> Thông tin chuyến</h3>
+                    <div id="m-trip" class="info-grid"></div>
+                </section>
+
+                <!-- 2. Ngựa & hồ sơ khách nộp -->
+                <section class="approval-section">
+                    <h3 class="section-title"><span class="section-num">2</span> Ngựa &amp; hồ sơ khách đã nộp</h3>
+                    <p class="section-by"><i class="fa-solid fa-circle-info"></i> Kiểm dịch viên sẽ xác minh tính hợp lệ của giấy tờ ở bước sau.</p>
+                    <div id="m-horses" class="horse-list"></div>
+                    <div id="m-customer-note" class="staff-note"></div>
+                </section>
+
+                <!-- 3. Báo giá đã gửi khách -->
+                <section class="approval-section">
+                    <h3 class="section-title"><span class="section-num">3</span> Báo giá đã gửi khách</h3>
+                    <div id="m-quote" class="finance-box"></div>
+                </section>
+
+                <!-- 4. Kiểm tra tự động -->
+                <section class="approval-section">
+                    <h3 class="section-title"><span class="section-num">4</span> Hệ thống kiểm tra tự động</h3>
+                    <ul id="m-checks" class="check-list"></ul>
+                </section>
+
+                <!-- 5. Phân công -->
+                <section class="approval-section">
+                    <h3 class="section-title"><span class="section-num">5</span> Phân công xử lý</h3>
+                    <div id="m-assign"></div>
+                </section>
+            </div>
+
+            <!-- Hộp Từ chối sớm -->
+            <div id="reject-box" class="action-box action-box-danger" style="display: none;">
+                <label class="action-label">Lý do từ chối <span class="required">*</span></label>
+                <select id="reject-type" class="action-input">
+                    <option value="Đơn trùng lặp">Đơn trùng lặp</option>
+                    <option value="Thông tin khai báo không khớp hồ sơ">Thông tin khai báo không khớp hồ sơ</option>
+                    <option value="Ngựa không thuộc diện vận chuyển">Ngựa không thuộc diện vận chuyển (không phải ngựa đua / không khỏe mạnh)</option>
+                    <option value="Khác">Khác</option>
+                </select>
+                <label class="action-label" style="margin-top: 10px;">Ghi chú gửi khách hàng <span class="required">*</span></label>
+                <textarea id="reject-note" class="action-input" rows="3" placeholder="Nhập chi tiết lý do từ chối..."></textarea>
+                <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Khách chưa thanh toán nên không phát sinh hoàn tiền. Chỗ xe giữ tạm sẽ được nhả.</p>
+                <div class="action-box-buttons">
+                    <button class="btn btn-light" onclick="hideRejectBox()">Hủy</button>
+                    <button class="btn btn-red" onclick="confirmReject()">Xác nhận Từ chối</button>
                 </div>
             </div>
 
-            <div id="tn-reject-reason-box" style="display: none; margin-bottom: 12px; padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; animation: slideDown 0.3s ease;">
-                <label style="font-size: 0.85rem; font-weight: 600; color: #dc2626; display: block; margin-bottom: 8px;">Lý do từ chối <span style="color: #ef4444;">*</span></label>
-                <textarea id="tn-reject-reason-input" rows="3" placeholder="Nhập lý do từ chối báo giá..." style="width: 100%; padding: 10px 12px; border: 1px solid #fecaca; border-radius: 6px; font-family: Inter; font-size: 0.85rem; resize: vertical; outline: none; box-sizing: border-box;"></textarea>
-                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
-                    <button onclick="hideRejectReason()" style="padding: 8px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; color: #475569; font-weight: 600; cursor: pointer; font-family: Inter;">Hủy</button>
-                    <button onclick="confirmReject()" style="padding: 8px 16px; border: none; border-radius: 6px; background: #dc2626; color: white; font-weight: 600; cursor: pointer; font-family: Inter;"><i class="fa-solid fa-xmark"></i> Xác nhận Từ chối</button>
+            <div class="approval-actions">
+                <button class="btn btn-light" onclick="closeModal()">Đóng</button>
+                <div class="approval-actions-right" id="decision-buttons">
+                    <button class="btn btn-red-outline" onclick="showRejectBox()"><i class="fa-solid fa-xmark"></i> Từ chối sớm</button>
+                    <button id="btn-accept" class="btn btn-orange" onclick="acceptOrder()"><i class="fa-solid fa-check"></i> Tiếp nhận &amp; chuyển xử lý</button>
                 </div>
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                <button id="tn-btn-reject" class="btn btn-outline-danger" onclick="showRejectReason()" style="padding: 8px 16px; border: 1px solid #ef4444; color: #ef4444; background: white; border-radius: 4px; cursor: pointer;">Từ chối</button>
-                <button id="btn-approve" class="btn btn-primary" onclick="approveQuote()" style="padding: 8px 16px; background: #ea580c; border: none; color: white; border-radius: 4px; cursor: pointer; font-weight: 600;">Phê duyệt & Gửi Báo giá</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Xem lý do từ chối -->
-    <div id="rejectReasonModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; border-radius: 8px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="margin: 0; font-size: 1.1rem; color: #1e293b;">Lý do Từ chối <span id="reject-modal-order-id" style="color: #dc2626;"></span></h3>
-                <button onclick="closeRejectReasonModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748b;">&times;</button>
-            </div>
-            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px;">
-                <p id="reject-modal-reason" style="margin: 0; color: #991b1b; font-size: 0.9rem; line-height: 1.6;"></p>
-            </div>
-            <div style="text-align: right; margin-top: 16px;">
-                <button onclick="closeRejectReasonModal()" style="padding: 8px 20px; border: 1px solid #cbd5e1; border-radius: 6px; background: white; cursor: pointer; font-family: Inter; font-weight: 500;">Đóng</button>
             </div>
         </div>
     </div>
@@ -279,85 +181,7 @@
         </div>
     </footer>
 
-<style>
-    /* Custom Checkbox UI */
-    .custom-checkbox {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        padding: 8px 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        background: #ffffff;
-        transition: all 0.2s;
-        user-select: none;
-    }
-    .custom-checkbox:hover {
-        border-color: #94a3b8;
-        background: #f1f5f9;
-    }
-    .custom-checkbox input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-    .checkmark {
-        height: 18px;
-        width: 18px;
-        background-color: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        border-radius: 4px;
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: transparent;
-        transition: all 0.2s;
-    }
-    .checkmark i {
-        font-size: 0.7rem;
-    }
-    .custom-checkbox input:checked ~ .checkmark {
-        background-color: #ea580c;
-        border-color: #ea580c;
-        color: white;
-    }
-    .custom-checkbox input:checked ~ .check-label {
-        color: #ea580c;
-        font-weight: 500;
-    }
-    .check-label {
-        font-size: 0.85rem;
-        color: #475569;
-        transition: all 0.2s;
-    }
-    .btn-disabled {
-        background-color: #cbd5e1 !important;
-        color: #64748b !important;
-        cursor: not-allowed !important;
-        border-color: #cbd5e1 !important;
-    }
-    .btn-active {
-        background-color: #ea580c !important;
-        color: #ffffff !important;
-        cursor: pointer !important;
-        border-color: #ea580c !important;
-    }
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        20% { transform: translateX(-6px); }
-        40% { transform: translateX(6px); }
-        60% { transform: translateX(-4px); }
-        80% { transform: translateX(4px); }
-    }
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-<script src="manager_tiep_nhan.js"></script>
+    <script src="manager_tiep_nhan.js"></script>
 <script src="../global_translate.js"></script>
 </body>
 </html>
