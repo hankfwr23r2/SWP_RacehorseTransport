@@ -31,9 +31,9 @@ const COUNTRY_LOCATIONS = {
 // ==========================================
 
 /**
- * Đổ danh sách kho/sân bay vào thẻ <select> dựa trên quốc gia đã chọn
+ * Đổ danh sách kho/điểm đến vào thẻ <select> dựa trên quốc gia đã chọn
  * @param {string} selectId - ID của thẻ select vị trí (origin_location hoặc dest_location)
- * @param {string} countryCode - Mã quốc gia (VN, HK, JP, ...)
+ * @param {string} countryCode - Mã quốc gia (VN, KH, LA)
  * @param {string} selectedId - ID vị trí mặc định muốn chọn
  */
 function populateLocations(selectId, countryCode, selectedId = null) {
@@ -159,9 +159,9 @@ function detectTransportType() {
         const destName = getCountryName(destCountry);
         badge.className = 'alert-box alert-warning';
         badge.innerHTML = `
-            <i class="fa-solid fa-plane-departure text-orange" style="font-size: 1.3rem; margin-top: 2px;"></i>
+            <i class="fa-solid fa-truck text-orange" style="font-size: 1.3rem; margin-top: 2px;"></i>
             <div>
-                <strong style="color: #9a3412;">Vận chuyển Quốc tế (${originName} &rarr; ${destName}):</strong> Tuyến đường yêu cầu kiểm dịch xuất/nhập cảnh thú y chuẩn OIE, vận chuyển bằng chuyên cơ Air Cargo khoang áp suất ổn định và trung chuyển bằng xe tải chuyên dụng hai đầu.
+                <strong style="color: #9a3412;">Vận chuyển Quốc tế (${originName} &rarr; ${destName}):</strong> Tuyến đường yêu cầu kiểm dịch xuất/nhập cảnh thú y chuẩn OIE và thông quan tại cửa khẩu đường bộ, vận chuyển bằng xe tải chuyên dụng xuyên biên giới.
             </div>
         `;
     }
@@ -170,14 +170,8 @@ function detectTransportType() {
 function getCountryName(code) {
     const map = {
         'VN': 'Việt Nam',
-        'HK': 'Hồng Kông (SAR)',
-        'JP': 'Nhật Bản',
-        'SG': 'Singapore',
-        'AU': 'Úc',
-        'NZ': 'New Zealand',
-        'AE': 'UAE (Dubai)',
-        'GB': 'Vương quốc Anh',
-        'FR': 'Pháp'
+        'KH': 'Campuchia',
+        'LA': 'Lào'
     };
     return map[code] || code;
 }
@@ -1060,12 +1054,12 @@ function initStep4() {
                 <div class="review-value">${data.destCountry === 'VN' ? '🇻🇳' : '🌐'} ${destCountryName}</div>
             </div>
             <div class="review-item">
-                <div class="review-label">Sân bay / Điểm đến nhận ngựa</div>
+                <div class="review-label">Điểm đến nhận ngựa</div>
                 <div class="review-value font-semibold">${data.destLocationName || data.destLocation}</div>
             </div>
             <div class="review-item">
                 <div class="review-label">Phương thức vận chuyển</div>
-                <div class="review-value">${isDomestic ? 'Nội địa — Đội xe tải chuyên dụng kiểm soát nhiệt độ & chống sốc' : 'Quốc tế — Air Cargo chuyên dụng + Trucking 2 đầu'}</div>
+                <div class="review-value">${isDomestic ? 'Nội địa — Đội xe tải chuyên dụng kiểm soát nhiệt độ & chống sốc' : 'Xuyên quốc gia — Xe tải chuyên dụng đường bộ qua cửa khẩu'}</div>
             </div>
             <div class="review-item">
                 <div class="review-label">Ngày khởi hành dự kiến</div>
@@ -1241,7 +1235,7 @@ function recalculateStep4Quotation(data) {
                     <div class="font-semibold">
                         ${isDomestic
                 ? 'Cước vận chuyển Nội địa đường bộ chuyên dụng'
-                : 'Cước vận chuyển Quốc tế Đa phương thức'
+                : 'Cước vận chuyển đường bộ xuyên quốc gia'
             }
                     </div>
 
