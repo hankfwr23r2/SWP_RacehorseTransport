@@ -11,35 +11,28 @@
     <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../global_translate.css">
+    <link rel="stylesheet" href="manager_sidebar.css">
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header class="main-header">
-        <div class="container header-container">
-            <a href="manager_dashboard.html" class="logo" style="text-decoration: none; color: inherit;">
-                <div class="logo-icon-eq">EQ</div>
-                <span>Vận chuyển Ngựa</span>
-            </a>
-            <nav class="main-nav" aria-label="Menu chính">
-                <ul>
-                    <li><a href="manager_dashboard.html">Bảng điều khiển</a></li>
-                    <li><a href="manager_phe_duyet.html">Phê duyệt Đơn hàng</a></li>
-                    <li><a href="manager_phan_cong.html">Phân công</a></li>
-                    <li><a href="manager_trip_reports.html">Báo cáo Chuyến đi</a></li>
-                    <li><a href="manager_tiep_nhan.html" class="active" aria-current="page">Duyệt & Báo Giá</a></li>
-                    <li><a href="manager_duyet_su_co.html">Sự cố & Chi Phí</a></li>
-                </ul>
-            </nav>
-            <div class="user-actions">
-                <div class="avatar"></div>
-                <span class="greeting">Quản lý</span>
-                <span class="divider">|</span>
-                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+    <div class="ops-layout">
+        <aside class="ops-sidebar">
+            <div class="ops-brand">
+                <div class="logo-circle">EQ</div>
+                <span>Quản lý</span>
             </div>
-        </div>
-    </header>
+            <nav class="ops-nav">
+                <a href="manager_dashboard.html" class="nav-item">Bảng điều khiển</a>
+                <a href="manager_phe_duyet.html" class="nav-item">Phê duyệt Đơn hàng</a>
+                <a href="manager_phan_cong.html" class="nav-item">Phân công</a>
+                <a href="manager_trip_reports.html" class="nav-item">Báo cáo Chuyến đi</a>
+                <a href="manager_tiep_nhan.html" class="nav-item active">Duyệt & Báo Giá</a>
+                <a href="manager_duyet_su_co.html" class="nav-item">Sự cố & Chi Phí</a>
+            </nav>
+            <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+        </aside>
+        <div class="ops-main">
 
     <!-- Main Content -->
     <main class="container main-content">
@@ -357,6 +350,8 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
+        </div>
+    </div>
 <script src="manager_tiep_nhan.js"></script>
 <script src="../global_translate.js"></script>
 </body>

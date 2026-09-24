@@ -25,17 +25,14 @@
                 <span>Điều hành</span>
             </div>
             <nav class="ops-nav">
-                <a href="CUS2_Policy.html" class="nav-item">
-                    Văn bản Pháp lý
-                </a>
 
                 <a href="CUS2_KiemDich.html" class="nav-item active">
                     Danh mục Kiểm dịch
                 </a>
 
-                <!-- <a href="chi-tiet-kiem-dich.html" class="nav-item">
-                    Chi tiết Kiểm dịch
-                </a> -->
+                <a href="CUS2_Policy_List.html" class="nav-item">
+                    Vận đơn Xuất/Nhập cảnh
+                </a>
             </nav>
             <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
         </aside>
@@ -117,11 +114,11 @@
                             <tr>
                                 <th>STT</th>
                                 <th>MÃ VẬN ĐƠN</th>
-                                <th>TÊN NGỰA</th>
+                                <th>KHÁCH HÀNG / CLB</th>
                                 <th>TUYẾN ĐƯỜNG</th>
-                                <th>NGÀY NỘP</th>
-                                <th>TRẠNG THÁI</th>
-                                <th>NGƯỜI PHỤ TRÁCH</th>
+                                <th>SỐ LƯỢNG NGỰA</th>
+                                <th>NGÀY TIẾP NHẬN</th>
+                                <th>TRẠNG THÁI HỒ SƠ</th>
                                 <th>HÀNH ĐỘNG</th>
                             </tr>
                         </thead>
@@ -129,90 +126,52 @@
                             <tr>
                                 <td>1</td>
                                 <td class="bold">EQ-2026-9842</td>
-                                <td class="bold">Bạch Mã Vương</td>
-                                <td>Hồng Kông (HKG) → Long An (VNM)</td>
+                                <td class="bold">Saigon Racing Club</td>
+                                <td>Hồng Kông (HKG) &rarr; Long An (VNM)</td>
+                                <td><span class="bold">3</span> ngựa</td>
                                 <td>18/10/2026</td>
-                                <td><span class="status-badge status-orange">Đang xem xét</span></td>
-                                <td>Trần Minh Anh</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
+                                <td><span class="status-badge status-orange">Đang kiểm duyệt</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td class="bold">EQ-2026-8711</td>
-                                <td class="bold">Hắc Phong</td>
-                                <td>Nhật Bản (JPN) → Bình Dương (VNM)</td>
+                                <td class="bold">EQ-2026-7240</td>
+                                <td class="bold">Ông Trần Văn A</td>
+                                <td>Australia (AUS) &rarr; Long An (VNM)</td>
+                                <td><span class="bold">1</span> ngựa</td>
                                 <td>17/10/2026</td>
-                                <td><span class="status-badge status-green">Thông quan</span></td>
-                                <td>Lê Hoàng Nam</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
+                                <td><span class="status-badge status-gray">Chờ bổ sung</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
                             </tr>
                             <tr>
                                 <td>3</td>
-                                <td class="bold">EQ-2026-7240</td>
-                                <td class="bold">Xích Thố</td>
-                                <td>Australia (AUS) → Long An (VNM)</td>
+                                <td class="bold">EQ-2026-5512</td>
+                                <td class="bold">Hanoi Equestrian</td>
+                                <td>Singapore (SIN) &rarr; Củ Chi (VNM)</td>
+                                <td><span class="bold">5</span> ngựa</td>
                                 <td>16/10/2026</td>
-                                <td><span class="status-badge status-orange">Chờ bổ sung</span></td>
-                                <td>Nguyễn Thị Mai</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
+                                <td><span class="status-badge status-blue">Chờ thông quan</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
                             </tr>
                             <tr>
                                 <td>4</td>
-                                <td class="bold">EQ-2026-5512</td>
-                                <td class="bold">Kim Kê</td>
-                                <td>Singapore (SIN) → Củ Chi (VNM)</td>
+                                <td class="bold">EQ-2026-8711</td>
+                                <td class="bold">Đại Nam Stud</td>
+                                <td>Nhật Bản (JPN) &rarr; Bình Dương (VNM)</td>
+                                <td><span class="bold">2</span> ngựa</td>
                                 <td>15/10/2026</td>
-                                <td><span class="status-badge status-blue">Đã nộp Hải quan</span></td>
-                                <td>Trần Minh Anh</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
+                                <td><span class="status-badge status-green">Đã thông quan</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
                             </tr>
                             <tr>
                                 <td>5</td>
-                                <td class="bold">EQ-2026-4011</td>
-                                <td class="bold">Bảo Tuyết</td>
-                                <td>Nhật Bản (JPN) → Long An (VNM)</td>
-                                <td>14/10/2026</td>
-                                <td><span class="status-badge status-gray">Đã tiếp nhận</span></td>
-                                <td>Phạm Thanh Sơn</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
                                 <td class="bold">EQ-2026-3199</td>
-                                <td class="bold">Ngân Hà</td>
-                                <td>Hồng Kông (HKG) → Bình Dương (VNM)</td>
+                                <td class="bold">Saigon Racing Club</td>
+                                <td>Hồng Kông (HKG) &rarr; Bình Dương (VNM)</td>
+                                <td><span class="bold">4</span> ngựa</td>
                                 <td>12/10/2026</td>
                                 <td><span class="status-badge status-red">Từ chối</span></td>
-                                <td>Lê Hoàng Nam</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td class="bold">EQ-2026-2187</td>
-                                <td class="bold">Phi Vũ</td>
-                                <td>New Zealand (NZL) → Củ Chi (VNM)</td>
-                                <td>10/10/2026</td>
-                                <td><span class="status-badge status-green">Thông quan</span></td>
-                                <td>Nguyễn Thị Mai</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td class="bold">EQ-2026-1104</td>
-                                <td class="bold">Thiên Lý Mã</td>
-                                <td>Hồng Kông (HKG) → Long An (VNM)</td>
-                                <td>08/10/2026</td>
-                                <td><span class="status-badge status-green">Thông quan</span></td>
-                                <td>Phạm Thanh Sơn</td>
-                                <td><a href="chi-tiet-kiem-dich.html" class="action-link">Xem chi tiết <i
-                                            class="fa-solid fa-chevron-right"></i></a></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
                             </tr>
                         </tbody>
                     </table>

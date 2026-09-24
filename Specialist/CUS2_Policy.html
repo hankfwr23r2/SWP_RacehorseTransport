@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xử lý Hồ sơ Pháp lý - CUS-02</title>
+    <title>Xử lý Hồ sơ Hải quan & Pháp lý - CUS-02</title>
     <link rel="stylesheet" href="style_policy.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,17 +20,13 @@
                 <span>Điều hành</span>
             </div>
             <nav class="ops-nav">
-                <a href="CUS2_Policy.html" class="nav-item active">
-                    Văn bản Pháp lý
-                </a>
-
                 <a href="CUS2_KiemDich.html" class="nav-item">
                     Danh mục Kiểm dịch
                 </a>
 
-                <!-- <a href="chi-tiet-kiem-dich.html" class="nav-item">
-                    Chi tiết Kiểm dịch
-                </a> -->
+                <a href="CUS2_Policy_List.html" class="nav-item active">
+                    Vận đơn Xuất/Nhập cảnh
+                </a>
             </nav>
             <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
         </aside>
@@ -39,9 +35,10 @@
                 <div class="page-header">
                     <div class="breadcrumb">
                         <span class="text-muted">Hệ thống vận hành</span> /
-                        <span class="text-orange">Xử lý Hồ sơ Pháp lý</span>
+                        <a href="CUS2_Policy_List.html" style="color: inherit; text-decoration: none;"><span class="text-muted">Vận đơn Xuất/Nhập cảnh</span></a> /
+                        <span class="text-orange">Xử lý Hồ sơ Hải quan & Pháp lý</span>
                     </div>
-                    <h1>Xử lý Hồ sơ Pháp lý</h1>
+                    <h1>Xử lý Hồ sơ Hải quan & Pháp lý</h1>
                     <p class="subtitle">Thẩm định, duyệt hồ sơ sức khỏe và giấy phép xuất nhập cảnh dành riêng cho ngựa
                         đua thuần chủng.</p>
                 </div>
@@ -105,41 +102,7 @@
                         </div>
                     </div>
                     <div class="right-col">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>Tiến trình kiểm duyệt liên tục</h2>
-                            </div>
-                            <ul class="timeline">
-                                <li class="timeline-item completed">
-                                    <div class="timeline-icon"><i class="fa-solid fa-check"></i></div>
-                                    <div class="timeline-content">
-                                        <h4>Bước 1: Tiếp nhận hồ sơ</h4>
-                                        <p>Nhận thông tin thành công từ khách hàng</p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item active">
-                                    <div class="timeline-icon"></div>
-                                    <div class="timeline-content">
-                                        <h4>Bước 2: Đang thẩm định</h4>
-                                        <p>Chuyên viên OPS đang rà soát tính hợp lệ</p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item pending">
-                                    <div class="timeline-icon"></div>
-                                    <div class="timeline-content">
-                                        <h4>Bước 3: Gửi cơ quan kiểm dịch</h4>
-                                        <p>Sẽ cập nhật: Đã nộp / Yêu cầu bổ sung</p>
-                                    </div>
-                                </li>
-                                <li class="timeline-item pending">
-                                    <div class="timeline-icon"></div>
-                                    <div class="timeline-content">
-                                        <h4>Bước 4: Phê duyệt hải quan</h4>
-                                        <p>Thông quan và cho phép ngựa nhập cảnh</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+
                         <div class="card">
                             <div class="card-header">
                                 <h2>Thao tác nghiệp vụ</h2>
@@ -154,6 +117,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="bottom-action-bar" style="margin-top: 24px;">
+                    <button class="btn btn-outline-gray" onclick="window.location.href='CUS2_Policy_List.html'"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</button>
                 </div>
             </main>
             <footer class="main-footer">
