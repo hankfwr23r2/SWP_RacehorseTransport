@@ -11,6 +11,9 @@ backend/.mvn/
 backend/*.class
 backend/application-secret.properties
 
+# --- Claude ---
+CLAUDE.md
+
 # --- OS & IDE Files ---
 .idea/
 .vscode/

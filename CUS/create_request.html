@@ -1,175 +1,195 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo Yêu cầu Vận chuyển - Vận chuyển Ngựa</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Tạo Yêu cầu Vận chuyển - Tuyến đường - Vận chuyển Ngựa</title>
+    <!-- FontAwesome for icons (Synced with Manager) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="../global_translate.css">
 </head>
+
 <body>
-    <!-- Header (Authenticated) -->
-    <header class="header">
-        <div class="header-logo">
-            <div class="header-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <!-- Header (Synced with Manager) -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="home_auth.html" class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </a>
+            <nav class="main-nav" aria-label="Menu khách hàng">
+                <ul>
+                    <li><a href="home_auth.html">Trang chủ</a></li>
+                    <li><a href="create_request.html" class="active" aria-current="page">Đặt chuyến ngay</a></li>
+                    <li><a href="tracking.html">Tra cứu lộ trình</a></li>
+                    <li><a href="bao_gia.html">Báo giá của tôi</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <div class="avatar">LT</div>
+                <span class="greeting">Trang trại Long Thành</span>
+                <span class="divider">|</span>
+                <button class="btn-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
             </div>
-            Vận chuyển Ngựa
-        </div>
-        
-        <nav class="nav-links">
-            <a href="home_auth.html">Trang chủ</a>
-            <a href="create_request.html" class="active" style="border-bottom: 2px solid var(--primary-color); padding-bottom: 4px;">Đặt chuyến ngay</a>
-            <a href="#">Tra cứu lộ trình</a>
-        </nav>
-        
-        <div class="header-actions">
-            <div class="user-profile">
-                Xin chào, Long Thanh Farm
-                <div class="avatar">AVT</div>
-            </div>
-            <a href="../index.html" class="btn-outline">Đăng xuất</a>
         </div>
     </header>
 
-    <main class="main-container">
-        <div class="request-container">
-            <div class="request-header">
-                <h2>Tạo Yêu cầu Vận chuyển mới</h2>
-            </div>
-            
-            <div class="stepper">
-                <div class="step active">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Tuyến đường</div>
+    <!-- Main Content Container -->
+    <main class="container main-content">
+        <div class="request-wrapper">
+            <!-- Page Header & Breadcrumb -->
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <a href="home_auth.html"><i class="fa-solid fa-house"></i> Cổng Khách hàng</a> /
+                    <span>Đặt chuyến</span> /
+                    <span class="text-orange">Bước 1: Tuyến đường</span>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Thông tin ngựa</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Dịch vụ & Y tế</div>
-                </div>
-                <div class="step">
-                    <div class="step-label" style="text-align: center;">4<br>Xác nhận</div>
-                </div>
+                <h1>Tạo Yêu cầu Vận chuyển mới</h1>
+                <p class="subtitle">Hoàn thành 4 bước để hệ thống phân tích phương án logistics và lập báo giá tự động
+                    nhanh chóng.</p>
             </div>
 
-            <div class="request-form-card">
-                <h3>Chi tiết Tuyến đường</h3>
-                
-                <form action="create_request_step2.html">
-                    <!-- Điểm xuất phát -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="origin_country">Quốc gia Xuất phát</label>
-                            <select id="origin_country" onchange="updateOriginLocations()">
-                                <option value="">— Chọn quốc gia —</option>
-                                <option value="VN" selected>🇻🇳 Việt Nam</option>
-                                <option value="HK">🇭🇰 Hồng Kông (SAR)</option>
-                                <option value="JP">🇯🇵 Nhật Bản</option>
-                                <option value="SG">🇸🇬 Singapore</option>
-                                <option value="AU">🇦🇺 Úc (Australia)</option>
-                                <option value="NZ">🇳🇿 New Zealand</option>
-                                <option value="AE">🇦🇪 UAE (Dubai)</option>
-                                <option value="GB">🇬🇧 Vương quốc Anh</option>
-                                <option value="FR">🇫🇷 Pháp</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="origin_location">Sân bay / Kho hàng Xuất phát</label>
-                            <select id="origin_location">
-                                <option value="">— Chọn điểm xuất phát —</option>
-                                <option value="SGN">Sân bay Tân Sơn Nhất (SGN) — Kho Cargo</option>
-                                <option value="HAN">Sân bay Nội Bài (HAN) — Kho Cargo</option>
-                                <option value="DAD">Sân bay Đà Nẵng (DAD) — Kho Cargo</option>
-                                <option value="KHO-LA" selected>Kho Long An — Trang trại Mỹ Quỳnh</option>
-                                <option value="KHO-DN">Kho Đồng Nai — Trang trại Long Thành</option>
-                                <option value="KHO-BD">Kho Bình Dương — Trang trại Đức Hòa</option>
-                            </select>
-                        </div>
+            <!-- Stepper Component -->
+            <div class="stepper-container">
+                <div class="stepper">
+                    <div class="step active">
+                        <div class="step-number"><i class="fa-solid fa-route"></i></div>
+                        <div class="step-label">1. Tuyến đường</div>
                     </div>
-
-                    <!-- Điểm đến -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dest_country">Quốc gia Đến</label>
-                            <select id="dest_country" onchange="updateDestLocations()">
-                                <option value="">— Chọn quốc gia —</option>
-                                <option value="VN">🇻🇳 Việt Nam</option>
-                                <option value="HK" selected>🇭🇰 Hồng Kông (SAR)</option>
-                                <option value="JP">🇯🇵 Nhật Bản</option>
-                                <option value="SG">🇸🇬 Singapore</option>
-                                <option value="AU">🇦🇺 Úc (Australia)</option>
-                                <option value="NZ">🇳🇿 New Zealand</option>
-                                <option value="AE">🇦🇪 UAE (Dubai)</option>
-                                <option value="GB">🇬🇧 Vương quốc Anh</option>
-                                <option value="FR">🇫🇷 Pháp</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="dest_location">Sân bay / Kho hàng Đích đến</label>
-                            <select id="dest_location">
-                                <option value="">— Chọn điểm đến —</option>
-                                <option value="HKG" selected>Sân bay Chek Lap Kok (HKG) — Kho Cargo</option>
-                                <option value="SHA-TIN">Sha Tin Racecourse — Kho nhận ngựa</option>
-                                <option value="HAPPY-VALLEY">Happy Valley Racecourse — Kho nhận ngựa</option>
-                            </select>
-                        </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">2. Thông tin ngựa</div>
                     </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">3. Dịch vụ & Y tế</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">4. Xác nhận & Dự toán</div>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Loại vận chuyển tự detect -->
-                    <div class="form-row" style="margin-bottom: 0.5rem;">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Loại vận chuyển</label>
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; font-size: 0.9rem;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                <span><strong style="color: #92400e;">Quốc tế</strong> — Tuyến đường yêu cầu kiểm dịch xuất/nhập khẩu và vận chuyển hàng không</span>
+            <!-- Form Card: Route Details -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-map-location-dot text-orange"></i> Chi tiết Tuyến đường & Lịch trình</h2>
+                    <span class="badge badge-info"><i class="fa-solid fa-circle-info"></i> Bước 1/4</span>
+                </div>
+
+                <div class="card-body">
+                    <form action="create_request_step2.html" method="GET">
+                        <!-- Điểm xuất phát -->
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="origin_country"><i class="fa-solid fa-flag text-muted"></i> Quốc gia Xuất
+                                    phát <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="origin_country" class="form-control" onchange="updateOriginLocations()"
+                                        required>
+                                        <option value="" selected>— Chọn quốc gia —</option>
+                                        <option value="VN">🇻🇳 Việt Nam</option>
+                                        <option value="KH">🇰🇭 Campuchia</option>
+                                        <option value="LA">🇱🇦 Lào</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="origin_location"><i class="fa-solid fa-warehouse text-muted"></i> Điểm đón /
+                                    Kho xuất phát <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="origin_location" class="form-control" required disabled>
+                                        <option value="" selected disabled>Vui lòng chọn quốc gia trước</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="date">Ngày khởi hành dự kiến</label>
-                            <input type="date" id="date">
+                        <!-- Điểm đến -->
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="dest_country"><i class="fa-solid fa-flag-checkered text-muted"></i> Quốc gia
+                                    Đến <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="dest_country" class="form-control" onchange="updateDestLocations()"
+                                        required>
+                                        <option value="" selected>— Chọn quốc gia —</option>
+                                        <option value="VN">🇻🇳 Việt Nam</option>
+                                        <option value="KH">🇰🇭 Campuchia</option>
+                                        <option value="LA">🇱🇦 Lào</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="dest_location"><i class="fa-solid fa-warehouse text-muted"></i> Điểm đến /
+                                    Kho đích <span class="required">*</span></label>
+                                <div class="select-wrapper">
+                                    <select id="dest_location" class="form-control" required disabled>
+                                        <option value="" selected disabled>Vui lòng chọn quốc gia trước</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="quantity">Số lượng Ngựa</label>
-                            <input type="number" id="quantity" value="1" min="1" max="10">
+
+
+
+                        <!-- Ngày khởi hành, số lượng và mức độ ưu tiên -->
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="date"><i class="fa-regular fa-calendar text-muted"></i> Ngày khởi hành (Phải
+                                    sau 10 ngày từ lúc đặt đơn) <span class="required">*</span></label>
+                                <input type="date" id="date" class="form-control" value="2026-11-15" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantity"><i class="fa-solid fa-hashtag text-muted"></i> Số lượng ngựa (Tối đa 10 con ngựa mỗi chuyến) <span
+                                        class="required">*</span></label>
+                                <input type="text" id="quantity" class="form-control"
+                                    placeholder="Nhập số lượng ngựa cần vận chuyển" inputmode="numeric" pattern="[0-9]+"
+                                    required>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn-outline-dark" style="padding: 0.75rem 2rem;">Hủy bỏ</button>
-                        <button type="submit" class="btn-solid-orange" style="padding: 0.75rem 2rem;">Tiếp tục (Bước 2)</button>
-                    </div>
-                </form>
+
+
+                        <!-- Actions -->
+                        <div class="form-actions">
+                            <a href="home_auth.html" class="btn btn-outline"> Hủy đơn</a>
+                            <button type="submit" class="btn btn-primary">Tiếp tục: Thông tin ngựa <i
+                                    class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="header-logo">
-                <div class="header-logo-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </div>
-                Vận chuyển Ngựa
+    <!-- Footer (Synced with Manager) -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
             </div>
             <div class="footer-links">
                 <a href="#">Điều khoản Dịch vụ</a>
-                <a href="#">Chính sách Bảo mật</a>
-                <a href="#">Hỗ trợ Khách hàng</a>
+                <a href="#">Chính sách Vận chuyển</a>
+                <a href="#">Tiêu chuẩn Y tế OIE</a>
+                <a href="#">Hỗ trợ 24/7</a>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+            &copy; 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. All rights reserved.
         </div>
     </footer>
-<script src="../global_translate.js"></script>
+
+    <script src="../global_translate.js"></script>
+    <script src="create_request.js"></script>
 </body>
+
 </html>

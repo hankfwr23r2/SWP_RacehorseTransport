@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh mục Kiểm dịch</title>
+    <link rel="stylesheet" href="style_KiemDich.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="specialist_sidebar.css">
+
+    <link rel="stylesheet" href="../global_translate.css">
+</head>
+
+<body>
+
+    <div class="ops-layout">
+        <aside class="ops-sidebar">
+            <div class="ops-brand">
+                <div class="logo-circle">EQ</div>
+                <span>Điều hành</span>
+            </div>
+            <nav class="ops-nav">
+
+                <a href="CUS2_KiemDich.html" class="nav-item active">
+                    Danh mục Kiểm dịch
+                </a>
+
+                <a href="CUS2_Policy_List.html" class="nav-item">
+                    Vận đơn Xuất/Nhập cảnh
+                </a>
+            </nav>
+            <button class="ops-logout" onclick="window.location.href='../index.html'">Đăng xuất</button>
+        </aside>
+        <div class="ops-main">
+
+            <main class="container main-content">
+
+                <div class="page-header">
+                    <div class="breadcrumb">
+                        <span class="text-muted">Operations System</span> /
+                        <span class="text-muted">Xử lý Hồ sơ</span> /
+                        <span class="text-orange">Danh mục Kiểm dịch</span>
+                    </div>
+                    <h1>Danh mục Kiểm dịch</h1>
+                    <p class="subtitle">Tổng hợp tất cả hồ sơ kiểm dịch ngựa đua, theo dõi trạng thái và tiến độ xử lý.
+                    </p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Tổng hồ sơ</span>
+                            <i class="fa-solid fa-list-ul icon-gray"></i>
+                        </div>
+                        <div class="stat-value">24 <span class="stat-unit">hồ sơ</span></div>
+                        <div class="stat-line line-blue"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Đang xử lý</span>
+                            <i class="fa-regular fa-clock icon-orange"></i>
+                        </div>
+                        <div class="stat-value">8 <span class="stat-unit">hồ sơ</span></div>
+                        <div class="stat-line line-orange"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Chờ bổ sung</span>
+                            <i class="fa-solid fa-triangle-exclamation icon-yellow"></i>
+                        </div>
+                        <div class="stat-value">5 <span class="stat-unit">hồ sơ</span></div>
+                        <div class="stat-line line-yellow"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <span>Hoàn tất</span>
+                            <i class="fa-regular fa-circle-check icon-green"></i>
+                        </div>
+                        <div class="stat-value">11 <span class="stat-unit">hồ sơ</span></div>
+                        <div class="stat-line line-green"></div>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-group search-group">
+                        <label>TÌM KIẾM</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tìm theo mã vận đơn, tên ngựa...">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>NGÀY NỘP HỒ SƠ</label>
+                        <select>
+                            <option>Tất cả thời gian</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-action">
+                        <button class="btn btn-primary btn-filter"><i class="fa-solid fa-filter"></i> Lọc</button>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>MÃ VẬN ĐƠN</th>
+                                <th>KHÁCH HÀNG / CLB</th>
+                                <th>TUYẾN ĐƯỜNG</th>
+                                <th>SỐ LƯỢNG NGỰA</th>
+                                <th>NGÀY TIẾP NHẬN</th>
+                                <th>TRẠNG THÁI HỒ SƠ</th>
+                                <th>HÀNH ĐỘNG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td class="bold">EQ-2026-9842</td>
+                                <td class="bold">Saigon Racing Club</td>
+                                <td>Hồng Kông (HKG) &rarr; Long An (VNM)</td>
+                                <td><span class="bold">3</span> ngựa</td>
+                                <td>18/10/2026</td>
+                                <td><span class="status-badge status-orange">Đang kiểm duyệt</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td class="bold">EQ-2026-7240</td>
+                                <td class="bold">Ông Trần Văn A</td>
+                                <td>Australia (AUS) &rarr; Long An (VNM)</td>
+                                <td><span class="bold">1</span> ngựa</td>
+                                <td>17/10/2026</td>
+                                <td><span class="status-badge status-gray">Chờ bổ sung</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td class="bold">EQ-2026-5512</td>
+                                <td class="bold">Hanoi Equestrian</td>
+                                <td>Singapore (SIN) &rarr; Củ Chi (VNM)</td>
+                                <td><span class="bold">5</span> ngựa</td>
+                                <td>16/10/2026</td>
+                                <td><span class="status-badge status-blue">Chờ thông quan</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td class="bold">EQ-2026-8711</td>
+                                <td class="bold">Đại Nam Stud</td>
+                                <td>Nhật Bản (JPN) &rarr; Bình Dương (VNM)</td>
+                                <td><span class="bold">2</span> ngựa</td>
+                                <td>15/10/2026</td>
+                                <td><span class="status-badge status-green">Đã thông quan</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td class="bold">EQ-2026-3199</td>
+                                <td class="bold">Saigon Racing Club</td>
+                                <td>Hồng Kông (HKG) &rarr; Bình Dương (VNM)</td>
+                                <td><span class="bold">4</span> ngựa</td>
+                                <td>12/10/2026</td>
+                                <td><span class="status-badge status-red">Từ chối</span></td>
+                                <td><a href="chi-tiet-kiem-dich.html" class="action-link" style="color: #ea580c; font-weight: 500;">Chi tiết <i class="fa-solid fa-chevron-right"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            Hiển thị <strong>1 - 8</strong> trong <strong>24</strong> hồ sơ.
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="page-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="main-footer">
+                <div class="container footer-container">
+                    <div class="footer-logo">
+                        <i class="fa-solid fa-horse-head"></i>
+                        <span>Vận chuyển Ngựa</span>
+                    </div>
+                    <div class="footer-links">
+                        <a href="#">Điều khoản Dịch vụ</a>
+                        <a href="#">Chính sách Bảo mật</a>
+                        <a href="#">Hỗ trợ Khách hàng</a>
+                    </div>
+                </div>
+                <div class="container copyright">
+                    <p>&copy; 2026 Equinext Logistics - Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.</p>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+    <script src="../global_translate.js"></script>
+</body>
+
+</html>

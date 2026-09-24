@@ -1,123 +1,200 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ - Vận chuyển Ngựa</title>
-    <link rel="stylesheet" href="CUS/main.css">
+    <title>Hệ thống Vận chuyển Ngựa đua Xuyên quốc gia — Equine Logistics</title>
+    <!-- FontAwesome 6 (Synced with Manager) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CUS/main.css">
     <link rel="stylesheet" href="./global_translate.css">
 </head>
+
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-logo">
-            <div class="header-logo-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <!-- Header (Synced with Manager Design) -->
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
+            </a>
+            <nav class="main-nav" aria-label="Menu chính">
+                <ul>
+                    <li><a href="index.html" class="active" aria-current="page">Trang chủ</a></li>
+                    <li><a href="CUS/login.html">Đặt chuyến ngay</a></li>
+                    <li><a href="CUS/login.html">Tra cứu lộ trình</a></li>
+                    <li><a href="CUS/login.html">Báo giá của tôi</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <a href="CUS/login.html" class="btn btn-outline" style="color: #cbd5e1; border-color: rgba(255, 255, 255, 0.25); padding: 7px 16px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng nhập
+                </a>
+                <a href="CUS/login.html" class="btn btn-primary" style="padding: 7px 18px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-paper-plane"></i> Đặt chuyến ngay
+                </a>
             </div>
-            Vận chuyển Ngựa
-        </div>
-        
-        <nav class="nav-links">
-            <a href="index.html" class="active" style="border-bottom: 2px solid var(--primary-color); padding-bottom: 4px;">Trang chủ</a>
-            <a href="CUS/login.html">Đặt chuyến ngay</a>
-            <a href="CUS/login.html">Tra cứu lộ trình</a>
-        </nav>
-        
-        <div class="header-actions">
-            <a href="CUS/register.html" class="btn-outline">Đăng Ký</a>
-            <a href="CUS/login.html" class="btn-solid-orange">Đăng nhập</a>
         </div>
     </header>
 
-    <main class="main-container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
+    <!-- Main Container -->
+    <main class="container main-content" style="padding-top: 28px;">
+        <!-- Hero Section (Manager Aesthetic) -->
+        <section class="hero-manager" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 32px;">
+            <div class="hero-content" style="display: flex; flex-direction: column; align-items: center;">
+                <div style="margin-bottom: 16px;">
+                    <span class="badge" style="background: rgba(234, 88, 12, 0.2); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.4); font-size: 0.8rem; padding: 6px 12px;">
+                        <i class="fa-solid fa-award"></i> Chuẩn Thú y Quốc tế OIE • IATA Live Animals Certified
+                    </span>
+                </div>
                 <h1>Vận chuyển Ngựa đua Xuyên quốc gia <span>Đẳng cấp & An toàn</span></h1>
-                <p>Giải pháp logistics chuyên biệt dành riêng cho ngựa đua thuần chủng. Bao trọn gói thủ tục hải quan, kiểm dịch thú y OIE và hệ thống giám sát sức khỏe thời gian thực 24/7 trên mọi chặng đường.</p>
+                <p>Giải pháp logistics đường không (Air Cargo) & đường bộ chuyên biệt dành riêng cho ngựa đua thuần chủng. Giám sát sinh trắc học 24/7, xe tải ổn nhiệt giảm chấn khí nén và thủ tục kiểm dịch hải quan trọn gói.</p>
                 <div class="hero-actions">
-                    <a href="CUS/login.html" class="btn-solid-orange btn-large">Tạo Yêu cầu Vận chuyển</a>
-                    <a href="CUS/login.html" class="btn-outline-dark btn-large">Tra cứu Đơn hàng</a>
+                    <a href="CUS/login.html" class="btn btn-primary btn-large">
+                        <i class="fa-solid fa-paper-plane"></i> Tạo Yêu cầu Vận chuyển ngay
+                    </a>
+                    <a href="CUS/login.html" class="btn btn-outline-light btn-large">
+                        <i class="fa-solid fa-magnifying-glass"></i> Tra cứu Hành trình
+                    </a>
                 </div>
-            </div>
-            <div class="hero-image">
-                [Hero Image: Horse boarding specialized truck]
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="features">
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                </div>
-                <h3>Chuẩn Y tế Quốc tế</h3>
-                <p>Hỗ trợ trọn gói thủ tục sổ tiêm chủng, giấy phép xuất nhập cảnh và kiểm dịch cửa khẩu theo tiêu chuẩn OIE.</p>
+        <!-- Statistics / Marketing Banner -->
+        <section class="marketing-stats" style="display: flex; justify-content: space-around; background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); color: white; padding: 40px 20px; border-radius: 12px; margin-bottom: 60px; box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.3);">
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">100%</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">An toàn Sinh học</div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                </div>
-                <h3>Phương tiện Chuyên dụng</h3>
-                <p>Hệ thống Stalls hàng không và xe tải trang bị điều hòa không khí, hệ thống chống sốc, đảm bảo ngựa không căng thẳng.</p>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">18+</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Quốc gia Kết nối</div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <h3>Bảo hiểm Toàn diện</h3>
-                <p>Cam kết bảo hiểm 100% giá trị cho các sự cố. Đội ngũ chuyên gia thú y và người chăm sóc chuyên nghiệp hộ tống ngựa trong suốt hành trình.</p>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">24/7</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Bác sĩ Thú y Hộ tống</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">&lt; 24h</div>
+                <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9;">Thẩm định Hồ sơ</div>
             </div>
         </section>
 
-        <!-- Xử lý Section -->
-        <section class="process-section">
-            <h2>Quy trình Vận hành Chuyên nghiệp</h2>
+        <!-- Core Services Section (Visual) -->
+        <section id="dich-vu" style="margin-bottom: 60px;">
+            <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2rem; color: var(--primary-color);">Dịch vụ Logistics Ngựa đua Chuyên nghiệp</h2>
+                <p style="max-width: 700px; margin: 0 auto; color: var(--text-muted);">Quy chuẩn vận tải được thiết kế chuyên biệt nhằm triệt tiêu stress, duy trì phong độ thể lực cao nhất cho các chiến mã thi đấu.</p>
+            </div>
+
+            <div class="service-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <!-- Service 2 -->
+                <div class="service-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+                    <img src="CUS/images/truck.jpg" alt="Đội xe tải Chuyên dụng" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="card-body" style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column;">
+                        <h3 style="margin-top: 0; font-size: 1.25rem;"><i class="fa-solid fa-truck-fast text-orange"></i> Đội xe tải Chuyên dụng</h3>
+                        <p style="color: var(--text-main); font-size: 0.95rem;">Xe tải chuyên dụng 2 đến 9 khoang với hệ thống treo bóng hơi điện tử giảm chấn triệt để, vách ngăn bọc nệm dày và camera giám sát trực tiếp từng chuồng.</p>
+                        <ul class="service-features" style="list-style: none; padding: 0; margin-top: auto; padding-top: 16px;">
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Điều hòa không khí 2 chiều ổn định 20 - 24°C</li>
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Cầu dẫn thủy lực chống trơn trượt</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column;">
+                    <img src="CUS/images/vet.jpg" alt="Pháp lý & Kiểm dịch OIE" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="card-body" style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column;">
+                        <h3 style="margin-top: 0; font-size: 1.25rem;"><i class="fa-solid fa-file-shield text-orange"></i> Pháp lý & Kiểm dịch OIE</h3>
+                        <p style="color: var(--text-main); font-size: 0.95rem;">Đại diện chủ sở hữu hoàn tất trọn gói thủ tục hải quan xuất nhập cảnh, hộ chiếu ngựa (Horse Passport), kiểm tra vi chip và xét nghiệm thú y quốc tế.</p>
+                        <ul class="service-features" style="list-style: none; padding: 0; margin-top: auto; padding-top: 16px;">
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Xin phép nhập khẩu & xuất khẩu động vật sống</li>
+                            <li style="margin-bottom: 8px; font-size: 0.85rem;"><i class="fa-solid fa-check text-orange" style="margin-right: 8px;"></i> Bố trí trạm cách ly thú y đạt chuẩn trước khi bay</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section (4 Steps) -->
+        <section id="quy-trinh" class="process-section">
+            <div class="section-header">
+                <h2>Quy trình Vận hành Chuyên nghiệp</h2>
+                <p>Khép kín từ khâu tiếp nhận thông tin trực tuyến đến khi hoàn thành nghiệm thu bàn giao an toàn tại điểm đến.</p>
+            </div>
+
             <div class="process-grid">
                 <div class="process-card">
                     <div class="process-number">1</div>
-                    <h3>Tiếp nhận Hồ sơ</h3>
-                    <p>Khách hàng gửi yêu cầu vận chuyển và upload Hộ chiếu, Sổ tiêm chủng của ngựa.</p>
+                    <h3>Tiếp nhận & Lập Hồ sơ</h3>
+                    <p>Khách hàng gửi yêu cầu vận chuyển, tải lên Hộ chiếu ngựa và Sổ tiêm phòng trực tuyến trên hệ thống.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">2</div>
-                    <h3>Đánh giá Khả thi & Báo giá</h3>
-                    <p>Chuyên viên xử lý giấy tờ hải quan và xin giấy phép kiểm dịch từ cơ quan thú y.</p>
+                    <h3>Thẩm định & Báo giá</h3>
+                    <p>Quản lý kiểm tra điều kiện bay, đối soát yêu cầu thú y và gửi bảng Báo giá chính thức trong vòng 24h.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">3</div>
-                    <h3>Kiểm dịch & Hải quan</h3>
-                    <p>Xây dựng lộ trình tối ưu, bố trí điểm dừng nghỉ, phân công xe chuyên dụng và tài xế.</p>
+                    <h3>Kiểm dịch & Điều phối</h3>
+                    <p>Bộ phận vận hành xin cấp phép OIE, bố trí xe tải giảm chấn và lắp đặt khoang chuồng Stalls hàng không.</p>
                 </div>
                 <div class="process-card">
                     <div class="process-number">4</div>
                     <h3>Vận chuyển & Bàn giao</h3>
-                    <p>Giám sát sức khỏe thời gian thực trên app và bàn giao ngựa an toàn tại đích đến.</p>
+                    <p>Bác sĩ thú y hộ tống trực tiếp, khách hàng theo dõi nhịp tim qua app và ký biên bản nghiệm thu khi nhận ngựa.</p>
                 </div>
             </div>
         </section>
+        <!-- Company Terms Section -->
+        <section id="dieu-khoan" class="company-terms" style="margin-bottom: 60px; background: white; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <div class="section-header" style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem; color: var(--primary-color);"><i class="fa-solid fa-file-contract text-orange"></i> Điều khoản Công ty & Cam kết</h2>
+                <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">EquinezLogistics cam kết mang lại dịch vụ minh bạch, an toàn và tuân thủ tuyệt đối các quy định pháp luật quốc tế về vận chuyển động vật sống.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-shield-halved text-orange" style="margin-right: 8px;"></i> 1. Trách nhiệm Bảo hiểm</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Công ty chịu trách nhiệm bảo hiểm toàn diện 100% giá trị ngựa đua trong suốt quá trình vận chuyển. Mọi sự cố phát sinh do lỗi vận hành sẽ được đền bù theo hợp đồng đã ký kết.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-scale-balanced text-orange" style="margin-right: 8px;"></i> 2. Tuân thủ Pháp lý</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Khách hàng có trách nhiệm cung cấp đầy đủ thông tin y tế, nguồn gốc và Horse Passport hợp lệ. Công ty sẽ đại diện hoàn tất các thủ tục Hải quan và Kiểm dịch OIE.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--text-main); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-handshake text-orange" style="margin-right: 8px;"></i> 3. Chính sách Hủy & Hoàn tiền</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">Yêu cầu hủy chuyến phải được thông báo trước 72 giờ (đối với đường bộ) và 7 ngày (đối với đường bay) để được hoàn 100% phí cọc. Quá hạn sẽ áp dụng phí phạt.</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="header-logo">
-                <div class="header-logo-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                </div>
-                Vận chuyển Ngựa
+    <!-- Footer (Synced with Manager) -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <div class="logo-icon-eq">EQ</div>
+                <span>Vận chuyển Ngựa</span>
             </div>
             <div class="footer-links">
                 <a href="#">Điều khoản Dịch vụ</a>
-                <a href="#">Chính sách Bảo mật</a>
-                <a href="#">Hỗ trợ Khách hàng</a>
+                <a href="#">Chính sách Vận chuyển</a>
+                <a href="#">Tiêu chuẩn Y tế OIE</a>
+                <a href="#">Bảo hiểm Rủi ro</a>
+                <a href="#">Hỗ trợ 24/7</a>
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project.
+            &copy; 2026 Vận chuyển Ngựa đua Xuyên quốc gia System. SWP Project. All rights reserved.
         </div>
     </footer>
-<script src="./global_translate.js"></script>
+
+    <script src="./global_translate.js"></script>
 </body>
+
 </html>
