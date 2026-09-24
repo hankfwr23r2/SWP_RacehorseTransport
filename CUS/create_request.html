@@ -49,7 +49,8 @@
                     <span class="text-orange">Bước 1: Tuyến đường</span>
                 </div>
                 <h1>Tạo Yêu cầu Vận chuyển mới</h1>
-                <p class="subtitle">Hoàn thành 4 bước để hệ thống phân tích phương án logistics và lập báo giá tự động nhanh chóng.</p>
+                <p class="subtitle">Hoàn thành 4 bước để hệ thống phân tích phương án logistics và lập báo giá tự động
+                    nhanh chóng.</p>
             </div>
 
             <!-- Stepper Component -->
@@ -86,28 +87,25 @@
                         <!-- Điểm xuất phát -->
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="origin_country"><i class="fa-solid fa-flag text-muted"></i> Quốc gia Xuất phát <span class="required">*</span></label>
+                                <label for="origin_country"><i class="fa-solid fa-flag text-muted"></i> Quốc gia Xuất
+                                    phát <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="origin_country" class="form-control" onchange="updateOriginLocations()" required>
-                                        <option value="">— Chọn quốc gia —</option>
-                                        <option value="VN" selected>🇻🇳 Việt Nam</option>
-                                        <option value="HK">🇭🇰 Hồng Kông (SAR)</option>
-                                        <option value="JP">🇯🇵 Nhật Bản</option>
-                                        <option value="SG">🇸🇬 Singapore</option>
-                                        <option value="AU">🇦🇺 Úc (Australia)</option>
-                                        <option value="NZ">🇳🇿 New Zealand</option>
-                                        <option value="AE">🇦🇪 UAE (Dubai)</option>
-                                        <option value="GB">🇬🇧 Vương quốc Anh</option>
-                                        <option value="FR">🇫🇷 Pháp</option>
+                                    <select id="origin_country" class="form-control" onchange="updateOriginLocations()"
+                                        required>
+                                        <option value="" selected>— Chọn quốc gia —</option>
+                                        <option value="VN">🇻🇳 Việt Nam</option>
+                                        <option value="KH">🇰🇭 Campuchia</option>
+                                        <option value="LA">🇱🇦 Lào</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="origin_location"><i class="fa-solid fa-warehouse text-muted"></i> Điểm đón / Kho xuất phát <span class="required">*</span></label>
+                                <label for="origin_location"><i class="fa-solid fa-warehouse text-muted"></i> Điểm đón /
+                                    Kho xuất phát <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="origin_location" class="form-control" required>
-                                        <!-- Populated dynamically via create_request.js -->
+                                    <select id="origin_location" class="form-control" required disabled>
+                                        <option value="" selected disabled>Vui lòng chọn quốc gia trước</option>
                                     </select>
                                 </div>
                             </div>
@@ -116,31 +114,24 @@
                         <!-- Điểm đến -->
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="dest_country"><i class="fa-solid fa-flag-checkered text-muted"></i> Quốc gia Đến <span class="required">*</span></label>
+                                <label for="dest_country"><i class="fa-solid fa-flag-checkered text-muted"></i> Quốc gia
+                                    Đến <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="dest_country" class="form-control" onchange="updateDestLocations()" required>
-                                        <option value="">— Chọn quốc gia —</option>
+                                    <select id="dest_country" class="form-control" onchange="updateDestLocations()"
+                                        required>
+                                        <option value="" selected>— Chọn quốc gia —</option>
                                         <option value="VN">🇻🇳 Việt Nam</option>
-                                        <option value="HK" selected>🇭🇰 Hồng Kông (SAR)</option>
-                                        <option value="JP">🇯🇵 Nhật Bản</option>
-                                        <option value="SG">🇸🇬 Singapore</option>
-                                        <option value="AU">🇦🇺 Úc (Australia)</option>
-                                        <option value="NZ">🇳🇿 New Zealand</option>
-                                        <option value="AE">🇦🇪 UAE (Dubai)</option>
-                                        <option value="GB">🇬🇧 Vương quốc Anh</option>
-                                        <option value="FR">🇫🇷 Pháp</option>
+                                        <option value="KH">🇰🇭 Campuchia</option>
+                                        <option value="LA">🇱🇦 Lào</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="form-group">
-                                <label for="dest_location"><i class="fa-solid fa-plane-arrival text-muted"></i> Điểm đến / Sân bay nhận ngựa <span class="required">*</span></label>
+                                <label for="dest_location"><i class="fa-solid fa-warehouse text-muted"></i> Điểm đến /
+                                    Kho đích <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="dest_location" class="form-control" required>
-                                        <option value="">— Chọn điểm đến —</option>
-                                        <option value="HKG" selected>Sân bay Chek Lap Kok (HKG) — Kho Cargo</option>
-                                        <option value="SHA-TIN">Sha Tin Racecourse — Kho nhận ngựa đua</option>
-                                        <option value="HAPPY-VALLEY">Happy Valley Racecourse — Trạm cách ly</option>
+                                    <select id="dest_location" class="form-control" required disabled>
+                                        <option value="" selected disabled>Vui lòng chọn quốc gia trước</option>
                                     </select>
                                 </div>
                             </div>
@@ -149,33 +140,28 @@
 
 
                         <!-- Ngày khởi hành, số lượng và mức độ ưu tiên -->
-                        <div class="form-grid-3">
+                        <div class="form-grid">
                             <div class="form-group">
-                                <label for="date"><i class="fa-regular fa-calendar text-muted"></i> Ngày khởi hành dự kiến <span class="required">*</span></label>
+                                <label for="date"><i class="fa-regular fa-calendar text-muted"></i> Ngày khởi hành (Phải
+                                    sau 10 ngày từ lúc đặt đơn) <span class="required">*</span></label>
                                 <input type="date" id="date" class="form-control" value="2026-11-15" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="quantity"><i class="fa-solid fa-hashtag text-muted"></i> Số lượng ngựa <span class="required">*</span></label>
-                                <input type="number" id="quantity" class="form-control" value="1" min="1" max="10" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="urgency"><i class="fa-solid fa-stopwatch text-muted"></i> Mức độ ưu tiên</label>
-                                <div class="select-wrapper">
-                                    <select id="urgency" class="form-control">
-                                        <option value="standard" selected>Tiêu chuẩn (Lịch thường kỳ)</option>
-                                        <option value="priority">Ưu tiên (Sắp xếp slot bay sớm)</option>
-                                        <option value="urgent">Hỏa tốc (Phục vụ giải đua gấp)</option>
-                                    </select>
-                                </div>
+                                <label for="quantity"><i class="fa-solid fa-hashtag text-muted"></i> Số lượng ngựa (Tối đa 10 con ngựa mỗi chuyến) <span
+                                        class="required">*</span></label>
+                                <input type="text" id="quantity" class="form-control"
+                                    placeholder="Nhập số lượng ngựa cần vận chuyển" inputmode="numeric" pattern="[0-9]+"
+                                    required>
                             </div>
                         </div>
 
+
                         <!-- Actions -->
                         <div class="form-actions">
-                            <a href="home_auth.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-                            <button type="submit" class="btn btn-primary">Tiếp tục: Thông tin ngựa <i class="fa-solid fa-arrow-right"></i></button>
+                            <a href="home_auth.html" class="btn btn-outline"> Hủy đơn</a>
+                            <button type="submit" class="btn btn-primary">Tiếp tục: Thông tin ngựa <i
+                                    class="fa-solid fa-arrow-right"></i></button>
                         </div>
                     </form>
                 </div>

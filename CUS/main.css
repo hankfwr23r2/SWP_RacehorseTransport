@@ -35,8 +35,10 @@ input {
 
 /* Variables - Synced with Manager Theme */
 :root {
-    --primary-color: #0f172a; /* Deep Slate Navy */
-    --accent-orange: #ea580c; /* Action Orange */
+    --primary-color: #0f172a;
+    /* Deep Slate Navy */
+    --accent-orange: #ea580c;
+    /* Action Orange */
     --accent-hover: #c2410c;
     --primary-hover: #1e293b;
     --primary-orange: #ea580c;
@@ -127,7 +129,7 @@ input {
     color: var(--text-main);
 }
 
-.auth-form-container > p {
+.auth-form-container>p {
     color: var(--text-muted);
     margin-bottom: 2rem;
     font-size: 0.95rem;
@@ -243,7 +245,8 @@ input {
     transition: opacity 0.2s;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.nav-links a:hover,
+.nav-links a.active {
     opacity: 1;
     color: var(--primary-color);
 }
@@ -382,285 +385,6 @@ input {
     color: #ffffff;
 }
 
-/* Hero Status Card (Live Tracking Simulator) */
-.hero-status-card {
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid #475569;
-    border-radius: 8px;
-    padding: 18px 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-}
-
-.status-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #334155;
-    margin-bottom: 12px;
-}
-
-.live-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #4ade80;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-}
-
-.pulse-dot {
-    width: 7px;
-    height: 7px;
-    background-color: #4ade80;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
-    70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
-}
-
-.flight-no {
-    font-size: 0.76rem;
-    color: #94a3b8;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.status-route {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    padding: 0 4px;
-}
-
-.route-point {
-    text-align: center;
-}
-
-.point-code {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.2;
-}
-
-.point-city {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    white-space: nowrap;
-}
-
-.route-line {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 12px;
-    position: relative;
-}
-
-.route-line i {
-    color: var(--accent-orange);
-    font-size: 0.9rem;
-    margin-bottom: 4px;
-    transform: rotate(90deg);
-}
-
-.line-bar {
-    width: 100%;
-    height: 2px;
-    background: #334155;
-    position: relative;
-}
-
-.line-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 65%;
-    height: 100%;
-    background: var(--accent-orange);
-}
-
-.status-meta-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    background: rgba(30, 41, 59, 0.7);
-    padding: 10px 14px;
-    border-radius: 6px;
-    border: 1px solid #334155;
-}
-
-.meta-label {
-    font-size: 0.68rem;
-    color: #94a3b8;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 2px;
-    white-space: nowrap;
-}
-
-.meta-val {
-    font-size: 0.78rem;
-    color: #f8fafc;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.text-success {
-    color: #4ade80 !important;
-}
-
-/* Quick Tracking Card */
-.tracking-card {
-    margin-bottom: 24px;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 16px 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.tracking-inner {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.tracking-input-wrapper {
-    flex: 1;
-    position: relative;
-}
-
-.tracking-input-wrapper i {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-.tracking-input {
-    width: 100%;
-    padding: 9px 14px 9px 36px;
-    border: 1px solid var(--border-input);
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-family: inherit;
-    color: var(--text-main);
-    background-color: #f8fafc;
-    transition: all 0.2s;
-    box-sizing: border-box;
-}
-
-.tracking-input:focus {
-    outline: none;
-    border-color: var(--accent-orange);
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
-}
-
-.tracking-chips {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    font-size: 0.78rem;
-}
-
-.chip-label {
-    color: var(--text-muted);
-    font-weight: 500;
-    white-space: nowrap;
-    font-size: 0.75rem;
-}
-
-.tracking-chip {
-    background: #f1f5f9;
-    border: 1px solid var(--border-color);
-    padding: 3px 8px;
-    border-radius: 4px;
-    color: var(--text-main);
-    font-size: 0.75rem;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
-
-.tracking-chip:hover {
-    background: #e2e8f0;
-    color: var(--primary-color);
-}
-
-/* Dashboard Grid & KPI Cards (Synced with Manager) */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 28px;
-}
-
-.kpi-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
-}
-
-.kpi-title {
-    font-size: 0.76rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.kpi-value {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 3px;
-    line-height: 1.2;
-}
-
-.kpi-subtext {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.35;
-}
-
 /* Section Header */
 .section-header {
     margin-bottom: 20px;
@@ -695,7 +419,7 @@ input {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     transition: transform 0.2s, border-color 0.2s;
@@ -1054,7 +778,7 @@ input {
     border-radius: 8px;
     padding: 16px 14px;
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .stepper {
@@ -1160,7 +884,8 @@ input {
     background-color: #ffffff;
 }
 
-.card-header h2, .card-header h3 {
+.card-header h2,
+.card-header h3 {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--primary-color);
@@ -1242,7 +967,8 @@ input {
     box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
 }
 
-.form-control:disabled, .form-control[readonly] {
+.form-control:disabled,
+.form-control[readonly] {
     background-color: #f1f5f9;
     color: var(--text-muted);
     cursor: not-allowed;
@@ -1254,7 +980,8 @@ input {
 }
 
 .select-wrapper::after {
-    content: '\f107'; /* FontAwesome chevron-down */
+    content: '\f107';
+    /* FontAwesome chevron-down */
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
@@ -1571,7 +1298,8 @@ textarea.form-control {
     border-collapse: collapse;
 }
 
-.data-table th, .data-table td {
+.data-table th,
+.data-table td {
     padding: 10px 14px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
@@ -1599,12 +1327,29 @@ textarea.form-control {
     white-space: nowrap !important;
 }
 
-.text-right { text-align: right !important; }
-.text-center { text-align: center !important; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
-.text-orange { color: var(--accent-orange) !important; }
-.text-muted { color: var(--text-muted) !important; }
+.text-right {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.text-orange {
+    color: var(--accent-orange) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
 
 /* Main Footer (Synced with Manager) */
 .main-footer {
@@ -1808,4 +1553,302 @@ textarea.form-control {
     justify-content: center;
     flex-shrink: 0;
     font-size: 10px;
+}
+
+/* ===================================================
+   HORSE INFORMATION HEADER - STEP 2
+   Gộp chọn cá thể vào card thông tin ngựa
+   =================================================== */
+
+.horse-main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 20px;
+    background: #ffffff;
+}
+
+
+/* ==========================================
+   TITLE
+   ========================================== */
+
+.horse-title-area {
+    min-width: 0;
+    flex: 1;
+}
+
+.horse-title-area h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-color);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.horse-header-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+}
+
+
+/* ==========================================
+   RIGHT SIDE CONTROLS
+   ========================================== */
+
+.horse-header-controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+
+/* ==========================================
+   SELECT NGỰA
+   ========================================== */
+
+.horse-select-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.horse-select-inline label {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    white-space: nowrap;
+}
+
+.horse-select-inline label i {
+    color: var(--accent-orange);
+}
+
+
+.horse-select-inline .select-wrapper {
+    width: 190px;
+}
+
+
+.horse-selector {
+    height: 36px;
+    padding: 0 32px 0 11px;
+
+    font-size: 0.78rem;
+    font-weight: 600;
+
+    border-color: var(--border-input);
+    background-color: #ffffff;
+
+    cursor: pointer;
+}
+
+
+.horse-selector:focus {
+    border-color: var(--accent-orange);
+
+    box-shadow:
+        0 0 0 3px rgba(234, 88, 12, 0.10);
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+.horse-progress {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+
+    border-radius: 20px;
+
+    padding: 6px 10px;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+/* ===================================================
+   HORSE CARD HEADER - GỌN + KHÔNG BỊ CẮT CHỮ
+   =================================================== */
+
+.horse-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 20px;
+}
+
+/* Bên trái */
+.horse-card-title-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.horse-card-title-area h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-color);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.horse-card-subtitle {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Thông báo tự động lưu */
+.auto-save-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #64748b;
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
+.auto-save-hint i {
+    color: #059669;
+}
+
+/* ===================================================
+   KHU VỰC CHỌN CÁ THỂ
+   =================================================== */
+
+.horse-card-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.horse-selector-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #64748b;
+    font-size: 0.76rem;
+    white-space: nowrap;
+}
+
+.horse-selector-label i {
+    color: var(--accent-orange);
+}
+
+/* ===================================================
+   DROPDOWN CHỌN CÁ THỂ NGỰA
+   =================================================== */
+
+.horse-select-wrapper {
+    position: relative;
+    width: 220px;
+    flex-shrink: 0;
+}
+
+/* Select */
+.horse-card-controls .horse-selector {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 38px 0 12px;
+
+    font-size: 0.82rem;
+    font-weight: 600;
+
+    color: #0f172a;
+    background-color: #ffffff;
+
+    border: 1px solid var(--border-input);
+    border-radius: 7px;
+
+    /* Tắt mũi tên mặc định */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mũi tên dropdown */
+.horse-select-wrapper::after {
+    content: "\f078";
+
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+
+    position: absolute;
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #64748b;
+    font-size: 0.72rem;
+
+    pointer-events: none;
+
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Hover */
+.horse-select-wrapper:hover::after {
+    color: var(--accent-orange);
+}
+
+/* Focus */
+.horse-card-controls .horse-selector:focus {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.10);
+    outline: none;
+}
+
+/* Khi dropdown được focus */
+.horse-select-wrapper:focus-within::after {
+    color: var(--accent-orange);
+}
+
+/* Khi focus */
+.horse-card-controls .horse-selector:focus {
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.10);
+    outline: none;
+}
+
+/* Progress */
+.horse-card-controls .horse-progress {
+    flex-shrink: 0;
 }

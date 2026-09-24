@@ -49,7 +49,8 @@
                     <span class="text-orange">Bước 2: Thông tin cá thể ngựa</span>
                 </div>
                 <h1>Khai báo Thông tin Cá thể Ngựa</h1>
-                <p class="subtitle">Đặc điểm sinh trắc học và hình ảnh giúp đối chiếu mã định danh vi chip khi bàn giao vận chuyển.</p>
+                <p class="subtitle">Đặc điểm sinh trắc học và hình ảnh giúp đối chiếu mã định danh vi chip khi bàn giao
+                    vận chuyển.</p>
             </div>
 
             <!-- Stepper Component -->
@@ -75,63 +76,170 @@
             </div>
 
             <form action="create_request_step3.html" method="GET">
-                <!-- Cá thể Ngựa #1 -->
+
+                <!-- ==========================================
+         THÔNG TIN CÁ THỂ NGỰA
+         ========================================== -->
+
                 <div class="card" id="horse-1-card">
-                    <div class="card-header">
-                        <h2><i class="fa-solid fa-horse-head text-orange"></i> Cá thể Ngựa #1 — Thông tin Nhận dạng</h2>
-                        <span class="badge badge-info"><i class="fa-solid fa-id-card"></i> Cá thể chính</span>
+
+                    <!-- Header + Chọn cá thể gộp chung -->
+                    <div class="card-header horse-card-header">
+
+                        <div class="horse-card-title-area">
+                            <h2 id="horse-card-title">
+                                <i class="fa-solid fa-horse-head text-orange"></i>
+                                Cá thể Ngựa #1 — Thông tin Nhận dạng
+                            </h2>
+
+                            <p class="horse-card-subtitle">
+                                Thông tin nhận dạng và đặc điểm sinh trắc học
+                                <span class="auto-save-hint">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    Thông tin tự động lưu khi chuyển cá thể
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="horse-card-controls">
+
+                            <label for="horse_selector" class="horse-selector-label">
+                                <i class="fa-solid fa-list"></i>
+                                Cá thể
+                            </label>
+
+                            <div class="horse-select-wrapper">
+                                <select id="horse_selector" class="form-control horse-selector">
+                                </select>
+                            </div>
+
+                            <span class="horse-progress" id="horse-progress">
+                                Đã khai báo 0 / 1
+                            </span>
+
+                        </div>
+
                     </div>
 
+
+                    <!-- ==========================================
+             BODY - THÔNG TIN NGỰA
+             ========================================== -->
+
                     <div class="card-body">
+
                         <!-- Tên & Microchip ID -->
                         <div class="form-grid">
+
                             <div class="form-group">
-                                <label for="horse_name_1"><i class="fa-solid fa-tag text-muted"></i> Tên ngựa (Tên đăng ký thi đấu) <span class="required">*</span></label>
-                                <input type="text" id="horse_name_1" class="form-control" placeholder="VD: Storm Runner" value="Storm Runner" required>
+                                <label for="horse_name_1">
+                                    <i class="fa-solid fa-tag text-muted"></i>
+                                    Tên ngựa (Tên đăng ký thi đấu)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input type="text" id="horse_name_1" class="form-control" placeholder="VD: Storm Runner"
+                                    value="Storm Runner" required>
                             </div>
+
+
                             <div class="form-group">
-                                <label for="microchip_1"><i class="fa-solid fa-microchip text-muted"></i> Mã Vi chip Microchip ID <span class="required">*</span></label>
-                                <input type="text" id="microchip_1" class="form-control" placeholder="VD: #VN-985211" value="#VN-985211" required>
+                                <label for="microchip_1">
+                                    <i class="fa-solid fa-microchip text-muted"></i>
+                                    Mã Vi chip Microchip ID
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input type="text" id="microchip_1" class="form-control" placeholder="VD: #VN-985211"
+                                    value="#VN-985211" required>
                             </div>
+
                         </div>
+
 
                         <!-- Giống, Giới tính, Tuổi, Cân nặng -->
                         <div class="form-grid-4">
+
+                            <!-- GIỐNG -->
                             <div class="form-group">
-                                <label for="breed_1">Giống ngựa <span class="required">*</span></label>
+                                <label for="breed_1">
+                                    Giống ngựa
+                                    <span class="required">*</span>
+                                </label>
+
                                 <div class="select-wrapper">
                                     <select class="form-control" id="breed_1" required>
                                         <option value="">— Chọn giống —</option>
-                                        <option value="thoroughbred" selected>Thoroughbred (Anh)</option>
-                                        <option value="arabian">Arabian (Ả Rập)</option>
-                                        <option value="quarter">Quarter Horse</option>
-                                        <option value="warmblood">Warmblood</option>
-                                        <option value="appaloosa">Appaloosa</option>
-                                        <option value="other">Khác</option>
+                                        <option value="thoroughbred" selected>
+                                            Thoroughbred (Anh)
+                                        </option>
+                                        <option value="arabian">
+                                            Arabian (Ả Rập)
+                                        </option>
+                                        <option value="quarter">
+                                            Quarter Horse
+                                        </option>
+                                        <option value="warmblood">
+                                            Warmblood
+                                        </option>
+                                        <option value="appaloosa">
+                                            Appaloosa
+                                        </option>
+                                        <option value="other">
+                                            Khác
+                                        </option>
                                     </select>
                                 </div>
                             </div>
 
+
+                            <!-- GIỚI TÍNH -->
                             <div class="form-group">
-                                <label for="gender_1">Giới tính <span class="required">*</span></label>
+                                <label for="gender_1">
+                                    Giới tính
+                                    <span class="required">*</span>
+                                </label>
+
                                 <div class="select-wrapper">
                                     <select class="form-control" id="gender_1" required>
-                                        <option value="stallion">Đực (Stallion)</option>
-                                        <option value="mare">Cái (Mare)</option>
-                                        <option value="gelding" selected>Thiến (Gelding)</option>
+                                        <option value="stallion">
+                                            Đực (Stallion)
+                                        </option>
+
+                                        <option value="mare">
+                                            Cái (Mare)
+                                        </option>
+
+                                        <option value="gelding" selected>
+                                            Thiến (Gelding)
+                                        </option>
                                     </select>
                                 </div>
                             </div>
 
+
+                            <!-- TUỔI -->
                             <div class="form-group">
-                                <label for="age_1">Tuổi (Năm)</label>
-                                <input type="number" id="age_1" class="form-control" placeholder="Tuổi" value="5" min="1" max="30">
+                                <label for="age_1">
+                                    Tuổi (Năm)
+                                </label>
+
+                                <input type="number" id="age_1" class="form-control" placeholder="Tuổi" value="5"
+                                    min="1" max="30">
                             </div>
 
+
+                            <!-- TRỌNG LƯỢNG -->
                             <div class="form-group">
-                                <label for="weight_1">Trọng lượng (kg) <span class="required">*</span></label>
-                                <input type="number" id="weight_1" class="form-control" placeholder="kg" value="520" required>
+                                <label for="weight_1">
+                                    Trọng lượng (kg)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input type="number" id="weight_1" class="form-control" placeholder="kg" value="520"
+                                    required>
                             </div>
+
                         </div>
 
                         <!-- Màu lông & Upload ảnh -->
@@ -151,18 +259,70 @@
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <label for="marks_1">Đặc điểm dị biệt nhận dạng (nếu có)</label>
-                                    <input type="text" id="marks_1" class="form-control" placeholder="VD: Vệt trắng chữ sao ở trán, đốm chân sau bên phải" value="Sao trắng trán, tất trắng chân sau">
+                                    <input type="text" id="marks_1" class="form-control"
+                                        placeholder="VD: Vệt trắng chữ sao ở trán, đốm chân sau bên phải"
+                                        value="Sao trắng trán, tất trắng chân sau">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label><i class="fa-solid fa-camera text-muted"></i> Hình ảnh đối chiếu nhận dạng <span class="required">*</span></label>
+                                <label><i class="fa-solid fa-camera text-muted"></i> Hình ảnh đối chiếu nhận dạng <span
+                                        class="required">*</span></label>
                                 <div class="upload-area">
                                     <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                                    <div class="upload-text">Kéo thả hình ảnh hoặc <strong>chọn tệp từ máy</strong></div>
-                                    <div class="upload-hint">Yêu cầu ảnh toàn thân + góc chụp khuôn mặt (JPG/PNG, tối đa 5MB)</div>
+                                    <div class="upload-text">Kéo thả hình ảnh hoặc <strong>chọn tệp từ máy</strong>
+                                    </div>
+                                    <div class="upload-hint">Yêu cầu ảnh toàn thân + góc chụp khuôn mặt (JPG/PNG, tối đa
+                                        5MB)</div>
                                     <div style="margin-top: 8px;">
-                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Đã chọn 2 ảnh (storm_runner_profile.jpg, front.jpg)</span>
+                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Đã
+                                            chọn 2 ảnh (storm_runner_profile.jpg, front.jpg)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 1. Hồ sơ Pháp lý & Thú y -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fa-solid fa-file-shield text-orange"></i> Hồ sơ Pháp lý & Giấy tờ Thú y
+                                    OIE</h2>
+                                <span class="badge badge-info"><i class="fa-solid fa-certificate"></i> Bắt buộc thẩm
+                                    định</span>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-passport text-muted"></i> Hộ chiếu Ngựa (Horse
+                                            Passport) <span class="required">*</span></label>
+                                        <div class="upload-area">
+                                            <div class="upload-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                                            <div class="upload-text">Kéo thả file Hộ chiếu hoặc <strong>Chọn
+                                                    tệp</strong></div>
+                                            <div class="upload-hint">Định dạng PDF, JPG hoặc PNG (Tối đa 5MB)</div>
+                                            <div style="margin-top: 8px;">
+                                                <span class="badge badge-success"><i
+                                                        class="fa-solid fa-circle-check"></i> passport_storm_runner.pdf
+                                                    (2.4 MB)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-syringe text-muted"></i> Sổ Tiêm chủng / Chứng nhận
+                                            Kiểm dịch <span class="required">*</span></label>
+                                        <div class="upload-area">
+                                            <div class="upload-icon"><i class="fa-solid fa-file-medical"></i></div>
+                                            <div class="upload-text">Kéo thả sổ tiêm hoặc <strong>Chọn tệp</strong>
+                                            </div>
+                                            <div class="upload-hint">Yêu cầu vacxin cúm ngựa (Equine Influenza) trong 6
+                                                tháng</div>
+                                            <div style="margin-top: 8px;">
+                                                <span class="badge badge-success"><i
+                                                        class="fa-solid fa-circle-check"></i> vaccination_card_2026.pdf
+                                                    (1.8 MB)</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -170,98 +330,12 @@
                     </div>
                 </div>
 
-                <!-- Cá thể Ngựa #2 (Toggleable) -->
-                <div class="card" id="horse-2-section" style="display: none;">
-                    <div class="card-header">
-                        <h2><i class="fa-solid fa-horse-head text-orange"></i> Cá thể Ngựa #2 — Thông tin Nhận dạng</h2>
-                        <button type="button" class="btn-danger-light" onclick="toggleHorse2(false)"><i class="fa-solid fa-trash-can"></i> Xóa cá thể này</button>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="horse_name_2">Tên ngựa (Tên đăng ký)</label>
-                                <input type="text" id="horse_name_2" class="form-control" placeholder="VD: Thunder Bolt" value="Thunder Bolt">
-                            </div>
-                            <div class="form-group">
-                                <label for="microchip_2">Mã Vi chip Microchip ID</label>
-                                <input type="text" id="microchip_2" class="form-control" placeholder="VD: #VN-985212" value="#VN-985212">
-                            </div>
-                        </div>
-
-                        <div class="form-grid-4">
-                            <div class="form-group">
-                                <label for="breed_2">Giống ngựa</label>
-                                <div class="select-wrapper">
-                                    <select class="form-control" id="breed_2">
-                                        <option value="">— Chọn giống —</option>
-                                        <option value="thoroughbred" selected>Thoroughbred (Anh)</option>
-                                        <option value="arabian">Arabian (Ả Rập)</option>
-                                        <option value="quarter">Quarter Horse</option>
-                                        <option value="warmblood">Warmblood</option>
-                                        <option value="other">Khác</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="gender_2">Giới tính</label>
-                                <div class="select-wrapper">
-                                    <select class="form-control" id="gender_2">
-                                        <option value="stallion" selected>Đực (Stallion)</option>
-                                        <option value="mare">Cái (Mare)</option>
-                                        <option value="gelding">Thiến (Gelding)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="age_2">Tuổi</label>
-                                <input type="number" id="age_2" class="form-control" placeholder="Tuổi" value="4">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="weight_2">Trọng lượng (kg)</label>
-                                <input type="number" id="weight_2" class="form-control" placeholder="kg" value="490">
-                            </div>
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="color_2">Màu lông</label>
-                                <div class="select-wrapper">
-                                    <select class="form-control" id="color_2">
-                                        <option value="chestnut" selected>Hạt dẻ (Chestnut)</option>
-                                        <option value="bay">Nâu đỏ (Bay)</option>
-                                        <option value="black">Đen tuyền (Black)</option>
-                                        <option value="grey">Xám tro (Grey)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Hình ảnh đối chiếu nhận dạng</label>
-                                <div class="upload-area">
-                                    <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                                    <div class="upload-text">Kéo thả hoặc <strong>chọn ảnh cá thể #2</strong></div>
-                                    <div class="upload-hint">JPG/PNG, tối đa 5MB/ảnh</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Button Thêm Ngựa -->
-                <div style="margin-bottom: 24px;">
-                    <button type="button" class="btn-add-dashed" id="btn-add-horse" onclick="toggleHorse2(true)">
-                        <i class="fa-solid fa-plus"></i> Thêm cá thể ngựa khác vào cùng chuyến
-                    </button>
-                </div>
-
                 <!-- Navigation Actions -->
                 <div class="form-actions">
-                    <a href="create_request.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Bước 1: Tuyến đường</a>
-                    <button type="submit" class="btn btn-primary">Tiếp tục: Dịch vụ & Y tế <i class="fa-solid fa-arrow-right"></i></button>
+                    <a href="create_request.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Bước 1:
+                        Tuyến đường</a>
+                    <button type="submit" class="btn btn-primary">Tiếp tục: Dịch vụ & Y tế <i
+                            class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </form>
         </div>
