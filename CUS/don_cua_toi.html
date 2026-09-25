@@ -99,6 +99,8 @@
 
             <div class="acceptance-layout">
                 <div class="layout-left">
+                    <!-- Phản hồi sự cố hồ sơ (chỉ khi cần khách chọn phương án) -->
+                    <div class="card" id="d-choice-card" style="display: none;"></div>
                     <!-- Hành trình (chỉ khi đang vận chuyển) -->
                     <div class="card" id="d-trip-card" style="display: none;">
                         <div class="card-header"><h3><i class="fa-solid fa-route text-orange"></i> Hành trình</h3><span id="d-trip-updated" class="sub-text"></span></div>
@@ -116,6 +118,11 @@
                         <div class="card-header"><h3><i class="fa-solid fa-clipboard-check text-orange"></i> Kết quả thẩm định</h3></div>
                         <div class="card-body" id="d-plan"></div>
                     </div>
+                    <!-- Giấy tờ chuyến đi (sau khi thanh toán) -->
+                    <div class="card" id="d-papers-card" style="display: none;">
+                        <div class="card-header"><h3><i class="fa-solid fa-folder-open text-orange"></i> Giấy tờ chuyến đi</h3><span id="d-papers-sub" class="sub-text"></span></div>
+                        <div id="d-papers"></div>
+                    </div>
                     <div class="card">
                         <div class="card-header"><h3><i class="fa-solid fa-list-check text-orange"></i> Dịch vụ đã chọn</h3></div>
                         <div class="table-responsive" id="d-services"></div>
@@ -125,6 +132,20 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal xem bản scan giấy tờ -->
+    <div id="docModal" class="pay-modal-overlay">
+        <div class="pay-modal">
+            <div class="pay-modal-header">
+                <h3 id="doc-title"></h3>
+                <button class="pay-modal-close" onclick="closeDoc()" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="pay-modal-body" id="doc-body"></div>
+            <div class="pay-modal-actions">
+                <button class="btn btn-light-outline" onclick="closeDoc()">Đóng</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal xác nhận hủy đơn -->
     <div id="cancelModal" class="pay-modal-overlay">
@@ -137,6 +158,21 @@
             <div class="pay-modal-actions">
                 <button class="btn btn-light-outline" onclick="closeCancel()">Tiếp tục chờ</button>
                 <button class="btn btn-danger-solid" onclick="confirmCancel()"><i class="fa-solid fa-ban"></i> Xác nhận hủy đơn</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal xác nhận phương án -->
+    <div id="choiceModal" class="pay-modal-overlay">
+        <div class="pay-modal">
+            <div class="pay-modal-header">
+                <h3 id="ch-title"></h3>
+                <button class="pay-modal-close" onclick="closeChoice()" aria-label="Đóng">&times;</button>
+            </div>
+            <div class="pay-modal-body" id="ch-body"></div>
+            <div class="pay-modal-actions">
+                <button class="btn btn-light-outline" onclick="closeChoice()">Xem lại</button>
+                <button class="btn btn-primary" id="ch-confirm" onclick="applyChoice()"><i class="fa-solid fa-check"></i> Xác nhận</button>
             </div>
         </div>
     </div>

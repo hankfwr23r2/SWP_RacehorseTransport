@@ -1,12 +1,14 @@
 // ===== Dữ liệu mẫu =====
 // Đơn đến trang này khi Kiểm dịch đã xác minh giấy tờ và Điều phối viên đã lập lộ trình.
 // services: dịch vụ khách chọn khi đặt đơn [tên dịch vụ, lựa chọn, thành tiền]; tổng = giá đã báo khách.
-// status: pending (chờ duyệt) | approved (chờ thanh toán) | rejected
+// status: pending (chờ duyệt) | approved (chờ thanh toán) | rejected | paid (đã thanh toán, kiểm dịch viên chuẩn bị giấy tờ)
+// papers (đơn đã thanh toán): khách gửi bản gốc trước 17:00 ngày khởi hành − 3; kiểm dịch viên làm thủ tục với cơ quan
+// chức năng, cập nhật giấy đã cấp (kèm bản scan) và bàn giao cho Điều phối viên trước 12:00 ngày khởi hành − 2.
 
+// Giấy tờ khách nộp, khớp trang Kiểm dịch (giấy chứng nhận kiểm dịch do kiểm dịch viên xin sau khi khách thanh toán)
 const DOCS_DOMESTIC = [
     'Hộ chiếu ngựa / Microchip',
     'Giấy chứng nhận tiêm phòng',
-    'Giấy chứng nhận kiểm dịch vận chuyển nội địa',
     'Giấy tờ chứng minh sở hữu'
 ];
 
@@ -14,7 +16,6 @@ const DOCS_CROSS_BORDER = [
     'Hộ chiếu ngựa / Microchip',
     'Giấy chứng nhận tiêm phòng',
     'Kết quả xét nghiệm EIA & cúm ngựa',
-    'Giấy chứng nhận kiểm dịch xuất / nhập khẩu',
     'Giấy phép nhập khẩu của nước đến',
     'Giấy tờ chứng minh sở hữu'
 ];
@@ -215,10 +216,127 @@ const orders = [
     }
 ];
 
+// Giấy do cơ quan chức năng cấp (kiểm dịch viên làm thủ tục, khớp trang Chuẩn bị giấy tờ chuyến đi)
+const PROCEDURES_DOMESTIC = ['Giấy chứng nhận kiểm dịch động vật vận chuyển ra khỏi tỉnh'];
+const PROCEDURES_CROSS_BORDER = ['Giấy chứng nhận kiểm dịch động vật xuất/nhập khẩu', 'Tờ khai hải quan (điện tử)'];
+
+// Bản gốc giấy tờ của khách: mọi giấy đã nhận lúc receivedAt, trừ các giấy trong missing { tên ngựa: [giấy] }
+function originalsOf(order, receivedAt, missing = {}) {
+    const docs = order.border ? DOCS_CROSS_BORDER : DOCS_DOMESTIC;
+    return order.horses.map(h => ({ horse: h.name, docs: docs.map(d => [d, (missing[h.name] || []).includes(d) ? null : receivedAt]) }));
+}
+
+function paidOrder(o) {
+    o.papers.originals = originalsOf(o, o.papers.receivedAt, o.papers.missing);
+    return o;
+}
+
+orders.push(
+    paidOrder({
+        id: 'EQ-2026-1058', customer: 'Trang trại Tây Ninh Stud', submitted: '10/09/2026', depart: '30/09/2026', paidAt: '20/09/2026 10:00',
+        from: 'Trang trại Tây Ninh Stud (Tây Ninh, VN)', to: 'Trường đua Phnom Penh Royal Turf (Phnom Penh, KH)',
+        routeShort: 'Tây Ninh → Phnom Penh (KH)', border: 'Mộc Bài – Bavet', distance: '230 km', duration: '~6 giờ',
+        horses: [
+            { name: 'Bà Đen', breed: 'Thoroughbred', sex: 'Cái', chip: 'VN-610118' },
+            { name: 'Vàm Cỏ', breed: 'Thoroughbred', sex: 'Đực', chip: 'VN-610125' }
+        ],
+        inspector: 'Phạm Văn Hưng', inspectNote: 'Giấy tờ hợp lệ.',
+        coordinator: 'Phạm Tâm', vehicle: '70C-045.18 (xe chuyên dụng 2 ngăn)', driver: 'Lê Văn Tài', grooms: 'Huỳnh Thị Mai',
+        stops: ['Trang trại Tây Ninh Stud — nhận ngựa', 'Cửa khẩu Mộc Bài (Tây Ninh) — thông quan', 'Cửa khẩu Bavet (Svay Rieng) — kiểm tra thú y', 'Trường đua Phnom Penh Royal Turf — giao ngựa'],
+        services: [
+            ['Vận chuyển đường bộ', 'Xe chuyên dụng 2 ngăn · khoang tiêu chuẩn · 230 km', 12500000],
+            ['Kiểm dịch & thủ tục xuất cảnh', 'Trọn gói cho 2 ngựa: xét nghiệm, chứng nhận, thông quan Mộc Bài – Bavet', 7000000],
+            ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · nước điện giải', 1600000],
+            ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1600000]
+        ],
+        status: 'paid',
+        papers: {
+            originalsDue: '27/09/2026 17:00', handoverDue: '28/09/2026 12:00', receivedAt: '21/09/2026 10:00',
+            missing: { 'Vàm Cỏ': ['Kết quả xét nghiệm EIA & cúm ngựa', 'Giấy phép nhập khẩu của nước đến', 'Giấy tờ chứng minh sở hữu'] },
+            procedures: {
+                'Giấy chứng nhận kiểm dịch động vật xuất/nhập khẩu': { number: 'KD-XK-2026/0412', agency: 'Cơ quan Thú y vùng VI', issued: '23/09/2026', validUntil: '06/10/2026' }
+            }
+        }
+    }),
+    paidOrder({
+        id: 'EQ-2026-1050', customer: 'Hoàng Gia Stud', submitted: '05/09/2026', depart: '25/09/2026', paidAt: '15/09/2026 14:00',
+        from: 'Trường đua Thiên Mã (Sóc Sơn, Hà Nội, VN)', to: 'Trường đua Luang Prabang (Luang Prabang, LA)',
+        routeShort: 'Hà Nội → Luang Prabang (LA)', border: 'Tây Trang – Sop Hun', distance: '620 km', duration: '2 ngày',
+        horses: [
+            { name: 'Ngọc Hoàng', breed: 'Arabian', sex: 'Đực', chip: 'VN-902214' }
+        ],
+        inspector: 'Phạm Văn Hưng', inspectNote: 'Giấy tờ hợp lệ.',
+        coordinator: 'Phạm Tâm', vehicle: '29C-310.77 (xe chuyên dụng 2 ngăn)', driver: 'Trịnh Văn Long', grooms: 'Đỗ Thị Hạnh',
+        stops: ['Trường đua Thiên Mã (Sóc Sơn) — nhận ngựa', 'Trạm nghỉ Điện Biên — nghỉ đêm', 'Cửa khẩu Tây Trang (Điện Biên) — thông quan', 'Cửa khẩu Sop Hun (Phongsaly) — kiểm tra thú y', 'Trường đua Luang Prabang — giao ngựa'],
+        services: [
+            ['Vận chuyển đường bộ', 'Xe chuyên dụng 2 ngăn · khoang tiêu chuẩn · 620 km', 19000000],
+            ['Kiểm dịch & thủ tục xuất cảnh', 'Trọn gói: xét nghiệm, chứng nhận, thông quan Tây Trang – Sop Hun', 4200000],
+            ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 1800000],
+            ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1100000]
+        ],
+        status: 'paid',
+        papers: {
+            originalsDue: '22/09/2026 17:00', handoverDue: '23/09/2026 12:00', receivedAt: '18/09/2026 09:30', handedAt: '23/09/2026 10:00',
+            procedures: {
+                'Giấy chứng nhận kiểm dịch động vật xuất/nhập khẩu': { number: 'KD-XK-2026/0397', agency: 'Cơ quan Thú y vùng I', issued: '21/09/2026', validUntil: '03/10/2026' },
+                'Tờ khai hải quan (điện tử)': { number: '305112402267', agency: 'Chi cục Hải quan cửa khẩu Tây Trang', issued: '22/09/2026' }
+            }
+        }
+    }),
+    paidOrder({
+        id: 'EQ-2026-1052', customer: 'Trang trại Long Thành', submitted: '08/09/2026', depart: '27/09/2026', paidAt: '16/09/2026 16:00',
+        from: 'Trang trại Long Thành (Đồng Nai, VN)', to: 'Trường đua Angkor (Siem Reap, KH)',
+        routeShort: 'Đồng Nai → Siem Reap (KH)', border: 'Mộc Bài – Bavet', distance: '560 km', duration: '2 ngày',
+        horses: [
+            { name: 'Kim Lân', breed: 'Thoroughbred', sex: 'Đực', chip: 'VN-215530' }
+        ],
+        inspector: 'Phạm Văn Hưng', inspectNote: 'Giấy tờ hợp lệ.',
+        coordinator: 'Trần Minh', vehicle: '60C-222.10 (xe chuyên dụng 2 ngăn)', driver: 'Nguyễn Văn Hùng', grooms: 'Võ Thị Lan',
+        stops: ['Trang trại Long Thành — nhận ngựa', 'Cửa khẩu Mộc Bài (Tây Ninh) — thông quan', 'Cửa khẩu Bavet (Svay Rieng) — kiểm tra thú y', 'Trường đua Angkor — giao ngựa'],
+        services: [
+            ['Vận chuyển đường bộ', 'Xe chuyên dụng 2 ngăn · khoang tiêu chuẩn · 560 km', 15000000],
+            ['Kiểm dịch & thủ tục xuất cảnh', 'Trọn gói: xét nghiệm, chứng nhận, thông quan Mộc Bài – Bavet', 3800000],
+            ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 1000000],
+            ['Bảo hiểm vận chuyển', 'Gói cơ bản', 800000]
+        ],
+        status: 'paid',
+        papers: {
+            originalsDue: '24/09/2026 17:00', handoverDue: '25/09/2026 12:00', receivedAt: '19/09/2026 15:00',
+            missing: { 'Kim Lân': ['Giấy phép nhập khẩu của nước đến', 'Giấy tờ chứng minh sở hữu'] },
+            procedures: {
+                'Giấy chứng nhận kiểm dịch động vật xuất/nhập khẩu': { number: 'KD-XK-2026/0409', agency: 'Cơ quan Thú y vùng VI', issued: '23/09/2026', validUntil: '07/10/2026' }
+            },
+            report: {
+                at: '24/09/2026 08:00', type: 'Khách chưa gửi bản gốc đúng hạn',
+                items: ['Kim Lân · Giấy phép nhập khẩu của nước đến', 'Kim Lân · Giấy tờ chứng minh sở hữu', 'Tờ khai hải quan (điện tử)'],
+                note: 'Đã gọi khách 2 lần, khách hẹn gửi nhưng chưa nhận được. Chưa khai hải quan được vì thiếu bản gốc giấy phép nhập khẩu.'
+            }
+        }
+    })
+);
+
 // ===== Tính toán =====
 const formatVND = n => n.toLocaleString('en-US') + ' VND';
 
 const orderTotal = order => order.services.reduce((total, svc) => total + svc[2], 0);
+
+const proceduresOf = order => order.border ? PROCEDURES_CROSS_BORDER : PROCEDURES_DOMESTIC;
+
+function papersProgress(order) {
+    const { originals, procedures } = order.papers;
+    const docs = originals.flatMap(o => o.docs);
+    const total = docs.length + proceduresOf(order).length;
+    const done = docs.filter(d => d[1]).length + proceduresOf(order).filter(p => procedures[p]).length;
+    return { done, total };
+}
+
+function papersBadge(order) {
+    const papers = order.papers;
+    if (papers.handedAt) return '<span class="badge badge-success"><i class="fa-solid fa-handshake"></i> Đã bàn giao Điều phối</span>';
+    if (papers.report) return '<span class="badge badge-danger"><i class="fa-solid fa-flag"></i> Kiểm dịch báo cáo</span>';
+    const p = papersProgress(order);
+    return `<span class="badge badge-blue">Đủ ${p.done}/${p.total} giấy</span>`;
+}
 
 // ===== Bảng =====
 let currentTab = 'pending';
@@ -233,7 +351,7 @@ function renderTable() {
             : `<button class="btn btn-light btn-sm" onclick="openModal(${index})"><i class="fa-solid fa-eye"></i> Xem</button>`;
         return `
             <tr data-status="${order.status}">
-                <td class="font-semibold nowrap" style="color: #ea580c;">${order.id}</td>
+                <td class="font-semibold nowrap" style="color: #ea580c;">${order.id}${order.status === 'paid' ? `<div class="paid-badge">${papersBadge(order)}</div>` : ''}</td>
                 <td class="text-muted">${order.customer}</td>
                 <td>${order.routeShort}${order.border ? '<div class="route-border"><i class="fa-solid fa-flag"></i> ' + order.border + '</div>' : ''}</td>
                 <td class="text-muted">${order.horses.length}</td>
@@ -258,7 +376,7 @@ function switchTab(tab) {
 }
 
 function updateCounts() {
-    ['pending', 'approved', 'rejected'].forEach(status => {
+    ['pending', 'approved', 'rejected', 'paid'].forEach(status => {
         document.getElementById('count-' + status).textContent = orders.filter(o => o.status === status).length;
     });
 }
@@ -266,7 +384,7 @@ function updateCounts() {
 // ===== Modal =====
 function renderStepper(order) {
     const steps = ['Tiếp nhận', 'Kiểm dịch', 'Lập lộ trình', 'Phê duyệt'];
-    const current = order.status === 'approved' ? steps.length : 3;
+    const current = ['approved', 'paid'].includes(order.status) ? steps.length : 3;
     return steps.map((label, i) => {
         let cls = 'step';
         if (order.status === 'rejected' && i === 3) cls += ' step-rejected';
@@ -297,7 +415,10 @@ function openModal(index) {
     } else {
         const banners = {
             approved: ['banner-success', 'fa-circle-check', `Đã phê duyệt. Chờ khách hàng thanh toán 100% trước <b>${order.paymentDeadline}</b>.`],
-            rejected: ['banner-danger', 'fa-circle-xmark', `Từ chối — <b>${order.rejectType}</b>: ${order.note}`]
+            rejected: ['banner-danger', 'fa-circle-xmark', `Từ chối — <b>${order.rejectType}</b>: ${order.note}`],
+            paid: order.papers && order.papers.report
+                ? ['banner-danger', 'fa-flag', `<b>Kiểm dịch viên ${order.inspector} báo cáo lúc ${order.papers.report.at}</b> — ${order.papers.report.type}.<br>Giấy liên quan: ${order.papers.report.items.join('; ')}.<br>Ghi chú: ${order.papers.report.note}`]
+                : ['banner-success', 'fa-circle-check', `Khách đã thanh toán 100% lúc <b>${order.paidAt}</b>. ${order.papers && order.papers.handedAt ? `Giấy tờ đã bàn giao cho Điều phối viên lúc <b>${order.papers.handedAt}</b>.` : `Kiểm dịch viên đang chuẩn bị giấy tờ, hạn bàn giao <b>${order.papers.handoverDue}</b>.`}`]
         };
         const [cls, icon, html] = banners[order.status];
         banner.className = 'status-banner ' + cls;
@@ -330,8 +451,7 @@ function openModal(index) {
         </details>`).join('');
     document.getElementById('m-inspect-note').innerHTML = `<i class="fa-solid fa-comment-dots"></i> ${order.inspectNote}`;
 
-    const files = order.horses.map(h => ({ name: `Ho_so_${h.name.replace(/\s+/g, '_')}.pdf`, size: '1.2 MB', icon: 'fa-file-pdf', color: '#dc2626' }))
-        .concat([{ name: `Chung_nhan_kiem_dich_${order.id}.pdf`, size: '640 KB', icon: 'fa-file-pdf', color: '#dc2626' }]);
+    const files = order.horses.map(h => ({ name: `Ho_so_${h.name.replace(/\s+/g, '_')}.pdf`, size: '1.2 MB', icon: 'fa-file-pdf', color: '#dc2626' }));
     document.getElementById('m-files').innerHTML = files.map(file => `
         <div class="file-item">
             <div class="file-name"><i class="fa-solid ${file.icon}" style="color: ${file.color};"></i><div><div>${file.name}</div><div class="text-muted file-size">${file.size}</div></div></div>
@@ -360,10 +480,41 @@ function openModal(index) {
         </table>
         ${order.status === 'pending' ? '<div class="payment-note"><i class="fa-solid fa-credit-card"></i> Sau khi duyệt: khách hàng thanh toán 100% tổng giá trị đơn trong 48 giờ, quá hạn đơn tự hủy.</div>' : ''}`;
 
+    // 5. Giấy tờ chuyến đi (đơn đã thanh toán)
+    const papersSection = document.getElementById('m-papers-section');
+    papersSection.style.display = order.papers ? 'block' : 'none';
+    if (order.papers) renderPapers(order);
+
     hideRejectBox();
     document.getElementById('decision-buttons').style.display = order.status === 'pending' ? 'flex' : 'none';
     document.getElementById('approvalModal').style.display = 'flex';
     document.querySelector('.approval-modal').scrollTop = 0;
+}
+
+function renderPapers(order) {
+    const { originals, procedures, originalsDue, handoverDue } = order.papers;
+    const scan = '<button class="btn-file"><i class="fa-solid fa-eye"></i> Bản scan</button>';
+    document.getElementById('m-papers-badge').innerHTML = papersBadge(order);
+    document.getElementById('m-papers-by').innerHTML = `<i class="fa-solid fa-user-doctor"></i> Kiểm dịch viên: <b>${order.inspector}</b> · Khách gửi bản gốc trước <b>${originalsDue}</b> · Bàn giao Điều phối trước <b>${handoverDue}</b>`;
+    document.getElementById('m-papers').innerHTML = `
+        <table class="service-table papers-table">
+            <thead><tr><th>Giấy do cơ quan chức năng cấp</th><th>Thông tin</th><th></th></tr></thead>
+            <tbody>
+                ${proceduresOf(order).map(label => {
+                    const p = procedures[label];
+                    return `<tr><td class="font-semibold">${label}</td>
+                        <td>${p ? `Số <b>${p.number}</b><div class="text-muted">${p.agency} · cấp ${p.issued}${p.validUntil ? ` · hiệu lực đến ${p.validUntil}` : ''}</div>` : '<span class="badge badge-muted">Chưa có</span>'}</td>
+                        <td class="text-right">${p ? scan : ''}</td></tr>`;
+                }).join('')}
+            </tbody>
+            <thead><tr><th>Bản gốc giấy tờ của khách</th><th>Trạng thái</th><th></th></tr></thead>
+            <tbody>
+                ${originals.map(o => o.docs.map(([doc, receivedAt]) => `<tr>
+                    <td>${o.horse} · ${doc}</td>
+                    <td>${receivedAt ? `<span class="text-green"><i class="fa-solid fa-circle-check"></i> Đã nhận ${receivedAt}</span>` : '<span class="badge badge-warning">Chưa nhận</span>'}</td>
+                    <td class="text-right">${scan}</td></tr>`).join('')).join('')}
+            </tbody>
+        </table>`;
 }
 
 function closeModal() {

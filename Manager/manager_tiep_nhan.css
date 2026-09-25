@@ -802,3 +802,18 @@ body {
     cursor: not-allowed;
     opacity: 1;
 }
+
+/* Việc Manager xử lý: xác nhận từ chối / giao phúc tra */
+#m-manager-action { margin-bottom: 16px; }
+#m-manager-action .status-banner { margin-bottom: 12px; }
+.banner-warning { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.action-box-neutral { background: #f8fafc; border-color: var(--border-color); }
+.option-line { display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem; padding: 6px 0; cursor: pointer; }
+.option-line input { margin-top: 3px; }
+.option-off { opacity: 0.6; cursor: not-allowed; }
+.option-why { font-size: 0.78rem; color: #b91c1c; margin-top: 2px; }
+.option-why i { margin-right: 4px; }
+.custom-option { margin: 6px 0 8px; padding: 10px; border: 1px dashed #cbd5e1; border-radius: 8px; background: white; display: flex; flex-direction: column; gap: 6px; }
+.custom-option-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+.custom-remove { border: none; background: none; color: #64748b; cursor: pointer; font-size: 0.9rem; }
+.custom-remove:hover { color: var(--danger-color); }

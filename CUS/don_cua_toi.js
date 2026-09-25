@@ -13,6 +13,13 @@
 //     + Khách vẫn được hủy miễn phí nếu không muốn chờ (phương án phụ).
 // - Hạn thanh toán = mốc SỚM HƠN của (duyệt + PAYMENT_HOURS giờ) và 17:00 của (khởi hành − PAYMENT_CAP_DAYS ngày),
 //   để đơn duyệt muộn vẫn còn thời gian chuẩn bị.
+// - Hồ sơ có vấn đề không khắc phục được (do kiểm dịch báo cáo): Manager gửi phương án, khách chọn trong CHOICE_HOURS giờ:
+//     A. Bỏ ngựa có vấn đề (báo giá lại)  B. Thay ngựa khác  C. Dời ngày khởi hành (bệnh chữa được)
+//     D. Kiểm tra lại (kiểm dịch viên khác)  E. Hủy đơn miễn phí
+//   Quá hạn không chọn: Manager quyết định (có thể từ chối đơn).
+// - Chỉ Manager từ chối đơn; đơn bị từ chối ghi rõ ở bước nào.
+const CHOICE_HOURS = 48;
+const MIN_LEAD_DAYS = 10;
 const PAYMENT_HOURS = 48;
 const PAYMENT_CAP_DAYS = 2;
 const APPRAISAL_WORKING_DAYS = 5;
@@ -21,6 +28,8 @@ const PRIORITY_WORKING_DAYS = 1;
 const HOTLINE = '1900 6868';
 const WORK_END_HOUR = 17;
 const HOLIDAYS = ['2026-01-01', '2026-04-30', '2026-05-01', '2026-09-02', '2027-01-01'];
+const ORIGINALS_DUE_DAYS = 3;  // khách gửi bản gốc giấy tờ trước 17:00 ngày khởi hành − 3
+const OFFICE_ADDRESS = 'Văn phòng Vận chuyển Ngựa, 120 Xô Viết Nghệ Tĩnh, TP.HCM';
 const URGENT_HOURS = 12; // còn ít hơn số giờ này thì cảnh báo đỏ
 const HOUR = 60 * 60 * 1000;
 
@@ -68,7 +77,10 @@ function addWorkingDays(t, n) {
 }
 
 // ===== Dữ liệu mẫu (ngày tính tương đối so với hôm nay) =====
-// status: processing | awaiting_payment | paid | in_transit | delivered (chờ nghiệm thu) | completed | rejected | cancelled
+// status: processing | choose_option (cần khách chọn phương án) | rechecking (đang kiểm tra lại) | awaiting_payment | paid
+//         | in_transit | delivered (chờ nghiệm thu) | completed | rejected | cancelled
+// choose_option: offer { issue, affected: [tên ngựa], options: [...], custom: [{ code, label, detail }] (Manager tự thêm), sentAt, requoteServices (cho phương án A) }
+// rejected: rejectedStep 0 = bước Tiếp nhận, 1 = bước Thẩm định hồ sơ; rejectedAt; reason
 // trip (khi đang vận chuyển): checkpoints [{ label, time, state: done | current | next }], health [...], contacts
 const now = Date.now();
 const today = startOfDay(now);
@@ -144,6 +156,14 @@ const orders = [
             ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1000000]
         ],
         status: 'in_transit', approvedAt: daysFromToday(-8, 10), paidAt: daysFromToday(-7, 15),
+        papers: {
+            originals: { 'Kim Lân': { passport: daysFromToday(-5, 10), vaccine: daysFromToday(-5, 10), lab: daysFromToday(-5, 10), import_permit: daysFromToday(-4, 14), ownership: daysFromToday(-5, 10) } },
+            procedures: {
+                quarantine_border: { number: 'KD-XK-2026/0391', agency: 'Cơ quan Thú y vùng VI', issuedAt: daysFromToday(-3), validUntil: daysFromToday(7), file: 'GCN_kiem_dich_XK_EQ-2026-1028.pdf' },
+                customs: { number: '305112398410', agency: 'Chi cục Hải quan cửa khẩu Mộc Bài', issuedAt: daysFromToday(-2), file: 'To_khai_HQ_EQ-2026-1028.pdf' }
+            },
+            handedAt: daysFromToday(-2, 11)
+        },
         trip: {
             plate: '51C-123.45', eta: now + 3 * HOUR, updatedAt: now - 10 * 60000,
             contacts: [['Tài xế', 'Nguyễn Văn Hùng', '0908 111 222'], ['NV chăm sóc', 'Võ Thị Lan', '0908 333 444']],
@@ -190,7 +210,11 @@ const orders = [
             ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 2400000],
             ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1200000]
         ],
-        status: 'paid', approvedAt: now - 9 * 24 * HOUR, paidAt: now - 8 * 24 * HOUR
+        status: 'paid', approvedAt: now - 9 * 24 * HOUR, paidAt: now - 8 * 24 * HOUR,
+        papers: {
+            originals: { 'Bạch Phong': { passport: daysFromToday(-2, 10), vaccine: daysFromToday(-2, 10), ownership: null } },
+            procedures: {}
+        }
     },
     {
         id: 'EQ-2026-1021', submittedAt: daysFromToday(-22, 9), departAt: daysFromToday(-6),
@@ -217,7 +241,37 @@ const orders = [
             ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 1500000],
             ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1500000]
         ],
-        status: 'rejected', reason: 'Đơn trùng lặp: trùng với đơn EQ-2026-1042 (cùng 2 ngựa, cùng ngày khởi hành).'
+        status: 'rejected', rejectedStep: 0, rejectedAt: daysFromToday(-1, 11),
+        reason: 'Đơn trùng lặp: trùng với đơn EQ-2026-1042 (cùng 2 ngựa, cùng ngày khởi hành).'
+    },
+    {
+        id: 'EQ-2026-1074', submittedAt: daysFromToday(-3, 9), departAt: daysFromToday(14),
+        from: 'Trang trại Long Thành (Đồng Nai, VN)', to: 'Trường đua Angkor (Siem Reap, KH)',
+        routeShort: 'Đồng Nai → Siem Reap (KH)', border: 'Mộc Bài – Bavet', distance: '560 km', duration: '2 ngày',
+        horses: ['Hắc Phong (Thoroughbred, Đực)', 'Kim Lân (Thoroughbred, Đực)'],
+        services: [
+            ['Vận chuyển đường bộ', 'Xe chuyên dụng 2 ngăn · khoang tiêu chuẩn · 560 km', 18000000],
+            ['Kiểm dịch & thủ tục xuất cảnh', 'Trọn gói cho 2 ngựa: xét nghiệm, chứng nhận, thông quan Mộc Bài – Bavet', 7600000],
+            ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 2000000],
+            ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1600000]
+        ],
+        status: 'choose_option',
+        offer: {
+            issue: 'Kết quả xét nghiệm của ngựa Hắc Phong dương tính bệnh thiếu máu truyền nhiễm (EIA). Đây là bệnh không chữa được nên ngựa không thể vận chuyển.',
+            affected: ['Hắc Phong'],
+            options: ['remove_horse', 'replace_horse', 'recheck', 'cancel'],
+            custom: [{
+                code: 'F', label: 'Bỏ Hắc Phong, chuyển Kim Lân sang xe 1 ngăn',
+                detail: 'Bỏ Hắc Phong khỏi đơn và chở Kim Lân bằng xe chuyên dụng 1 ngăn. Xe 1 ngăn chỉ còn trống từ 2 ngày sau ngày khởi hành hiện tại nên ngày khởi hành dời thêm 2 ngày. Giá mới 17,300,000 ₫. Bạn không cần cung cấp thêm giấy tờ.'
+            }],
+            sentAt: now - 6 * HOUR,
+            requoteServices: [
+                ['Vận chuyển đường bộ', 'Xe chuyên dụng 2 ngăn · khoang tiêu chuẩn · 560 km', 15000000],
+                ['Kiểm dịch & thủ tục xuất cảnh', 'Trọn gói cho 1 ngựa: xét nghiệm, chứng nhận, thông quan Mộc Bài – Bavet', 3800000],
+                ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 1000000],
+                ['Bảo hiểm vận chuyển', 'Gói cơ bản', 800000]
+            ]
+        }
     },
     {
         id: 'EQ-2026-1025', submittedAt: daysFromToday(-19, 9), departAt: daysFromToday(-4),
@@ -262,6 +316,14 @@ const priorityDeadline = order => atHour(addWorkingDays(appraisalDeadline(order)
 
 const isAppraisalOverdue = order => order.status === 'processing' && Date.now() > appraisalDeadline(order);
 
+const choiceDeadline = order => order.offer.sentAt + CHOICE_HOURS * HOUR;
+const choiceExpired = order => order.status === 'choose_option' && Date.now() > choiceDeadline(order);
+
+function timeLeftUntil(t) {
+    const ms = Math.max(0, t - Date.now());
+    return `${Math.floor(ms / HOUR)} giờ ${pad(Math.floor((ms % HOUR) / 60000))} phút`;
+}
+
 function timeLeft(order) {
     const ms = paymentDeadline(order) - Date.now();
     const hours = Math.floor(ms / HOUR);
@@ -283,6 +345,8 @@ function expireOverdue() {
 function currentStep(order) {
     switch (order.status) {
         case 'processing': return 1;
+        case 'choose_option': return 1;
+        case 'rechecking': return 1;
         case 'awaiting_payment': return 2;
         case 'paid': return 3;
         case 'in_transit': return 3;
@@ -307,6 +371,10 @@ function statusBadge(order) {
         case 'delivered': return '<span class="badge badge-warning"><i class="fa-solid fa-clipboard-check"></i> Đã giao · chờ bạn nghiệm thu</span>';
         case 'completed': return '<span class="badge badge-success"><i class="fa-solid fa-flag-checkered"></i> Hoàn thành</span>';
         case 'rejected': return '<span class="badge badge-muted"><i class="fa-solid fa-xmark"></i> Bị từ chối</span>';
+        case 'choose_option': return choiceExpired(order)
+            ? '<span class="badge badge-muted"><i class="fa-solid fa-clock"></i> Quá hạn phản hồi</span>'
+            : `<span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Chờ bạn phản hồi · còn ${timeLeftUntil(choiceDeadline(order))}</span>`;
+        case 'rechecking': return '<span class="badge badge-info"><i class="fa-solid fa-magnifying-glass"></i> Đang kiểm tra lại</span>';
         case 'cancelled': return '<span class="badge badge-muted"><i class="fa-solid fa-ban"></i> Đã hủy</span>';
     }
 }
@@ -314,7 +382,7 @@ function statusBadge(order) {
 // ===== Danh sách =====
 const TABS = [
     ['all', 'Tất cả', () => true],
-    ['processing', 'Chờ thẩm định', o => o.status === 'processing'],
+    ['processing', 'Chờ thẩm định', o => ['processing', 'choose_option', 'rechecking'].includes(o.status)],
     ['awaiting_payment', 'Chờ thanh toán', o => o.status === 'awaiting_payment'],
     ['paid', 'Đã thanh toán', o => o.status === 'paid'],
     ['in_transit', 'Đang vận chuyển', o => o.status === 'in_transit'],
@@ -328,12 +396,18 @@ function renderList() {
     document.getElementById('payment-hours').textContent = PAYMENT_HOURS;
 
     const waiting = orders.filter(o => o.status === 'awaiting_payment');
-    document.getElementById('payment-alert').innerHTML = waiting.length
+    const choosing = orders.filter(o => o.status === 'choose_option' && !choiceExpired(o));
+    document.getElementById('payment-alert').innerHTML = (choosing.length
+        ? `<div class="alert-box alert-danger"><i class="fa-solid fa-circle-exclamation" style="margin-top: 3px;"></i><div>
+            Bạn có <strong>${choosing.length} đơn cần phản hồi</strong> do hồ sơ ngựa có vấn đề (${choosing.map(o => o.id).join(', ')}).
+            Hạn gần nhất: <strong>${formatTime(Math.min(...choosing.map(choiceDeadline)))}</strong>.
+           </div></div>`
+        : '') + (waiting.length
         ? `<div class="alert-box alert-warning"><i class="fa-solid fa-credit-card" style="margin-top: 3px;"></i><div>
             Bạn có <strong>${waiting.length} đơn đã được duyệt</strong> đang chờ thanh toán.
             Hạn gần nhất: <strong>${formatTime(Math.min(...waiting.map(paymentDeadline)))}</strong>. Quá hạn đơn sẽ tự hủy.
            </div></div>`
-        : '';
+        : '');
 
     document.getElementById('order-tabs').innerHTML = TABS.map(([key, label, match]) =>
         `<button class="order-tab ${key === currentTab ? 'active' : ''}" onclick="switchTab('${key}')">${label} (${orders.filter(match).length})</button>`
@@ -412,9 +486,18 @@ function showDetail(orderId) {
                     <li><i class="fa-regular fa-clock"></i> Cam kết có kết quả trước <strong>${formatTime(priorityDeadline(order))}</strong>${Date.now() > priorityDeadline(order) ? ' — Quản lý phụ trách sẽ gọi trực tiếp cho bạn' : ''}.</li>
                     <li><i class="fa-solid fa-headset"></i> Nếu có thắc mắc hoặc cần hỗ trợ về đơn, vui lòng liên hệ hotline <strong>${HOTLINE}</strong>.</li>
                 </ul>`]
-            : ['alert-info', 'fa-hourglass-half', `Đơn đang được thẩm định: xác minh hồ sơ thú y và lập kế hoạch vận chuyển. Kết quả trước <strong>${formatTime(appraisalDeadline(order))}</strong>. Khi đơn được duyệt, bạn có ${PAYMENT_HOURS} giờ để thanh toán.`],
-        rejected: ['alert-danger', 'fa-circle-xmark', `<strong>Đơn bị từ chối.</strong> ${order.reason} Bạn chưa thanh toán nên không phát sinh chi phí.`],
-        cancelled: ['alert-danger', 'fa-ban', `<strong>Đơn đã hủy.</strong> ${order.reason}`]
+            : ['alert-info', 'fa-hourglass-half', `Đơn đang được thẩm định: xác minh hồ sơ thú y và lập kế hoạch vận chuyển. Kết quả trước <strong>${formatTime(appraisalDeadline(order))}</strong>. Khi đơn được duyệt, bạn có ${PAYMENT_HOURS} giờ để thanh toán.${order.note ? `<br>${order.note}` : ''}`],
+        rejected: ['alert-danger', 'fa-circle-xmark', rejectedHtml(order)],
+        choose_option: order.offer ? (choiceExpired(order)
+            ? ['alert-warning', 'fa-clock', `<strong>Đã quá hạn phản hồi</strong> (hạn ${formatTime(choiceDeadline(order))}). Quản lý sẽ xem xét và liên hệ với bạn. Cần hỗ trợ, gọi hotline <strong>${HOTLINE}</strong>.`]
+            : ['alert-warning', 'fa-circle-exclamation', `<strong>Cần phản hồi của bạn.</strong> Hồ sơ có vấn đề không thể khắc phục bằng bổ sung giấy tờ.
+                Vui lòng chọn phương án xử lý bên dưới trước <strong>${formatTime(choiceDeadline(order))}</strong>. Quá hạn không phản hồi, Quản lý có thể từ chối đơn.`]) : null,
+        rechecking: ['alert-info', 'fa-magnifying-glass', `<strong>Bạn đã yêu cầu kiểm tra lại lúc ${formatTime(order.recheckAt || Date.now())}.</strong> Một kiểm dịch viên khác đang xem lại hồ sơ từ đầu. Ngày khởi hành ${formatDate(order.departAt)} vẫn giữ nguyên.`],
+        cancelled: ['alert-danger', 'fa-ban', `<strong>Đơn đã hủy.</strong> ${order.reason}`],
+        paid: order.papers && missingOriginals(order).length
+            ? ['alert-warning', 'fa-envelope-open-text', `<strong>Vui lòng gửi bản gốc ${missingOriginals(order).length} giấy tờ trước ${formatTime(originalsDue(order))}</strong>: ${missingOriginals(order).join('; ')}.<br>
+                Gửi chuyển phát hoặc mang trực tiếp đến ${OFFICE_ADDRESS}. Qua cửa khẩu và trạm kiểm dịch chỉ chấp nhận bản gốc. Chưa có đủ bản gốc, chuyến đi có thể không khởi hành được.`]
+            : null
     };
     const banner = banners[order.status];
     document.getElementById('d-banner').innerHTML = banner
@@ -443,6 +526,15 @@ function showDetail(orderId) {
             </ul>
             <div class="sub-title">Lộ trình dự kiến</div>
             <ol class="plan-stops">${order.stops.map(s => `<li>${s}</li>`).join('')}</ol>`;
+    }
+
+    // Giấy tờ chuyến đi (sau khi thanh toán)
+    document.getElementById('d-papers-card').style.display = order.papers ? 'block' : 'none';
+    if (order.papers) {
+        document.getElementById('d-papers-sub').textContent = order.papers.handedAt
+            ? `Đã bàn giao cho đội vận chuyển lúc ${formatTime(order.papers.handedAt)}`
+            : `Hạn gửi bản gốc: ${formatTime(originalsDue(order))}`;
+        document.getElementById('d-papers').innerHTML = papersHtml(order);
     }
 
     // Hành trình & sức khỏe (chỉ khi đang vận chuyển)
@@ -477,6 +569,11 @@ function showDetail(orderId) {
             <tbody>${order.services.map(svc => `<tr><td class="font-semibold">${svc[0]}</td><td class="text-muted">${svc[1]}</td><td class="text-right nowrap">${formatVND(svc[2])}</td></tr>`).join('')}</tbody>
             <tfoot><tr class="total-row"><td colspan="2">TỔNG GIÁ TRỊ ĐƠN</td><td class="text-right nowrap">${formatVND(orderTotal(order))}</td></tr></tfoot>
         </table>`;
+
+    const choosing = order.status === 'choose_option' && !choiceExpired(order);
+    const choiceCard = document.getElementById('d-choice-card');
+    choiceCard.style.display = choosing ? 'block' : 'none';
+    choiceCard.innerHTML = choosing ? choicePanel(order) : '';
 
     document.getElementById('d-side').innerHTML = sidePanel(order);
     document.getElementById('list-view').style.display = 'none';
@@ -532,6 +629,7 @@ function sidePanel(order) {
                     <div class="sub-title">Bước tiếp theo</div>
                     <ol class="plan-stops">
                         <li>Hợp đồng điện tử và hóa đơn đã gửi qua email</li>
+                        ${order.papers ? `<li>Gửi bản gốc giấy tờ của ngựa trước ${formatTime(originalsDue(order))} (xem mục Giấy tờ chuyến đi)</li>` : ''}
                         <li>Ngày ${formatDate(order.departAt)}: kiểm dịch viên kiểm tra sức khỏe ngựa tại chỗ trước khi lên xe</li>
                         <li>Khởi hành; theo dõi hành trình ngay trên trang này</li>
                     </ol>
@@ -599,6 +697,16 @@ function sidePanel(order) {
             </div>
             ${policyCard()}`;
     }
+    if (order.status === 'rechecking' || order.status === 'choose_option') {
+        return `
+            <div class="card">
+                <div class="card-body">
+                    ${infoRow('Tổng giá trị đơn', total)}
+                    <p class="side-hint">Chưa cần thanh toán. Bạn sẽ nhận yêu cầu thanh toán 100% khi đơn được duyệt.</p>
+                    <a href="tel:${HOTLINE.replace(/\s/g, '')}" class="btn btn-light-outline btn-full" style="margin-top: 12px;"><i class="fa-solid fa-headset"></i> Liên hệ hỗ trợ: ${HOTLINE}</a>
+                </div>
+            </div>`;
+    }
     return `
         <div class="card">
             <div class="card-body">
@@ -607,6 +715,289 @@ function sidePanel(order) {
                 <a href="create_request.html" class="btn btn-primary btn-full" style="margin-top: 12px;"><i class="fa-solid fa-paper-plane"></i> Đặt chuyến mới</a>
             </div>
         </div>`;
+}
+
+// Nhập/chọn lại thì bỏ viền đỏ báo lỗi
+['input', 'change'].forEach(type => document.addEventListener(type, e => {
+    e.target.classList.remove('input-error');
+    const list = e.target.closest('#option-list');
+    if (list) list.classList.remove('input-error');
+}));
+
+// ===== Giấy tờ chuyến đi =====
+// Khách gửi bản gốc giấy tờ đã nộp scan lúc đặt đơn; kiểm dịch viên của công ty làm thủ tục với cơ quan chức năng
+// và tải bản scan giấy được cấp lên. Khách xem được mọi bản scan.
+const DOC_LABEL = {
+    passport: 'Hộ chiếu ngựa / Microchip',
+    vaccine: 'Giấy chứng nhận tiêm phòng',
+    lab: 'Kết quả xét nghiệm EIA & cúm ngựa',
+    import_permit: 'Giấy phép nhập khẩu của nước đến',
+    ownership: 'Giấy tờ chứng minh sở hữu'
+};
+const FILE_PREFIX = { passport: 'Ho_chieu', vaccine: 'Tiem_phong', lab: 'Xet_nghiem', import_permit: 'Giay_phep_NK', ownership: 'So_huu' };
+const PROCEDURES = {
+    quarantine_domestic: { label: 'Giấy chứng nhận kiểm dịch động vật vận chuyển ra khỏi tỉnh', numberLabel: 'Số giấy' },
+    quarantine_border: { label: 'Giấy chứng nhận kiểm dịch động vật xuất/nhập khẩu', numberLabel: 'Số giấy' },
+    customs: { label: 'Tờ khai hải quan (điện tử)', numberLabel: 'Số tờ khai' }
+};
+const proceduresOf = order => order.border ? ['quarantine_border', 'customs'] : ['quarantine_domestic'];
+const originalsDue = order => atHour(new Date(order.departAt - ORIGINALS_DUE_DAYS * 24 * HOUR), WORK_END_HOUR);
+
+function missingOriginals(order) {
+    return Object.entries(order.papers.originals).flatMap(([horse, docs]) =>
+        Object.entries(docs).filter(([, receivedAt]) => !receivedAt).map(([key]) => `${DOC_LABEL[key]} (${horse})`));
+}
+
+function papersHtml(order) {
+    const { originals, procedures } = order.papers;
+    const scanButton = (file, title) => `<button class="btn-link-scan" onclick="openDoc('${file}', '${title}')"><i class="fa-regular fa-file-pdf"></i> Bản scan</button>`;
+    const procedureRows = proceduresOf(order).map(key => {
+        const p = procedures[key];
+        return `<tr>
+            <td class="font-semibold">${PROCEDURES[key].label}</td>
+            <td>${p ? `${PROCEDURES[key].numberLabel} <strong>${p.number}</strong><div class="sub-text">${p.agency} · cấp ${formatDate(p.issuedAt)}${p.validUntil ? ` · hiệu lực đến ${formatDate(p.validUntil)}` : ''}</div>` : '<span class="badge badge-muted">Đang làm thủ tục</span>'}</td>
+            <td class="text-right">${p ? scanButton(p.file, PROCEDURES[key].label) : ''}</td>
+        </tr>`;
+    }).join('');
+    const originalRows = Object.entries(originals).map(([horse, docs]) => `
+        <tr class="papers-group"><td colspan="3">${horse}</td></tr>
+        ${Object.entries(docs).map(([key, receivedAt]) => `<tr>
+            <td>${DOC_LABEL[key]}</td>
+            <td>${receivedAt ? `<span class="badge badge-success">Đã nhận bản gốc</span><div class="sub-text">${formatTime(receivedAt)}</div>` : '<span class="badge badge-warning">Chưa nhận bản gốc</span>'}</td>
+            <td class="text-right">${scanButton(`${FILE_PREFIX[key]}_${horse.replace(/\s+/g, '_')}.pdf`, `${DOC_LABEL[key]} · ${horse}`)}</td>
+        </tr>`).join('')}`).join('');
+    return `
+        <table class="data-table papers-table">
+            <thead><tr><th colspan="3">Giấy do cơ quan chức năng cấp · công ty làm thủ tục</th></tr></thead>
+            <tbody>${procedureRows}</tbody>
+            <thead><tr><th colspan="3">Giấy tờ của bạn · cần gửi bản gốc</th></tr></thead>
+            <tbody>${originalRows}</tbody>
+        </table>
+        <p class="side-hint papers-note">Bản gốc đi cùng ngựa trên xe và được trả lại khi giao ngựa.</p>`;
+}
+
+function openDoc(file, title) {
+    document.getElementById('doc-title').textContent = title;
+    document.getElementById('doc-body').innerHTML = `<div class="doc-preview"><i class="fa-regular fa-file-pdf"></i><div>${file}</div><div class="sub-text">Bản xem trước tài liệu</div></div>`;
+    document.getElementById('docModal').style.display = 'flex';
+}
+
+function closeDoc() {
+    document.getElementById('docModal').style.display = 'none';
+}
+
+// ===== Từ chối =====
+function rejectedHtml(order) {
+    const step = order.rejectedStep === 0 ? 'bước Tiếp nhận' : 'bước Thẩm định hồ sơ';
+    return `<strong>Đơn bị từ chối ở ${step}</strong> lúc ${formatTime(order.rejectedAt)}. ${order.reason} Bạn chưa thanh toán nên không phát sinh chi phí.`;
+}
+
+// ===== Chọn phương án =====
+const OPTIONS = {
+    remove_horse: 'Bỏ ngựa có vấn đề, chở các con còn lại',
+    replace_horse: 'Thay bằng ngựa khác',
+    postpone: 'Dời ngày khởi hành để điều trị và xét nghiệm lại',
+    recheck: 'Yêu cầu kiểm tra lại hồ sơ',
+    cancel: 'Hủy đơn'
+};
+
+const remainingHorses = order => order.horses.filter(h => !order.offer.affected.some(name => h.startsWith(name)));
+const minDepartDate = () => dayKey(new Date(today.getTime() + MIN_LEAD_DAYS * 24 * HOUR));
+// Phương án Manager tự thêm có key dạng custom-F, đặt trước "Hủy đơn" để hủy luôn ở cuối
+const optionKeys = order => [
+    ...order.offer.options.filter(k => k !== 'cancel'),
+    ...(order.offer.custom || []).map(c => `custom-${c.code}`),
+    'cancel'
+];
+const customOption = (order, key) => (order.offer.custom || []).find(c => `custom-${c.code}` === key);
+const optionLabel = (order, key) => OPTIONS[key] || customOption(order, key).label;
+const requoteTotal = order => order.offer.requoteServices.reduce((t, svc) => t + svc[2], 0);
+
+// Ảnh hưởng của từng phương án: [ngày khởi hành, chi phí, bạn cần cung cấp]
+function optionImpact(order, key) {
+    const depart = formatDate(order.departAt);
+    switch (key) {
+        case 'remove_horse': return [`Giữ nguyên ${depart}`,
+            `${formatVND(requoteTotal(order))}<div class="sub-text">giảm ${formatVND(orderTotal(order) - requoteTotal(order))}</div>`, 'Không'];
+        case 'replace_horse': return [`Giữ nguyên ${depart}<div class="sub-text">nếu kịp xác minh ngựa mới</div>`, 'Không đổi', 'Tên, microchip, giấy tờ ngựa mới'];
+        case 'postpone': return [`Ngày mới, từ ${formatDate(new Date(minDepartDate()).getTime())}`, 'Không đổi', 'Ngày mới; kết quả xét nghiệm sau điều trị'];
+        case 'recheck': return [`Giữ nguyên ${depart}`, 'Không phát sinh', 'Lý do; tài liệu (nếu có)'];
+        case 'cancel': return ['Không thực hiện', 'Miễn phí', 'Không'];
+        default: return ['Xem mô tả', 'Xem mô tả', 'Xem mô tả'];
+    }
+}
+
+// Thông tin bổ sung hiện khi chọn phương án
+function optionDetail(order, key) {
+    const affected = order.offer.affected.join(', ');
+    switch (key) {
+        case 'remove_horse': return `
+            <p class="option-desc">Đơn tiếp tục thẩm định với: <strong>${remainingHorses(order).join(', ')}</strong>. Bảng giá mới:</p>
+            <table class="requote-table">
+                ${order.offer.requoteServices.map(svc => `<tr><td>${svc[0]}</td><td class="text-right nowrap">${formatVND(svc[2])}</td></tr>`).join('')}
+                <tr class="requote-total"><td>Tổng mới</td><td class="text-right nowrap">${formatVND(requoteTotal(order))}</td></tr>
+            </table>`;
+        case 'replace_horse': return `
+            <p class="option-desc">Khai ngựa thay cho ${affected}. Kiểm dịch viên sẽ xác minh giấy tờ của ngựa mới trước khi duyệt đơn.</p>
+            <div class="option-fields">
+                <div><label class="form-label-sm" for="opt-horse-name">Tên ngựa mới *</label><input id="opt-horse-name" class="form-control"></div>
+                <div><label class="form-label-sm" for="opt-horse-chip">Số microchip *</label><input id="opt-horse-chip" class="form-control"></div>
+                <div class="field-full"><label class="form-label-sm" for="opt-horse-files">Giấy tờ của ngựa mới *</label><input id="opt-horse-files" type="file" class="form-control" multiple></div>
+            </div>`;
+        case 'postpone': return `
+            <p class="option-desc">Điều trị cho ${affected}, sau đó nộp kết quả xét nghiệm lại để kiểm dịch viên xác minh.</p>
+            <div class="option-fields">
+                <div><label class="form-label-sm" for="opt-date">Ngày khởi hành mới * (từ ${formatDate(new Date(minDepartDate()).getTime())})</label><input id="opt-date" type="date" class="form-control" min="${minDepartDate()}"></div>
+            </div>`;
+        case 'recheck': return `
+            <p class="option-desc">Một kiểm dịch viên khác sẽ xem lại toàn bộ hồ sơ từ đầu. Mỗi đơn chỉ được kiểm tra lại một lần.</p>
+            <div class="option-fields">
+                <div class="field-full"><label class="form-label-sm" for="opt-reason">Lý do bạn cho rằng kết luận chưa đúng *</label><textarea id="opt-reason" class="form-control" rows="2"></textarea></div>
+                <div class="field-full"><label class="form-label-sm" for="opt-files">Tài liệu bổ sung (không bắt buộc)</label><input id="opt-files" type="file" class="form-control" multiple></div>
+            </div>`;
+        case 'cancel': return '<p class="option-desc">Đơn chuyển sang Đã hủy. Bạn chưa thanh toán nên không phát sinh chi phí.</p>';
+        default: return `<p class="option-desc">Phương án do Quản lý đề xuất riêng cho đơn này:</p><p class="custom-detail">${customOption(order, key).detail}</p>`;
+    }
+}
+
+function choicePanel(order) {
+    const offer = order.offer;
+    return `
+        <div class="card-header">
+            <h3><i class="fa-solid fa-file-circle-exclamation text-orange"></i> Phản hồi sự cố hồ sơ</h3>
+            <span class="sub-text">Gửi lúc ${formatTime(offer.sentAt)}</span>
+        </div>
+        <div class="card-body">
+            <div class="issue-summary">
+                <div><span class="issue-label">Ngựa bị ảnh hưởng</span><strong>${offer.affected.join(', ')}</strong></div>
+                <div><span class="issue-label">Hạn phản hồi</span><strong>${formatTime(choiceDeadline(order))}</strong><div class="sub-text">còn ${timeLeftUntil(choiceDeadline(order))}</div></div>
+                <div class="issue-full"><span class="issue-label">Kết luận kiểm dịch</span>${offer.issue}</div>
+            </div>
+            <h4 class="option-heading">Phương án xử lý</h4>
+            <div class="table-responsive">
+                <table class="data-table option-table" id="option-list">
+                    <thead><tr><th>Phương án</th><th>Ngày khởi hành</th><th>Chi phí</th><th>Bạn cần cung cấp</th></tr></thead>
+                    <tbody>
+                        ${optionKeys(order).map(key => {
+                            const [depart, cost, need] = optionImpact(order, key);
+                            return `
+                                <tr class="option-row" data-key="${key}" onclick="selectOption('${key}')">
+                                    <td><label class="option-name"><input type="radio" name="opt" value="${key}"> ${optionLabel(order, key)}</label></td>
+                                    <td>${depart}</td><td class="nowrap">${cost}</td><td>${need}</td>
+                                </tr>
+                                <tr class="option-extra" data-key="${key}" style="display: none;"><td colspan="4">${optionDetail(order, key)}</td></tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+            <div class="choice-actions">
+                <span class="sub-text">Sau khi gửi, bạn không thể đổi phương án. Cần tư vấn, gọi <strong>${HOTLINE}</strong>.</span>
+                <button class="btn btn-primary" onclick="reviewChoice()">Gửi phản hồi</button>
+            </div>
+        </div>`;
+}
+
+function selectOption(key) {
+    document.querySelector(`input[name="opt"][value="${key}"]`).checked = true;
+    document.getElementById('option-list').classList.remove('input-error');
+    document.querySelectorAll('.option-row').forEach(row => row.classList.toggle('selected', row.dataset.key === key));
+    document.querySelectorAll('.option-extra').forEach(row => { row.style.display = row.dataset.key === key ? 'table-row' : 'none'; });
+}
+
+function markInvalid(el) {
+    el.classList.add('input-error');
+    el.focus();
+    return null;
+}
+
+// Kiểm tra dữ liệu của phương án đã chọn; trả về { key, data } hoặc null
+function readChoice() {
+    const picked = document.querySelector('input[name="opt"]:checked');
+    if (!picked) {
+        document.getElementById('option-list').classList.add('input-error');
+        showToast('Vui lòng chọn một phương án');
+        return null;
+    }
+    const key = picked.value;
+    if (key === 'replace_horse') {
+        const name = document.getElementById('opt-horse-name');
+        const chip = document.getElementById('opt-horse-chip');
+        const files = document.getElementById('opt-horse-files');
+        if (!name.value.trim()) return markInvalid(name);
+        if (!chip.value.trim()) return markInvalid(chip);
+        if (!files.files.length) return markInvalid(files);
+        return { key, data: { name: name.value.trim(), chip: chip.value.trim(), files: files.files.length } };
+    }
+    if (key === 'postpone') {
+        const date = document.getElementById('opt-date');
+        if (!date.value || date.value < minDepartDate()) return markInvalid(date);
+        return { key, data: { date: date.value } };
+    }
+    if (key === 'recheck') {
+        const reason = document.getElementById('opt-reason');
+        if (!reason.value.trim()) return markInvalid(reason);
+        return { key, data: { reason: reason.value.trim(), files: document.getElementById('opt-files').files.length } };
+    }
+    return { key, data: {} };
+}
+
+let pendingChoice = null;
+
+function reviewChoice() {
+    pendingChoice = readChoice();
+    if (!pendingChoice) return;
+    const order = activeOrder;
+    const { key, data } = pendingChoice;
+    const effects = {
+        remove_horse: `Bỏ ${order.offer.affected.join(', ')} khỏi đơn. Đơn tiếp tục thẩm định với ${remainingHorses(order).join(', ')}, giá mới ${formatVND(requoteTotal(order))}.`,
+        replace_horse: `Thay ${order.offer.affected.join(', ')} bằng ${data.name} (microchip ${data.chip}), kèm ${data.files} tệp giấy tờ. Kiểm dịch viên sẽ xác minh ngựa mới.`,
+        postpone: `Dời ngày khởi hành từ ${formatDate(order.departAt)} sang ${formatDate(new Date(data.date).getTime())}. Bạn cần nộp kết quả xét nghiệm lại sau khi điều trị.`,
+        recheck: 'Một kiểm dịch viên khác sẽ xem lại hồ sơ từ đầu. Nếu vấn đề vẫn còn, bạn sẽ nhận lại các phương án còn lại (trừ kiểm tra lại).',
+        cancel: 'Đơn chuyển sang Đã hủy, không phát sinh chi phí. Không thể khôi phục; muốn vận chuyển lại cần đặt đơn mới.'
+    };
+    document.getElementById('ch-title').textContent = `Xác nhận phản hồi · ${order.id}`;
+    document.getElementById('ch-body').innerHTML = `
+        <p class="cancel-lead">Phương án: <strong>${optionLabel(order, key)}</strong></p>
+        <ul class="cancel-effects"><li><i class="fa-solid fa-circle-info" style="color: #1d4ed8;"></i> <span>${effects[key] || `${customOption(order, key).detail} Quản lý sẽ thực hiện theo mô tả này và cập nhật đơn.`}</span></li></ul>`;
+    document.getElementById('ch-confirm').className = key === 'cancel' ? 'btn btn-danger-solid' : 'btn btn-primary';
+    document.getElementById('choiceModal').style.display = 'flex';
+}
+
+function closeChoice() {
+    document.getElementById('choiceModal').style.display = 'none';
+}
+
+function applyChoice() {
+    const order = activeOrder;
+    const { key, data } = pendingChoice;
+    const affected = order.offer.affected.join(', ');
+    if (key === 'remove_horse') {
+        order.horses = remainingHorses(order);
+        order.services = order.offer.requoteServices;
+        order.note = `Đã bỏ ${affected} khỏi đơn, giá đã cập nhật.`;
+        order.status = 'processing';
+    } else if (key === 'replace_horse') {
+        order.horses = [...remainingHorses(order), `${data.name} (khai mới, microchip ${data.chip})`];
+        order.note = `Đã thay ${affected} bằng ${data.name}. Kiểm dịch viên đang xác minh giấy tờ ngựa mới.`;
+        order.status = 'processing';
+    } else if (key === 'postpone') {
+        order.departAt = new Date(data.date).setHours(0, 0, 0, 0);
+        order.note = `Đã dời ngày khởi hành. Vui lòng nộp kết quả xét nghiệm lại của ${affected} sau khi điều trị.`;
+        order.status = 'processing';
+    } else if (key === 'recheck') {
+        order.status = 'rechecking';
+        order.recheckAt = Date.now();
+    } else if (customOption(order, key)) {
+        order.note = `Bạn đã chọn phương án "${customOption(order, key).label}". Quản lý đang cập nhật đơn theo phương án này.`;
+        order.status = 'processing';
+    } else {
+        order.status = 'cancelled';
+        order.reason = `Bạn đã hủy đơn lúc ${formatTime(Date.now())} theo phương án xử lý hồ sơ. Không phát sinh chi phí.`;
+    }
+    delete order.offer;
+    closeChoice();
+    showToast(`Đã ghi nhận phản hồi cho đơn ${order.id}`);
+    showDetail(order.id);
 }
 
 // Khách hủy đơn quá hạn thẩm định
