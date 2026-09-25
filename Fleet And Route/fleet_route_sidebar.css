@@ -37,7 +37,7 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 6px;
-    background: #F97316;
+    background: #ea580c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,9 +69,9 @@ body {
 }
 
 .ops-nav .nav-item.active {
-    color: #F97316;
+    color: #ea580c;
     background-color: rgba(249, 115, 22, 0.1);
-    border-left-color: #F97316;
+    border-left-color: #ea580c;
     font-weight: 600;
 }
 
@@ -88,8 +88,8 @@ body {
 }
 
 .ops-logout:hover {
-    border-color: #F97316;
-    color: #F97316;
+    border-color: #ea580c;
+    color: #ea580c;
 }
 
 .ops-main {

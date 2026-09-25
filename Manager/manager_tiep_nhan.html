@@ -54,6 +54,9 @@
                 style="padding: 0 24px; margin-top: 16px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end;">
                 <div class="status-tab active-tab" data-tab="new" onclick="switchTab('new')"
                     style="padding-bottom: 12px; cursor: pointer;">Đơn mới (<span id="count-new">0</span>)</div>
+                <div class="status-tab" data-tab="needs_manager" onclick="switchTab('needs_manager')"
+                    style="padding-bottom: 12px; cursor: pointer;"><i class="fa-solid fa-user-tie text-amber"></i> Cần Manager xử lý (<span id="count-needs_manager">0</span>)
+                </div>
                 <div class="status-tab" data-tab="inspecting" onclick="switchTab('inspecting')"
                     style="padding-bottom: 12px; cursor: pointer;">Đang kiểm dịch (<span id="count-inspecting">0</span>)
                 </div>
@@ -61,7 +64,7 @@
                     style="padding-bottom: 12px; cursor: pointer;">Đang lập lộ trình (<span id="count-routing">0</span>)
                 </div>
                 <div class="status-tab" data-tab="rejected" onclick="switchTab('rejected')"
-                    style="padding-bottom: 12px; cursor: pointer;">Từ chối sớm (<span id="count-rejected">0</span>)
+                    style="padding-bottom: 12px; cursor: pointer;">Từ chối (<span id="count-rejected">0</span>)
                 </div>
                 <a href="manager_phe_duyet.html" class="next-step-link">Sang Phê duyệt Đơn hàng <i
                         class="fa-solid fa-arrow-right"></i></a>
@@ -113,6 +116,9 @@
 
             <!-- Trạng thái (chỉ hiện với đơn đã xử lý) -->
             <div id="m-status-banner" class="status-banner" style="display: none;"></div>
+
+            <!-- Việc Manager cần xử lý: chọn phương án gửi khách / giao kiểm tra lại / từ chối khi khách quá hạn -->
+            <div id="m-manager-action" style="display: none;"></div>
 
             <div class="approval-modal-body">
                 <!-- 1. Thông tin chuyến -->

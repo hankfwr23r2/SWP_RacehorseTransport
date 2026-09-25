@@ -24,17 +24,25 @@
        <div class="logo-circle">EQ</div>
        <span>Điều hành</span>
     </div>
-    <nav class="ops-nav">
-        <a href="OPS-04.html" class="nav-item">
-          Sự cố
+      <nav class="ops-nav">
+        <a href="OPS-03.html" class="nav-item">
+          Khả thi
         </a>
 
         <a href="OPS-05.html" class="nav-item">
           Lộ trình
         </a>
 
+        <a href="OPS-08.html" class="nav-item">
+          Phân công
+        </a>
+
         <a href="OPS-06.html" class="nav-item">
           Giám sát
+        </a>
+
+        <a href="OPS-04.html" class="nav-item">
+          Sự cố
         </a>
 
         <a href="OPS-07.html" class="nav-item active">
@@ -68,44 +76,23 @@
     <div class="card">
       <div class="flex-between mb-12">
         <div class="card-title" style="margin-bottom:0;">Danh sách Phương tiện Vận chuyển</div>
-        <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;">+ Thêm phương tiện</button>
+        <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;" onclick="newVehicle()">+ Thêm phương tiện</button>
       </div>
       <table>
-        <thead><tr><th>Mã xe</th><th>Tên phương tiện</th><th>Loại</th><th>Sức chứa</th><th>Biển số / ID</th><th>Trạng thái</th><th>Lần bảo trì gần nhất</th><th>Thao tác</th></tr></thead>
-        <tbody>
-          <tr><td class="code">VH-001</td><td>Xe Thùng VIP</td><td>Xe tải chuyên dụng</td><td>2 ngăn</td><td>29H-12345</td><td><span class="badge badge-success">Khả dụng</span></td><td>15/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
-          <tr><td class="code">VH-002</td><td>Xe Thùng Tiêu chuẩn</td><td>Xe tải chuyên dụng</td><td>4 ngăn</td><td>51C-98765</td><td><span class="badge badge-success">Khả dụng</span></td><td>10/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
-          <tr><td class="code">VH-003</td><td>Xe Thùng Lạnh</td><td>Xe tải chuyên dụng</td><td>3 ngăn</td><td>30A-55678</td><td><span class="badge badge-info">Đang sử dụng</span></td><td>01/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
-          <tr><td class="code">VH-004</td><td>Xe Container Quốc tế</td><td>Container đặc biệt</td><td>6 ngăn</td><td>51D-11122</td><td><span class="badge badge-success">Khả dụng</span></td><td>08/09/2026</td><td><a class="action-link">Sửa</a> &nbsp; <a class="action-link" style="color:#DC2626;">Xóa</a></td></tr>
-        </tbody>
+        <thead><tr><th>Mã xe</th><th>Tên phương tiện</th><th>Loại</th><th>Sức chứa</th><th>Biển số / ID</th><th>Tài xế cố định</th><th>Trạng thái</th><th>Lần bảo trì gần nhất</th><th>Thao tác</th></tr></thead>
+        <tbody id="vehicle-rows"></tbody>
       </table>
     </div>
 
     <!-- Vehicle detail / edit form -->
-    <div class="card">
-      <div class="card-title"><div class="icon"></div> Chi tiết Phương tiện — VH-001</div>
-      <div class="divider"></div>
-      <div class="grid-3">
-        <div class="form-group"><label class="form-label">Tên phương tiện</label><input class="form-input" value="Xe Thùng VIP"></div>
-        <div class="form-group"><label class="form-label">Loại phương tiện</label><select class="form-input"><option>Xe tải chuyên dụng</option><option>Container đặc biệt</option></select></div>
-        <div class="form-group"><label class="form-label">Sức chứa (ngăn)</label><input class="form-input" value="2"></div>
-      </div>
-      <div class="grid-3">
-        <div class="form-group"><label class="form-label">Biển số / Mã ID</label><input class="form-input" value="29H-12345"></div>
-        <div class="form-group"><label class="form-label">Trạng thái</label><select class="form-input"><option>Khả dụng</option><option selected>Đang sử dụng</option></select></div>
-        <div class="form-group"><label class="form-label">Ngày bảo trì gần nhất</label><input class="form-input" type="date" value="2026-09-15"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Ghi chú kỹ thuật</label><textarea class="form-input" rows="2" placeholder="Kiểm soát nhiệt tự động, hệ thống giảm xóc đặc biệt cho ngựa..."></textarea></div>
-      <div class="flex-end mt-16">
-        <button class="btn btn-outline">Hủy</button>
-        <button class="btn btn-primary">Lưu thông tin</button>
-      </div>
-    </div>
+    <div class="card" id="vehicle-detail"></div>
   </div>
 </div>
 
   </div>
 </div>
-<script src="../global_translate.js"></script>
+  <script src="ops_data.js"></script>
+  <script src="ops-07.js"></script>
+  <script src="../global_translate.js"></script>
 </body>
 </html>

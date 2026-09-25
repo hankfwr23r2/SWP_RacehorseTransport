@@ -1,13 +1,22 @@
 // ===== Dữ liệu mẫu =====
 // Manager là người đầu tiên thấy đơn khách gửi. Tại đây manager:
 //  - Tiếp nhận: xác nhận Kiểm dịch viên & Điều phối viên do hệ thống gợi ý (có thể đổi người)
-//  - Hoặc từ chối sớm đơn không hợp lệ (trùng đơn, khai sai, không phải ngựa đua...)
-// status: new (đơn mới) | inspecting (đang kiểm dịch) | routing (đang lập lộ trình) | rejected (từ chối sớm)
+//  - Hoặc từ chối sớm dựa trên THÔNG TIN KHÁCH KHAI (trùng đơn, tự khai không phải ngựa đua, khai mâu thuẫn)
+//  - Xử lý các việc chuyển lên từ kiểm dịch (tab "Cần Manager xử lý"):
+//      + issue:   kiểm dịch BÁO CÁO VẤN ĐỀ không khắc phục được → Manager chọn phương án gửi khách chọn trong 48 giờ
+//      + recheck: khách chọn phương án D (kiểm tra lại) → Manager giao kiểm dịch viên KHÁC
+//      + expired: khách không chọn phương án trong 48 giờ → Manager quyết định TỪ CHỐI đơn
+//  - Chỉ Manager được từ chối đơn. Kiểm dịch viên không từ chối.
+// Phương án cho khách:
+//   A. Bỏ ngựa có vấn đề (còn ít nhất 1 ngựa không bị ảnh hưởng)  B. Thay ngựa khác
+//   C. Dời ngày khởi hành (chỉ khi bệnh chữa được)                D. Kiểm tra lại (1 lần)
+//   E. Hủy đơn miễn phí (luôn có)
+// status: new | needs_manager (pending.kind: issue | recheck | expired) | inspecting | routing | rejected
 
+// Giấy tờ khách nộp (giấy chứng nhận kiểm dịch do kiểm dịch viên xin sau khi khách thanh toán)
 const DOCS_DOMESTIC = [
     'Hộ chiếu ngựa / Microchip',
     'Giấy chứng nhận tiêm phòng',
-    'Giấy chứng nhận kiểm dịch vận chuyển nội địa',
     'Giấy tờ chứng minh sở hữu'
 ];
 
@@ -15,10 +24,13 @@ const DOCS_CROSS_BORDER = [
     'Hộ chiếu ngựa / Microchip',
     'Giấy chứng nhận tiêm phòng',
     'Kết quả xét nghiệm EIA & cúm ngựa',
-    'Giấy chứng nhận kiểm dịch xuất / nhập khẩu',
     'Giấy phép nhập khẩu của nước đến',
     'Giấy tờ chứng minh sở hữu'
 ];
+
+const CHOICE_HOURS = 48;
+const HOUR = 60 * 60 * 1000;
+const now = Date.now();
 
 const MIN_LEAD_DAYS = 10;
 
@@ -112,7 +124,8 @@ const orders = [
         customerNote: '',
         hold: '1 xe chuyên dụng 2 ngăn',
         priceItems: [['Cước vận chuyển đường bộ', 9500000], ['Phí kiểm dịch & thủ tục nhập cảnh', 6000000], ['Chăm sóc ngựa dọc đường', 800000], ['Bảo hiểm vận chuyển', 900000]],
-        status: 'inspecting', acceptedAt: '22/09/2026 10:05', inspector: 'Phạm Văn Hưng', coordinator: 'Lê Quang'
+        status: 'inspecting', acceptedAt: '22/09/2026 10:05', inspector: 'Phạm Văn Hưng', coordinator: 'Lê Quang',
+        waitingChoice: { options: ['replace_horse', 'recheck', 'cancel'], sentAt: now - 5 * HOUR }
     },
     {
         id: 'EQ-2026-1046', customer: 'Savan Horse Club', submitted: '21/09/2026 15:45', depart: '03/10/2026',
@@ -125,7 +138,7 @@ const orders = [
         customerNote: '',
         hold: '1 xe chuyên dụng 2 ngăn',
         priceItems: [['Cước vận chuyển đường bộ', 16000000], ['Phí kiểm dịch & thủ tục nhập cảnh', 8500000], ['Chăm sóc ngựa dọc đường', 2200000], ['Bảo hiểm vận chuyển', 1800000]],
-        status: 'inspecting', acceptedAt: '21/09/2026 17:20', inspector: 'Nguyễn Thị Thu', coordinator: 'Trần Minh'
+        status: 'inspecting', acceptedAt: '21/09/2026 17:20', inspector: 'Nguyễn Thị Thu', coordinator: 'Trần Minh', waitingCustomer: true
     },
     {
         id: 'EQ-2026-1045', customer: 'CLB Ngựa Phú Thọ', submitted: '20/09/2026 11:00', depart: '02/10/2026',
@@ -164,8 +177,84 @@ const orders = [
         customerNote: '',
         hold: '1 xe chuyên dụng 2 ngăn',
         priceItems: [['Cước vận chuyển đường bộ', 11000000], ['Phí kiểm dịch nội địa', 1500000], ['Chăm sóc ngựa dọc đường', 900000], ['Bảo hiểm vận chuyển', 800000]],
-        status: 'rejected', rejectType: 'Ngựa không thuộc diện vận chuyển',
+        status: 'rejected', rejectedStep: 0, rejectedAt: now - 6 * 24 * HOUR, rejectType: 'Ngựa không thuộc diện vận chuyển',
         note: 'Hệ thống chỉ nhận vận chuyển ngựa đua. 2 ngựa khai báo là ngựa kéo xe du lịch.'
+    },
+    {
+        // Kiểm dịch báo cáo vấn đề không khắc phục được → Manager chọn phương án
+        id: 'EQ-2026-1072', customer: 'Mekong Stud', submitted: '22/09/2026 15:10', depart: '07/10/2026',
+        from: 'Trang trại Mekong (Cần Thơ, VN)', to: 'Trường đua Phnom Penh Royal Turf (Phnom Penh, KH)',
+        routeShort: 'Cần Thơ → Phnom Penh (KH)', border: 'Tịnh Biên – Phnom Den', distance: '250 km', duration: '~6 giờ',
+        horses: [{ name: 'Cửu Long', breed: 'Thoroughbred', sex: 'Đực', chip: 'VN-812004' }],
+        customerNote: '', hold: '1 xe chuyên dụng 2 ngăn',
+        priceItems: [['Cước vận chuyển đường bộ', 12000000], ['Phí kiểm dịch & thủ tục xuất cảnh', 4500000], ['Chăm sóc ngựa dọc đường', 1300000], ['Bảo hiểm vận chuyển', 1200000]],
+        status: 'needs_manager', acceptedAt: '22/09/2026 16:00', inspector: 'Nguyễn Thị Thu', coordinator: 'Phạm Tâm',
+        pending: {
+            kind: 'issue', at: now - 2 * HOUR,
+            report: {
+                inspector: 'Nguyễn Thị Thu', horses: ['Cửu Long'], type: 'Xét nghiệm dương tính bệnh truyền nhiễm', disease: 'Cúm ngựa', curable: true,
+                note: 'Cửu Long dương tính cúm ngựa. Cần điều trị khoảng 2–3 tuần rồi xét nghiệm lại.',
+                evidence: ['Cửu Long · Kết quả xét nghiệm EIA & cúm ngựa']
+            }
+        }
+    },
+    {
+        // Khách chọn phương án D (kiểm tra lại) → Manager giao kiểm dịch viên khác
+        id: 'EQ-2026-1070', customer: 'Trường đua Thiên Mã', submitted: '21/09/2026 10:30', depart: '09/10/2026',
+        from: 'Trường đua Thiên Mã (Sóc Sơn, Hà Nội, VN)', to: 'Vientiane Turf Club (Viêng Chăn, LA)',
+        routeShort: 'Hà Nội → Viêng Chăn (LA)', border: 'Cầu Treo – Nam Phao', distance: '730 km', duration: '2 ngày',
+        horses: [{ name: 'Phi Vân', breed: 'Anglo-Arab', sex: 'Cái', chip: 'VN-771120' }],
+        customerNote: '', hold: '1 xe chuyên dụng 2 ngăn',
+        priceItems: [['Cước vận chuyển đường bộ', 21000000], ['Phí kiểm dịch & thủ tục xuất cảnh', 4500000], ['Chăm sóc ngựa dọc đường', 1800000], ['Bảo hiểm vận chuyển', 1200000]],
+        status: 'needs_manager', acceptedAt: '21/09/2026 11:00', inspector: 'Nguyễn Thị Thu', coordinator: 'Trần Minh',
+        pending: {
+            kind: 'recheck', at: now - 1 * HOUR,
+            report: {
+                inspector: 'Nguyễn Thị Thu', horses: ['Phi Vân'], type: 'Xét nghiệm dương tính bệnh truyền nhiễm', disease: 'EIA', curable: false,
+                note: 'Phiếu xét nghiệm của Phi Vân ghi EIA dương tính.',
+                evidence: ['Phi Vân · Kết quả xét nghiệm EIA & cúm ngựa']
+            },
+            customerReason: 'Phiếu xét nghiệm cũ bị nhầm mẫu. Trại đã xét nghiệm lại tại phòng xét nghiệm khác, kết quả âm tính.',
+            customerFiles: ['Xet_nghiem_lai_Phi_Van.pdf']
+        }
+    },
+    {
+        // Khách không chọn phương án trong 48 giờ → Manager quyết định từ chối
+        id: 'EQ-2026-1075', customer: 'CLB Ngựa Hà Thành', submitted: '19/09/2026 08:20', depart: '06/10/2026',
+        from: 'Trường đua Thiên Mã (Sóc Sơn, Hà Nội, VN)', to: 'Trường đua Sông Hàn (Đà Nẵng, VN)',
+        routeShort: 'Hà Nội → Đà Nẵng', border: null, distance: '770 km', duration: '2 ngày',
+        horses: [
+            { name: 'Thăng Long', breed: 'Thoroughbred', sex: 'Đực', chip: 'VN-118830' },
+            { name: 'Hồ Gươm', breed: 'Arabian', sex: 'Cái', chip: 'VN-118847' }
+        ],
+        customerNote: '', hold: '1 xe chuyên dụng 2 ngăn',
+        priceItems: [['Cước vận chuyển đường bộ', 18000000], ['Phí kiểm dịch nội địa', 1800000], ['Chăm sóc ngựa dọc đường', 2600000], ['Bảo hiểm vận chuyển', 1800000]],
+        status: 'needs_manager', acceptedAt: '19/09/2026 09:00', inspector: 'Phạm Văn Hưng', coordinator: 'Phạm Tâm',
+        pending: {
+            kind: 'expired', at: now - 50 * HOUR,
+            report: {
+                inspector: 'Phạm Văn Hưng', horses: ['Thăng Long'], type: 'Đã yêu cầu bổ sung nhưng giấy tờ vẫn không đạt', disease: '', curable: null,
+                note: 'Đã yêu cầu bổ sung 2 lần, giấy tiêm phòng của Thăng Long vẫn thiếu mũi cúm ngựa bắt buộc.',
+                evidence: ['Thăng Long · Giấy chứng nhận tiêm phòng']
+            },
+            offer: { options: ['remove_horse', 'replace_horse', 'recheck', 'cancel'], sentAt: now - 50 * HOUR }
+        }
+    },
+    {
+        // Đã từ chối: khách không chọn phương án trong 48 giờ
+        id: 'EQ-2026-1069', customer: 'HKD Du lịch Ngựa Quy Nhơn', submitted: '17/09/2026 09:40', depart: '02/10/2026',
+        from: 'Quy Nhơn (Bình Định, VN)', to: 'Trường đua Sông Hàn (Đà Nẵng, VN)',
+        routeShort: 'Quy Nhơn → Đà Nẵng', border: null, distance: '320 km', duration: '~7 giờ',
+        horses: [{ name: 'Ngựa kéo số 3', breed: 'Thoroughbred (khách khai)', sex: 'Đực', chip: 'VN-077003' }],
+        customerNote: '', hold: '1 xe chuyên dụng 2 ngăn',
+        priceItems: [['Cước vận chuyển đường bộ', 6500000], ['Phí kiểm dịch nội địa', 900000], ['Chăm sóc ngựa dọc đường', 500000], ['Bảo hiểm vận chuyển', 500000]],
+        status: 'rejected', rejectedStep: 1, inspector: 'Phạm Văn Hưng', rejectedAt: now - 3 * 24 * HOUR,
+        rejectType: 'Khách không chọn phương án trong 48 giờ',
+        note: 'Đã gửi phương án thay ngựa / kiểm tra lại / hủy đơn, khách không phản hồi.',
+        report: {
+            inspector: 'Phạm Văn Hưng', horses: ['Ngựa kéo số 3'], type: 'Đã yêu cầu bổ sung nhưng giấy tờ vẫn không đạt',
+            note: 'Khách không cung cấp được giấy tờ chứng minh là ngựa đua; hộ chiếu ghi ngựa kéo xe du lịch.'
+        }
     }
 ];
 
@@ -184,6 +273,27 @@ function nowText() {
     return `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 
+// Phương án cho khách; eligible trả về lý do KHÔNG áp dụng được (chuỗi rỗng = áp dụng được)
+const OPTIONS = {
+    remove_horse: { code: 'A', label: 'Bỏ ngựa có vấn đề, chở các con còn lại', why: o => o.horses.length > o.pending.report.horses.length ? '' : 'Đơn không còn ngựa nào khác ngoài ngựa có vấn đề' },
+    replace_horse: { code: 'B', label: 'Thay bằng ngựa khác', why: () => '' },
+    postpone: { code: 'C', label: 'Dời ngày khởi hành để điều trị và xét nghiệm lại', why: o => o.pending.report.curable ? '' : 'Chỉ áp dụng khi bệnh chữa được' },
+    recheck: { code: 'D', label: 'Kiểm tra lại (kiểm dịch viên khác)', why: o => o.rechecked ? 'Đơn đã được kiểm tra lại 1 lần' : '' },
+    cancel: { code: 'E', label: 'Hủy đơn miễn phí', why: () => '', mandatory: true }
+};
+const optionText = (keys, custom = []) => [
+    ...keys.map(k => `${OPTIONS[k].code}. ${OPTIONS[k].label}`),
+    ...custom.map(c => `${c.code}. ${c.label}`)
+].join(' · ');
+// Phương án do Manager tự thêm được đánh mã tiếp sau E
+const customCode = i => String.fromCharCode('F'.charCodeAt(0) + i);
+
+function formatTs(t) {
+    const d = new Date(t);
+    const pad = n => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 // Người đang ít việc nhất
 function suggest(staff) {
     return staff.reduce((best, s) => (s.load < best.load ? s : best));
@@ -195,16 +305,26 @@ let activeOrder = null;
 
 function assigneeText(order) {
     if (order.status === 'new') return '<span class="text-muted">Chưa phân công</span>';
-    if (order.status === 'inspecting') return `<i class="fa-solid fa-user-doctor text-muted"></i> ${order.inspector}`;
+    if (order.status === 'needs_manager') return {
+        issue: '<span class="badge badge-warning">Chọn phương án gửi khách</span>',
+        recheck: '<span class="badge badge-warning">Giao kiểm tra lại</span>',
+        expired: '<span class="badge badge-danger">Khách quá hạn chọn</span>'
+    }[order.pending.kind];
+    if (order.status === 'inspecting') {
+        const sub = order.waitingChoice
+            ? `Chờ khách chọn phương án · còn ${Math.max(0, Math.ceil((order.waitingChoice.sentAt + CHOICE_HOURS * HOUR - Date.now()) / HOUR))} giờ`
+            : order.review ? 'Kiểm tra lại' : order.waitingCustomer ? 'Chờ khách bổ sung' : '';
+        return `<i class="fa-solid fa-user-doctor text-muted"></i> ${order.inspector}${sub ? `<div class="route-border">${sub}</div>` : ''}`;
+    }
     if (order.status === 'routing') return `<i class="fa-solid fa-route text-muted"></i> ${order.coordinator}`;
-    return '<span class="text-muted">—</span>';
+    return `<span class="text-muted">Manager · bước ${order.rejectedStep === 0 ? 'Tiếp nhận' : 'Kiểm dịch'}</span>`;
 }
 
 function renderTable() {
     const tbody = document.getElementById('order-table-body');
     tbody.innerHTML = orders.map((order, index) => {
-        const button = order.status === 'new'
-            ? `<button class="btn btn-orange btn-sm" onclick="openModal(${index})">Tiếp nhận</button>`
+        const button = order.status === 'new' || order.status === 'needs_manager'
+            ? `<button class="btn btn-orange btn-sm" onclick="openModal(${index})">${order.status === 'new' ? 'Tiếp nhận' : 'Xử lý'}</button>`
             : `<button class="btn btn-light btn-sm" onclick="openModal(${index})"><i class="fa-solid fa-eye"></i> Xem</button>`;
         return `
             <tr data-status="${order.status}">
@@ -235,22 +355,31 @@ function switchTab(tab) {
 }
 
 function updateCounts() {
-    ['new', 'inspecting', 'routing', 'rejected'].forEach(status => {
+    ['new', 'needs_manager', 'inspecting', 'routing', 'rejected'].forEach(status => {
         document.getElementById('count-' + status).textContent = orders.filter(o => o.status === status).length;
     });
 }
 
 // ===== Modal =====
+// Nội dung banner cho đơn đã bị từ chối: ai từ chối, ở bước nào, căn cứ, tình trạng khiếu nại
+function rejectedBannerHtml(order) {
+    const step = order.rejectedStep === 0 ? 'bước Tiếp nhận' : 'bước Kiểm dịch';
+    const report = order.report ? `<br>Báo cáo kiểm dịch (${order.report.inspector}): ${order.report.type} — ${order.report.note}` : '';
+    return `<b>Manager từ chối</b> ở ${step} lúc ${formatTs(order.rejectedAt)} — <b>${order.rejectType}</b>: ${order.note}${report}`;
+}
+
 function infoItem(label, value) {
     return `<div class="info-item"><span class="info-label">${label}</span><span class="info-value">${value}</span></div>`;
 }
 
-function renderStepper(status) {
+function renderStepper(order) {
     const steps = ['Tiếp nhận', 'Kiểm dịch', 'Lập lộ trình', 'Phê duyệt'];
-    const current = { new: 0, inspecting: 1, routing: 2 }[status];
+    const status = order.status;
+    const current = { new: 0, needs_manager: 1, inspecting: 1, routing: 2 }[status];
+    const rejectedStep = order.rejectedStep || 0;
     return steps.map((label, i) => {
         let cls = 'step';
-        if (status === 'rejected') cls += i === 0 ? ' step-rejected' : '';
+        if (status === 'rejected') cls += i < rejectedStep ? ' step-done' : i === rejectedStep ? ' step-rejected' : '';
         else if (i < current) cls += ' step-done';
         else if (i === current) cls += ' step-current';
         const icon = cls.includes('done') ? '<i class="fa-solid fa-check"></i>' : cls.includes('rejected') ? '<i class="fa-solid fa-xmark"></i>' : i + 1;
@@ -279,14 +408,20 @@ function openModal(index) {
 
     document.getElementById('m-order-id').textContent = order.id;
     document.getElementById('m-order-sub').textContent = `${order.customer} · Gửi lúc ${order.submitted}`;
-    document.getElementById('m-stepper').innerHTML = renderStepper(order.status);
+    document.getElementById('m-stepper').innerHTML = renderStepper(order);
 
     // Trạng thái đơn đã xử lý
     const banner = document.getElementById('m-status-banner');
     const banners = {
-        inspecting: ['banner-info', 'fa-hourglass-half', `Đã tiếp nhận lúc ${order.acceptedAt}. Đang chờ Kiểm dịch viên <b>${order.inspector}</b> xác minh hồ sơ.`],
-        routing: ['banner-info', 'fa-hourglass-half', `Hồ sơ đã được kiểm dịch xác nhận hợp lệ. Đang chờ Điều phối viên <b>${order.coordinator}</b> lập lộ trình &amp; dự toán.`],
-        rejected: ['banner-danger', 'fa-circle-xmark', `Từ chối sớm — <b>${order.rejectType}</b>: ${order.note}`]
+        inspecting: ['banner-info', 'fa-hourglass-half', order.waitingChoice
+            ? `Đã gửi phương án cho khách lúc ${formatTs(order.waitingChoice.sentAt)}: ${optionText(order.waitingChoice.options, order.waitingChoice.custom)}. Hạn khách chọn: <b>${formatTs(order.waitingChoice.sentAt + CHOICE_HOURS * HOUR)}</b>.`
+            : order.review
+                ? `Đang kiểm tra lại theo yêu cầu của khách. Kiểm dịch viên <b>${order.inspector}</b> xác minh lại từ đầu.`
+                : order.waitingCustomer
+                    ? `Kiểm dịch viên <b>${order.inspector}</b> đã yêu cầu khách bổ sung giấy tờ. Đơn đang chờ phía khách, đồng hồ xử lý của kiểm dịch tạm dừng.`
+                    : `Đã tiếp nhận lúc ${order.acceptedAt}. Đang chờ Kiểm dịch viên <b>${order.inspector}</b> xác minh hồ sơ.`],
+        routing: ['banner-info', 'fa-hourglass-half', `Hồ sơ đã được kiểm dịch xác nhận hợp lệ. Đang chờ Điều phối viên <b>${order.coordinator}</b> lập lộ trình.`],
+        rejected: order.status === 'rejected' ? ['banner-danger', 'fa-circle-xmark', rejectedBannerHtml(order)] : null
     };
     if (banners[order.status]) {
         const [cls, icon, html] = banners[order.status];
@@ -360,8 +495,8 @@ function openModal(index) {
                 </div>
             </div>
             <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Hệ thống gợi ý người đang ít việc nhất. Điều phối viên bắt đầu lập lộ trình sau khi Kiểm dịch viên xác nhận hồ sơ hợp lệ.</p>`;
-    } else if (order.status === 'rejected') {
-        assign.innerHTML = '<p class="text-muted" style="font-size: 0.85rem;">Đơn đã bị từ chối, không phân công.</p>';
+    } else if (order.status === 'rejected' && order.rejectedStep === 0) {
+        assign.innerHTML = '<p class="text-muted" style="font-size: 0.85rem;">Đơn bị từ chối ở bước Tiếp nhận, không phân công.</p>';
     } else {
         assign.innerHTML = `<div class="info-grid">${infoItem('Kiểm dịch viên', order.inspector)}${infoItem('Điều phối viên', order.coordinator)}</div>`;
     }
@@ -375,6 +510,8 @@ function openModal(index) {
         assign.innerHTML += '<p class="action-hint"><i class="fa-solid fa-lock"></i> Nút tiếp nhận bị khóa cho đến khi có nhân sự đi làm lại (xem trang <a href="manager_phan_cong.html">Nhân sự</a>). Đơn giữ nguyên ở tab "Đơn mới".</p>';
     }
 
+    renderManagerAction(order);
+
     hideRejectBox();
     document.getElementById('decision-buttons').style.display = order.status === 'new' ? 'flex' : 'none';
     document.getElementById('intakeModal').style.display = 'flex';
@@ -385,6 +522,170 @@ function closeModal() {
     document.getElementById('intakeModal').style.display = 'none';
     hideRejectBox();
     activeOrder = null;
+}
+
+// ===== Việc Manager xử lý =====
+function reportBanner(r) {
+    return `
+        <div class="status-banner banner-warning"><i class="fa-solid fa-user-doctor"></i><span>
+            <b>Báo cáo của kiểm dịch viên ${r.inspector}</b> — ${r.type}${r.disease ? ` (<b>${r.disease}</b>, ${r.curable ? 'chữa được' : 'không chữa được'})` : ''}<br>
+            Ngựa bị ảnh hưởng: <b>${r.horses.join(', ')}</b>. ${r.note}<br>
+            Căn cứ: ${r.evidence.join('; ')}
+        </span></div>`;
+}
+
+function renderManagerAction(order) {
+    const box = document.getElementById('m-manager-action');
+    if (order.status !== 'needs_manager') {
+        box.style.display = 'none';
+        box.innerHTML = '';
+        return;
+    }
+    const p = order.pending;
+    let html = reportBanner(p.report);
+
+    if (p.kind === 'issue') {
+        const r = p.report;
+        const defaultMessage = `Hồ sơ của ngựa ${r.horses.join(', ')} có vấn đề không thể khắc phục bằng bổ sung giấy tờ: ${r.type.toLowerCase()}${r.disease ? ` (${r.disease})` : ''}. Vui lòng chọn một trong các phương án dưới đây trong ${CHOICE_HOURS} giờ.`;
+        html += `
+            <div id="mgr-box" class="action-box action-box-neutral">
+                <div class="action-label">Phương án gửi khách chọn <span class="required">*</span></div>
+                ${Object.entries(OPTIONS).map(([key, opt]) => {
+                    const why = opt.why(order);
+                    return `<label class="option-line ${why ? 'option-off' : ''}">
+                        <input type="checkbox" class="mgr-option" value="${key}" ${why ? 'disabled' : 'checked'} ${opt.mandatory ? 'disabled' : ''}>
+                        <span><b>${opt.code}.</b> ${opt.label}${opt.mandatory ? ' <span class="text-muted">(luôn có)</span>' : ''}${why ? `<div class="option-why"><i class="fa-solid fa-lock"></i> ${why}</div>` : ''}</span>
+                    </label>`;
+                }).join('')}
+                <div id="mgr-custom-list"></div>
+                <button type="button" class="btn btn-light btn-sm" onclick="addCustomOption()"><i class="fa-solid fa-plus"></i> Thêm phương án khác</button>
+                <label class="action-label" style="margin-top: 10px;">Nội dung gửi khách <span class="required">*</span></label>
+                <textarea id="mgr-message" class="action-input" rows="3">${defaultMessage}</textarea>
+                <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Khách có ${CHOICE_HOURS} giờ để chọn. Quá hạn không chọn, đơn chuyển lại đây để Manager quyết định từ chối.</p>
+                <div class="action-box-buttons"><button class="btn btn-orange" onclick="sendOffer()"><i class="fa-solid fa-paper-plane"></i> Gửi phương án cho khách</button></div>
+            </div>`;
+    } else if (p.kind === 'recheck') {
+        const candidates = available(inspectors).filter(s => s.name !== p.report.inspector).sort((a, b) => a.load - b.load);
+        html += `
+            <div class="status-banner banner-info"><i class="fa-solid fa-comment-dots"></i><span>
+                <b>Khách chọn phương án D – Kiểm tra lại</b> lúc ${formatTs(p.at)}: "${p.customerReason}"<br>
+                ${p.customerFiles.map(f => `<i class="fa-solid fa-file-pdf"></i> ${f}`).join(' · ')}
+            </span></div>
+            <div id="mgr-box" class="action-box action-box-neutral">
+                ${candidates.length ? `
+                    <label class="action-label">Giao kiểm tra lại cho <span class="required">*</span></label>
+                    <select id="mgr-reviewer" class="action-input">
+                        ${candidates.map((s, i) => `<option value="${s.name}">${s.name} — ${s.load} đơn đang xử lý${i === 0 ? ' (gợi ý)' : ''}</option>`).join('')}
+                    </select>
+                    <p class="action-hint"><i class="fa-solid fa-circle-info"></i> Chỉ hiện kiểm dịch viên đang làm việc, khác người đã báo cáo (${p.report.inspector}). Người kiểm tra lại xác minh từ đầu. Mỗi đơn chỉ được kiểm tra lại 1 lần.</p>
+                    <div class="action-box-buttons"><button class="btn btn-orange" onclick="assignRecheck()"><i class="fa-solid fa-magnifying-glass"></i> Giao kiểm tra lại</button></div>`
+                : `<div class="status-banner banner-danger"><i class="fa-solid fa-user-slash"></i><span>Không còn kiểm dịch viên nào khác ${p.report.inspector} đang làm việc. Xem trang <a href="manager_phan_cong.html">Nhân sự</a>.</span></div>`}
+            </div>`;
+    } else {
+        html += `
+            <div class="status-banner banner-danger"><i class="fa-solid fa-clock"></i><span>
+                Đã gửi phương án lúc ${formatTs(p.offer.sentAt)}: ${optionText(p.offer.options, p.offer.custom)}.<br>
+                <b>Khách không chọn phương án</b> trước hạn ${formatTs(p.offer.sentAt + CHOICE_HOURS * HOUR)}.
+            </span></div>
+            <div id="mgr-box" class="action-box action-box-danger">
+                <div class="action-label">Quyết định từ chối đơn</div>
+                <p class="action-hint" style="margin-top: 0;">Lý do: <b>Khách không chọn phương án trong ${CHOICE_HOURS} giờ</b>. Khách chưa thanh toán nên không phát sinh hoàn tiền.</p>
+                <label class="action-label" style="margin-top: 10px;">Ghi chú gửi khách <span class="required">*</span></label>
+                <textarea id="mgr-message" class="action-input" rows="2" placeholder="Nhập nội dung gửi khách..."></textarea>
+                <div class="action-box-buttons"><button class="btn btn-red" onclick="rejectExpired()"><i class="fa-solid fa-ban"></i> Từ chối đơn</button></div>
+            </div>`;
+    }
+    box.innerHTML = html;
+    box.style.display = 'block';
+}
+
+function requireMessage() {
+    const message = document.getElementById('mgr-message');
+    if (message.value.trim()) return message.value.trim();
+    message.classList.add('input-error');
+    message.focus();
+    return null;
+}
+
+function addCustomOption() {
+    const list = document.getElementById('mgr-custom-list');
+    const item = document.createElement('div');
+    item.className = 'custom-option';
+    item.innerHTML = `
+        <div class="custom-option-head">
+            <b class="custom-code"></b>
+            <button type="button" class="custom-remove" onclick="removeCustomOption(this)" aria-label="Xóa phương án"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <input class="action-input custom-label" placeholder="Tên phương án *" oninput="this.classList.remove('input-error')">
+        <textarea class="action-input custom-detail" rows="2" placeholder="Mô tả cho khách: điều gì xảy ra với đơn, ngày khởi hành, chi phí, khách cần cung cấp gì *" oninput="this.classList.remove('input-error')"></textarea>`;
+    list.appendChild(item);
+    renumberCustomOptions();
+    item.querySelector('.custom-label').focus();
+}
+
+function removeCustomOption(button) {
+    button.closest('.custom-option').remove();
+    renumberCustomOptions();
+}
+
+function renumberCustomOptions() {
+    document.querySelectorAll('.custom-option .custom-code').forEach((el, i) => { el.textContent = `${customCode(i)}. Phương án khác`; });
+}
+
+// Đọc các phương án tự thêm; ô trống thì báo lỗi và trả về null
+function readCustomOptions() {
+    const custom = [];
+    for (const [i, item] of [...document.querySelectorAll('.custom-option')].entries()) {
+        const label = item.querySelector('.custom-label');
+        const detail = item.querySelector('.custom-detail');
+        for (const input of [label, detail]) {
+            if (!input.value.trim()) {
+                input.classList.add('input-error');
+                input.focus();
+                return null;
+            }
+        }
+        custom.push({ code: customCode(i), label: label.value.trim(), detail: detail.value.trim() });
+    }
+    return custom;
+}
+
+function sendOffer() {
+    const custom = readCustomOptions();
+    if (!custom) return;
+    const message = requireMessage();
+    if (!message) return;
+    const options = [...document.querySelectorAll('.mgr-option')].filter(cb => cb.checked).map(cb => cb.value);
+    Object.assign(activeOrder, {
+        status: 'inspecting', waitingChoice: { options, custom, sentAt: Date.now(), message }, report: activeOrder.pending.report
+    });
+    delete activeOrder.pending;
+    showToast(`Đã gửi ${options.length + custom.length} phương án cho khách của đơn ${activeOrder.id}`, 'success');
+    closeModal();
+    renderTable();
+}
+
+function assignRecheck() {
+    const reviewer = document.getElementById('mgr-reviewer').value;
+    inspectors.find(s => s.name === reviewer).load++;
+    Object.assign(activeOrder, { status: 'inspecting', inspector: reviewer, review: true, rechecked: true, waitingCustomer: false });
+    delete activeOrder.pending;
+    showToast(`Đã giao ${activeOrder.id} cho ${reviewer} kiểm tra lại`, 'success');
+    closeModal();
+    renderTable();
+}
+
+function rejectExpired() {
+    const message = requireMessage();
+    if (!message) return;
+    Object.assign(activeOrder, {
+        status: 'rejected', rejectedStep: 1, rejectedAt: Date.now(),
+        rejectType: `Khách không chọn phương án trong ${CHOICE_HOURS} giờ`, note: message, report: activeOrder.pending.report
+    });
+    delete activeOrder.pending;
+    showToast(`Đã từ chối đơn ${activeOrder.id}`, 'error');
+    closeModal();
+    renderTable();
 }
 
 // ===== Hành động =====
@@ -418,6 +719,8 @@ function confirmReject() {
         return;
     }
     activeOrder.status = 'rejected';
+    activeOrder.rejectedStep = 0;
+    activeOrder.rejectedAt = Date.now();
     activeOrder.rejectType = document.getElementById('reject-type').value;
     activeOrder.note = input.value.trim();
     showToast('Đã từ chối sớm đơn ' + activeOrder.id + ' và thông báo cho khách hàng', 'error');

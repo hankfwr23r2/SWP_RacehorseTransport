@@ -682,3 +682,11 @@ body {
     .step-label { display: none; }
     .step-current .step-label { display: inline; }
 }
+
+/* Giấy tờ chuyến đi (đơn đã thanh toán) */
+.badge-warning { background: #fef3c7; color: #b45309; }
+.badge-muted { background: #f1f5f9; color: #64748b; }
+.paid-badge { margin-top: 4px; font-weight: 400; }
+.papers-table td { vertical-align: middle; }
+.papers-table thead th { padding-top: 16px; }
+.papers-table .btn-file { white-space: nowrap; }
