@@ -5,6 +5,7 @@
 
 ## 1. Phạm vi
 
+- **Tự vận hành toàn bộ, không thuê ngoài, không hợp tác nhà xe khác.** Công ty có xe, tài xế, nhân viên chăm sóc (hộ tống) và trạm trung chuyển riêng. Mọi chi phí chuyến đi (nhiên liệu, lương, khấu hao, vận hành trạm) đều là chi phí nội bộ.
 - **Chỉ vận chuyển đường bộ** bằng xe tải chuyên dụng chở ngựa.
 - **Không làm hàng không, không đường biển.** Mọi nội dung về máy bay, sân bay, Air Cargo, IATA là dữ liệu cũ, cần xóa.
 - **3 nước:** Việt Nam (VN), Campuchia (KH), Lào (LA).
@@ -15,8 +16,16 @@
 | Tuyến | Cửa khẩu (phía VN – phía bạn) |
 |---|---|
 | VN ↔ KH | Mộc Bài (Tây Ninh) – Bavet (Svay Rieng) |
-| VN ↔ LA (Bắc) | Cầu Treo – Nam Phao |
-| VN ↔ LA (Trung) | Lao Bảo – Densavanh |
+| VN ↔ KH | Tịnh Biên – Phnom Den |
+| VN ↔ LA | Tây Trang – Sop Hun |
+| VN ↔ LA | Cầu Treo – Nam Phao |
+| VN ↔ LA | Lao Bảo – Densavanh |
+
+Nguồn: `GATES` trong `home.js`. Trang tra cước tự chọn cửa khẩu cho quãng đường ngắn nhất.
+
+### Trạm trung chuyển (trạm của công ty, dùng để nghỉ đêm trên tuyến dài)
+
+Trong dữ liệu mẫu hiện có: Vinh (Nghệ An), Quy Nhơn (Bình Định), Tuy Hòa (Phú Yên), Điện Biên. Chưa có danh mục trạm chính thức trong code.
 
 ### Điểm đi / điểm đến (`CUS/create_request.js` → `COUNTRY_LOCATIONS`)
 
@@ -134,10 +143,21 @@ Khách chỉ thấy 5 bước: Gửi đơn · Chờ thẩm định · Thanh toá
 
 Prototype HTML/CSS/JS tĩnh, không có backend. Dữ liệu mẫu nằm trong các hằng JS; wizard đặt đơn lưu tạm ở `sessionStorage`. Hằng số thời hạn đang được lặp lại ở nhiều file (`don_cua_toi.js`, `manager_tiep_nhan.js`, `manager_phan_cong.js`, `kiem_dich.js`, `thu_tuc.js`): khi sửa một chỗ thì phải sửa đồng bộ các chỗ còn lại.
 
+**Đang chuyển sang React + TypeScript** trong thư mục `web/` (nhánh `refactor/khiet/code-structure`, thiết kế ở `docs/superpowers/specs/2026-09-26-react-migration-design.md`):
+- Có 2 app: `customer` (URL `/`) và `backoffice` (URL `/backoffice`).
+- Hằng số nghiệp vụ gom về `web/src/shared/config/`, hàm tính hạn và tính giá ở `web/src/shared/lib/` (có test đối chiếu với code cũ).
+- Bộ đơn mẫu chung của mọi vai trò nằm ở `web/src/shared/services/mock/orders.ts`.
+- Đã chuyển xong 12 trang khách và 8 trang Manager (gồm đăng nhập nội bộ). Kiểm dịch, Điều phối, Tài xế, Hộ tống vẫn dùng bản HTML.
+- Dữ liệu mẫu đã gộp: đơn của mọi khách, nhân sự, sự cố, lịch sử chuyến dùng chung một kho. Manager thao tác thì khách thấy ngay, ví dụ Manager từ chối đơn thì khách thấy "Bị từ chối". Mã đơn trùng nhau giữa các trang cũ được đánh số lại (1076, 1077, 1078, 1079, 1080).
+
 ## 11. Code đang lệch với PRD (cần sửa)
 
 1. **Tiền cọc:** `CUS/bao_gia.html` và `CUS/create_request.js` (`depositCost`) ghi cọc 50%, trái với quy tắc thanh toán 100%. Trong `bao_gia.html`, số "dư quyết toán" cũng không khớp với số tiền cọc.
 2. **Cách tính giá:** `recalculateStep4Quotation` (`CUS/create_request.js`) và mẫu `CUS/bao_gia.html` dùng giá cố định 25 triệu/ngựa (nội địa) và 120 triệu/ngựa (quốc tế). Mức 120 triệu còn sót từ thời làm hàng không. Dữ liệu đơn thật trong `don_cua_toi.js` lại tính theo xe và km (ví dụ 65 km = 4,2 triệu). Chưa có công thức thống nhất.
+3. **Chữ trên trang Cổng khách hàng (`CUS/home_auth.html`) trái quy tắc:** ghi "thẩm định hồ sơ < 24h" và "báo giá trong vòng 24h" (quy tắc: 5 ngày làm việc); ghi "hủy trước 72 giờ để hoàn 100% phí cọc" (quy tắc: bảng hoàn tiền ở mục 7).
+4. **Tuyến KH↔LA:** trang chủ (`home.js`) chặn tuyến không đi qua VN, còn trang đặt chuyến (`create_request.js`) vẫn cho chọn.
+5. **Nút gửi ở bước 4 đặt chuyến** của bản HTML chuyển sang trang Nghiệm thu. Bản React chuyển về "Đơn của tôi" cho khớp luồng ở mục 3.
+6. **Báo giá lại khi khách chọn phương án A (bỏ ngựa):** trang Tiếp nhận của Manager chỉ gửi phương án, không có bước lập giá mới. Nên bảng "giá mới" khách thấy đang bằng giá cũ. Chưa có quy tắc tính lại giá.
 
 ## 12. Câu hỏi mở (chưa chốt)
 
