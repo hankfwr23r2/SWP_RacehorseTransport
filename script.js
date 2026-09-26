@@ -59,7 +59,7 @@ if (viewTripBtn) {
                         </div>
 
                         <div class="trip-page-route">
-                            Doha → Paris
+                            Đồng Nai → Phnom Penh
                         </div>
 
                     </div>
