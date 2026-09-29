@@ -6,7 +6,6 @@ export const KM_TIERS: [number, number][] = [[300, 26_000], [600, 20_000], [Infi
 export const BIG_TRUCK_FACTOR = 1.4 // xe 4 ngăn
 export const QUARANTINE_FEE = { domestic: 900_000, border: 3_800_000 } // mỗi ngựa
 export const CARE_FEE_PER_DAY = 800_000 // mỗi ngựa, mỗi ngày
-export const INSURANCE_RATE = { basic: 0.02, full: 0.05 } // theo giá trị ngựa khai báo
 
 // Ước tính quãng đường và thời gian
 export const ROAD_FACTOR = 1.35 // đường bộ dài hơn đường chim bay

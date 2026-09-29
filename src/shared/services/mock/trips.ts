@@ -20,6 +20,7 @@ export interface OpsTrip {
   assessedAt?: number
   legs: Leg[]
   activity: { time: number; text: string }[] // nhật ký hiện trường (ảnh chặng) ở trang Giám sát
+  escortAcceptedAt?: number // hộ tống bấm "Nhận chuyến" (1 đơn = 1 xe = 1 hộ tống)
 }
 
 const leg = (no: number, from: string, to: string, vehicleId = '', driverId = '', escortId = ''): Leg => ({ no, from, to, vehicleId, driverId, escortId })
@@ -46,8 +47,8 @@ export function seedTrips(): OpsTrip[] {
       leg(2, 'Cửa khẩu Nam Phao', 'Vientiane Turf Club', 'VH-001', 'TX-01', 'NV-01'),
     ], activity: [] },
     { id: 'TR-9042', orderId: 'EQ-2026-1079', feasible: true, assessNote: 'Nghỉ đêm tại trạm Tuy Hòa.', legs: [
-      leg(1, 'Trường đua Phú Thọ (TP.HCM)', 'Trạm nghỉ Tuy Hòa (Phú Yên)', 'VH-003', 'TX-03', 'NV-02'),
-      leg(2, 'Trạm nghỉ Tuy Hòa (Phú Yên)', 'Trường đua Sông Hàn (Đà Nẵng)', 'VH-003', 'TX-03', 'NV-02'),
+      leg(1, 'Trường đua Phú Thọ (TP.HCM)', 'Trạm nghỉ Tuy Hòa (Phú Yên)', 'VH-003', 'TX-03', 'NV-03'),
+      leg(2, 'Trạm nghỉ Tuy Hòa (Phú Yên)', 'Trường đua Sông Hàn (Đà Nẵng)', 'VH-003', 'TX-03', 'NV-03'),
     ], activity: [{ time: atTime(0, '07:15'), text: 'TR-9042 — Đã tải ảnh chặng: rời trạm nghỉ Tuy Hòa' }] },
     { id: 'TR-9028', orderId: 'EQ-2026-1028', feasible: true, assessNote: 'Tuyến Mộc Bài – Bavet, đi trong ngày.', legs: legsOf(order('EQ-2026-1028')).map(l => ({ ...l, vehicleId: 'VH-007', driverId: 'TX-07', escortId: 'NV-02' })), activity: [] },
     { id: 'TR-9035', orderId: 'EQ-2026-1045', assessNote: '', legs: legsOf(order('EQ-2026-1045')), activity: [] },
@@ -67,5 +68,7 @@ export function seedTrips(): OpsTrip[] {
     const routed = o.stage !== 'routing'
     trips.push({ id: `TR-${next++}`, orderId: o.id, feasible: routed || undefined, assessNote: '', legs: legsOf(o), activity: [] })
   })
-  return trips
+  // Chuyến đã chạy / đã xong: hộ tống đã nhận chuyến từ trước
+  const started: Order['status'][] = ['in_transit', 'delivered', 'disputed', 'completed']
+  return trips.map(t => { const o = order(t.orderId); return started.includes(o.status) ? { ...t, escortAcceptedAt: o.approvedAt ?? o.submittedAt } : t })
 }

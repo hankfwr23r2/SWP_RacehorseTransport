@@ -1,116 +1,166 @@
-// Bước 1: Tuyến đường. Chuyển từ CUS/create_request.html + initStep1().
+// Bước 1: Loại chuyến & tuyến đường. Khách chọn Trong nước / Quốc tế trước để chỉ hỏi thông tin cần cho loại chuyến đó.
+// Quốc tế: một đầu là Việt Nam, khách bắt buộc chọn cửa khẩu; cửa khẩu khóa theo đơn và phải ghi đúng trên giấy tờ.
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { COUNTRIES, COUNTRY_LOCATIONS, type CountryCode } from '@shared/config/network'
+import { MIN_LEAD_DAYS } from '@shared/config/business-rules'
+import { COUNTRIES, COUNTRY_LOCATIONS, GATES, type CountryCode } from '@shared/config/network'
 import { Flag } from '@shared/ui/Flag'
 import { BookingShell } from './BookingShell'
-import { useBookingDraft } from './draft'
+import { useBookingDraft, type TransportType } from './draft'
 import s from './Booking.module.css'
 
-const COUNTRY_ORDER: CountryCode[] = ['VN', 'KH', 'LA']
+type Partner = Exclude<CountryCode, 'VN'>
+const PARTNERS: Partner[] = ['KH', 'LA']
 
-function LocationSelect({ id, country, value, onChange }: { id: string; country: CountryCode | ''; value: string; onChange: (v: string) => void }) {
+const isoDate = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+const earliest = () => { const d = new Date(); d.setDate(d.getDate() + MIN_LEAD_DAYS); return isoDate(d) }
+
+function LocationSelect({ id, country, value, onChange, exclude }: { id: string; country: CountryCode; value: string; onChange: (v: string) => void; exclude?: string }) {
   return (
-    <select id={id} className="form-control" required disabled={!country} value={country ? value : ''} onChange={e => onChange(e.target.value)}>
-      {!country && <option value="" disabled>Vui lòng chọn quốc gia trước</option>}
-      {country && <option value="" disabled>— Chọn địa điểm —</option>}
-      {country && COUNTRY_LOCATIONS[country].map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+    <select id={id} className="form-control" required value={value} onChange={e => onChange(e.target.value)}>
+      <option value="">— Chọn địa điểm —</option>
+      {COUNTRY_LOCATIONS[country].filter(l => l.id !== exclude).map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
     </select>
   )
 }
 
-// Ô chọn quốc gia có cờ SVG bên trái (không dùng emoji cờ trong <option>)
-function CountrySelect({ id, value, onChange }: { id: string; value: CountryCode | ''; onChange: (v: CountryCode) => void }) {
+function Segment<T extends string>({ value, options, onChange, label }: { value: T | ''; options: [T, React.ReactNode][]; onChange: (v: T) => void; label: string }) {
   return (
-    <div className={s.countrySelect}>
-      {value && <span className={s.countryFlag}><Flag code={value} size={20} /></span>}
-      <select id={id} className="form-control" required value={value} style={value ? { paddingLeft: 42 } : undefined} onChange={e => onChange(e.target.value as CountryCode)}>
-        <option value="">— Chọn quốc gia —</option>
-        {COUNTRY_ORDER.map(c => <option key={c} value={c}>{COUNTRIES[c].name}</option>)}
-      </select>
+    <div className={s.segment} role="radiogroup" aria-label={label}>
+      {options.map(([v, text]) => <button key={v} type="button" role="radio" aria-checked={value === v} className={value === v ? s.segOn : ''} onClick={() => onChange(v)}>{text}</button>)}
     </div>
   )
 }
 
+const TYPES: [TransportType, string, string, string][] = [
+  ['domestic', 'fa-truck', 'Trong nước', 'Đi và đến đều trong Việt Nam. Không qua cửa khẩu.'],
+  ['international', 'fa-earth-asia', 'Quốc tế', 'Từ Việt Nam sang Campuchia hoặc Lào, hoặc từ Campuchia hoặc Lào về Việt Nam, qua một cửa khẩu bạn chọn.'],
+]
+
 export default function Step1RoutePage() {
   const navigate = useNavigate()
   const { draft, save } = useBookingDraft()
-  const [originCountry, setOriginCountry] = useState<CountryCode | ''>(draft.originCountry)
-  const [destCountry, setDestCountry] = useState<CountryCode | ''>(draft.destCountry)
-  const [originLocation, setOriginLocation] = useState(draft.originLocation)
-  const [destLocation, setDestLocation] = useState(draft.destLocation)
-  const [date, setDate] = useState(draft.departureDate || '2026-11-15')
-  const [quantity, setQuantity] = useState(String(draft.quantity || ''))
+  const [type, setType] = useState<TransportType | ''>(draft.type)
+  // Quốc tế: nước bạn + chiều đi. Trong nước: chỉ trong Việt Nam.
+  const initPartner = draft.type === 'international' ? (draft.originCountry === 'VN' ? draft.destCountry : draft.originCountry) : ''
+  const [partner, setPartner] = useState<Partner | ''>(initPartner as Partner | '')
+  const [outbound, setOutbound] = useState<'out' | 'in'>(draft.type === 'international' && draft.originCountry !== 'VN' ? 'in' : 'out')
+  const [origin, setOrigin] = useState(draft.originLocation)
+  const [dest, setDest] = useState(draft.destLocation)
+  const [gate, setGate] = useState(draft.gate)
+  const [date, setDate] = useState(draft.departureDate)
 
+  const originCountry: CountryCode | '' = type === 'domestic' ? 'VN' : partner ? (outbound === 'out' ? 'VN' : partner) : ''
+  const destCountry: CountryCode | '' = type === 'domestic' ? 'VN' : partner ? (outbound === 'out' ? partner : 'VN') : ''
+  const gates = partner ? GATES.filter(g => g.country === partner) : []
   const nameOf = (c: CountryCode | '', id: string) => (c ? COUNTRY_LOCATIONS[c].find(l => l.id === id)?.name ?? '' : '')
+  const resetRoute = () => { setOrigin(''); setDest(''); setGate('') }
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
+    if (!type || !originCountry || !destCountry) return
     save({
-      originCountry, originLocation, originLocationName: nameOf(originCountry, originLocation),
-      destCountry, destLocation, destLocationName: nameOf(destCountry, destLocation),
-      isInternational: originCountry !== destCountry,
-      departureDate: date || '2026-11-15',
-      quantity: parseInt(quantity, 10) || 0,
-      urgency: draft.urgency || 'standard',
+      type, originCountry, originLocation: origin, originLocationName: nameOf(originCountry, origin),
+      destCountry, destLocation: dest, destLocationName: nameOf(destCountry, dest),
+      gate: type === 'international' ? gate : '', departureDate: date,
     })
     navigate('/booking/horses')
   }
 
-  const both = originCountry && destCountry
-  const domestic = originCountry === 'VN' && destCountry === 'VN'
-
   return (
-    <BookingShell step={1} crumb="Bước 1: Tuyến đường" title="Tạo Yêu cầu Vận chuyển mới" subtitle="Hoàn thành 4 bước để hệ thống phân tích phương án logistics và lập báo giá tự động nhanh chóng.">
-      <form className="card" onSubmit={submit}>
-        <div className="card-header"><h2><i className="fa-solid fa-route" /> Chi tiết Tuyến đường & Lịch trình</h2><span className="badge badge-orange">Bước 1/4</span></div>
-        <div className={s.grid2}>
-          <div className="form-group">
-            <label htmlFor="origin_country" className="required">Quốc gia Xuất phát</label>
-            <CountrySelect id="origin_country" value={originCountry} onChange={c => { setOriginCountry(c); setOriginLocation('') }} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="origin_location" className="required">Điểm đón</label>
-            <LocationSelect id="origin_location" country={originCountry} value={originLocation} onChange={setOriginLocation} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="dest_country" className="required">Quốc gia Đến</label>
-            <CountrySelect id="dest_country" value={destCountry} onChange={c => { setDestCountry(c); setDestLocation('') }} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="dest_location" className="required">Điểm đến</label>
-            <LocationSelect id="dest_location" country={destCountry} value={destLocation} onChange={setDestLocation} />
+    <BookingShell step={1} crumb="Bước 1: Loại chuyến & tuyến đường" title="Tạo yêu cầu vận chuyển" subtitle="Chọn loại chuyến trước, hệ thống chỉ hỏi những thông tin cần cho loại chuyến đó.">
+      <form onSubmit={submit}>
+        <div className="card">
+          <div className="card-header"><h2><i className="fa-solid fa-signs-post" /> Loại chuyến</h2><span className="badge badge-orange">Bước 1/4</span></div>
+          <div className={s.typeGrid} role="radiogroup" aria-label="Loại chuyến">
+            {TYPES.map(([v, icon, title, desc]) => (
+              <button key={v} type="button" role="radio" aria-checked={type === v} className={`${s.typeCard} ${type === v ? s.typeOn : ''}`} onClick={() => { setType(v); resetRoute() }}>
+                <i className={`fa-solid ${icon}`} />
+                <span className={s.typeTitle}>{title}</span>
+                <span className={s.typeDesc}>{desc}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        {both && (
-          domestic ? (
-            <div className="alert alert-info" style={{ marginBottom: 16 }}>
-              <i className="fa-solid fa-truck" />
-              <div><strong>Vận chuyển Nội địa:</strong> Tuyến đường bộ nội địa sử dụng đội xe tải chuyên dụng có điều hòa ổn nhiệt, đệm sàn chống sốc khí nén, hệ thống camera giám sát trực tiếp 24/7 và bác sĩ thú y theo dõi suốt hành trình.</div>
+        {type && (
+          <div className="card">
+            <div className="card-header"><h2><i className="fa-solid fa-route" /> Tuyến đường & ngày đi</h2></div>
+
+            {type === 'international' && (
+              <div className={s.grid2}>
+                <div className="form-group">
+                  <label className="required">Nước bạn</label>
+                  <Segment label="Nước bạn" value={partner} onChange={p => { setPartner(p); resetRoute() }}
+                    options={PARTNERS.map(c => [c, <span key={c} className={s.inlineFlag}><Flag code={c} size={16} /> {COUNTRIES[c].name}</span>])} />
+                </div>
+                <div className="form-group">
+                  <label className="required">Chiều đi</label>
+                  <Segment label="Chiều đi" value={outbound} onChange={o => { setOutbound(o); setOrigin(''); setDest('') }}
+                    options={[['out', `Việt Nam → ${partner ? COUNTRIES[partner].name : 'nước bạn'}`], ['in', `${partner ? COUNTRIES[partner].name : 'Nước bạn'} → Việt Nam`]]} />
+                </div>
+              </div>
+            )}
+
+            {originCountry && destCountry && (
+              <div className={s.grid2}>
+                <div className="form-group">
+                  <label htmlFor="origin" className="required">Điểm đón ({COUNTRIES[originCountry].name})</label>
+                  <LocationSelect id="origin" country={originCountry} value={origin} onChange={setOrigin} exclude={type === 'domestic' ? dest : undefined} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="dest" className="required">Điểm giao ({COUNTRIES[destCountry].name})</label>
+                  <LocationSelect id="dest" country={destCountry} value={dest} onChange={setDest} exclude={type === 'domestic' ? origin : undefined} />
+                </div>
+              </div>
+            )}
+
+            {type === 'international' && partner && (
+              <div className="form-group">
+                <label htmlFor="gate" className="required">Cửa khẩu</label>
+                <select id="gate" className="form-control" required value={gate} onChange={e => setGate(e.target.value)}>
+                  <option value="">— Chọn cửa khẩu Việt Nam – {COUNTRIES[partner].name} —</option>
+                  {gates.map(g => <option key={g.name} value={g.name}>{g.name}</option>)}
+                </select>
+                {gate && (
+                  <div className={`alert alert-danger ${s.gateWarn}`}>
+                    <i className="fa-solid fa-triangle-exclamation" />
+                    <div>Cửa khẩu đã chọn: <b>{gate}</b>. Bạn <b>bắt buộc</b> dùng đúng tên cửa khẩu này khi khai Tờ khai hải quan và Giấy chứng nhận kiểm dịch. Sau khi đặt, cửa khẩu không đổi được; giấy ghi cửa khẩu khác sẽ bị trả về để xin lại.</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className={s.grid2}>
+              <div className="form-group">
+                <label htmlFor="date" className="required">Ngày khởi hành</label>
+                <input id="date" type="date" className="form-control" required min={earliest()} value={date} onChange={e => setDate(e.target.value)} />
+                <div className="form-hint">Sớm nhất sau {MIN_LEAD_DAYS} ngày kể từ hôm nay.</div>
+              </div>
             </div>
-          ) : (
-            <div className="alert alert-warning" style={{ marginBottom: 16 }}>
-              <i className="fa-solid fa-truck" />
-              <div><strong>Vận chuyển Quốc tế ({COUNTRIES[originCountry].name} → {COUNTRIES[destCountry].name}):</strong> Tuyến đường yêu cầu kiểm dịch xuất/nhập cảnh thú y chuẩn OIE và thông quan tại cửa khẩu đường bộ, vận chuyển bằng xe tải chuyên dụng xuyên biên giới.</div>
+
+            <div className={`alert alert-info ${s.docsNote}`}>
+              <i className="fa-solid fa-file-shield" />
+              <div>
+                <b>Giấy tờ cho chuyến {type === 'domestic' ? 'trong nước' : 'quốc tế'}</b>
+                <ul>
+                  <li>Khi đặt: hộ chiếu ngựa và sổ tiêm lấy từ <Link to="/horses">Hồ sơ ngựa</Link>, không cần tải lại.</li>
+                  {type === 'domestic'
+                    ? <li>Trước giờ đi 24 giờ: bạn tự xin và tải lên bản scan Giấy chứng nhận kiểm dịch vận chuyển.</li>
+                    : <>
+                      <li>Sau khi đơn được duyệt: bạn nhận biển số xe để khai Tờ khai hải quan.</li>
+                      <li>Trước giờ đi 24 giờ: bạn tự xin và tải lên bản scan Giấy chứng nhận kiểm dịch xuất/nhập khẩu và Tờ khai hải quan, ghi đúng cửa khẩu đã chọn.</li>
+                    </>}
+                  <li>Ngày đi: giao bản gốc cho tài xế tại điểm đón.</li>
+                </ul>
+              </div>
             </div>
-          )
+          </div>
         )}
 
-        <div className={s.grid2}>
-          <div className="form-group">
-            <label htmlFor="date" className="required">Ngày khởi hành (Phải sau 10 ngày từ lúc đặt đơn)</label>
-            <input id="date" type="date" className="form-control" required value={date} onChange={e => setDate(e.target.value)} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="quantity" className="required">Số lượng ngựa (Tối đa 10 con ngựa mỗi chuyến)</label>
-            <input id="quantity" className="form-control" required placeholder="Nhập số lượng ngựa cần vận chuyển" value={quantity} onChange={e => setQuantity(e.target.value)} />
-          </div>
-        </div>
-
         <div className={s.actions}>
-          <Link to="/portal" className="btn btn-ghost">Hủy đơn</Link>
-          <button type="submit" className="btn btn-primary">Tiếp tục: Thông tin ngựa <i className="fa-solid fa-arrow-right" /></button>
+          <Link to="/portal" className="btn btn-ghost">Hủy</Link>
+          <button type="submit" className="btn btn-primary" disabled={!originCountry}>Tiếp tục: Chọn ngựa <i className="fa-solid fa-arrow-right" /></button>
         </div>
       </form>
     </BookingShell>

@@ -7,7 +7,7 @@ import s from './parts.module.css'
 
 export const cx = (...c: (string | false | undefined | null)[]) => c.filter(Boolean).join(' ')
 
-export const MANAGER_STEPS = ['Tiếp nhận', 'Kiểm dịch', 'Lập lộ trình', 'Phê duyệt']
+export const MANAGER_STEPS = ['Gửi đơn', 'Kiểm dịch', 'Lập lộ trình', 'Phê duyệt']
 
 // current: bước đang ở; rejectedAt: bước bị từ chối (nếu có)
 export function Stepper({ steps = MANAGER_STEPS, current, rejectedAt }: { steps?: string[]; current: number; rejectedAt?: number }) {

@@ -2,38 +2,21 @@
 import { useState } from 'react'
 import type { CountryCode } from '@shared/config/network'
 
-export interface DraftHorse {
-  id: number
-  name: string
-  microchip: string
-  breed: string
-  breedValue: string
-  gender: string
-  genderValue: string
-  age: string
-  weight: string
-  color: string
-  colorValue: string
-  marks: string
-  completed: boolean
-}
+export type TransportType = 'domestic' | 'international'
+export type InsuranceMode = 'own' | 'waiver'
 
 export interface BookingDraft {
+  type: TransportType | ''
+  // Trong nước: đi và đến cùng một nước. Quốc tế: một đầu là VN, qua cửa khẩu.
   originCountry: CountryCode | ''
   originLocation: string
   originLocationName: string
   destCountry: CountryCode | ''
   destLocation: string
   destLocationName: string
-  isInternational: boolean
+  gate: string // cửa khẩu khách chọn (chỉ quốc tế), khóa theo đơn
   departureDate: string
-  quantity: number | ''
-  urgency: string
-  horses: DraftHorse[]
-  hasDisease: string
-  hasMedication: string
-  diseaseDetail: string
-  needIsolation: string
+  horseIds: string[] // microchip của ngựa chọn từ Hồ sơ ngựa
   feeding: string
   foodType: string
   foodTypeName: string
@@ -41,22 +24,25 @@ export interface BookingDraft {
   stallTypeName: string
   waterSupplement: string
   waterSupplementName: string
-  insurance: string
-  insuranceName: string
-  horseValue: number | ''
   specialCare: string
+  insuranceMode: InsuranceMode | '' // own: khách tự mua, nhập mã hợp đồng · waiver: không mua, ký miễn trừ
+  insurancePolicy: string
+  waiverSigned: boolean
 }
+
+// Điều khoản khách ký khi không mua bảo hiểm (tài liệu nhóm, thẻ "mô tả pháp lí")
+export const WAIVER_TEXT = 'Tôi không mua bảo hiểm cho ngựa và đồng ý miễn trừ 100% trách nhiệm dân sự và tài chính cho Nhà vận chuyển trong trường hợp ngựa ốm đau hoặc tử vong do nguyên nhân bệnh lý tự nhiên (đau bụng colic, đột quỵ...).'
 
 export const STORAGE_KEY = 'SWP_RACEHORSE_TRANSPORT_REQUEST'
 
 export const emptyDraft = (): BookingDraft => ({
+  type: '',
   originCountry: '', originLocation: '', originLocationName: '',
   destCountry: '', destLocation: '', destLocationName: '',
-  isInternational: false, departureDate: '', quantity: '', urgency: '',
-  horses: [],
-  hasDisease: '', hasMedication: '', diseaseDetail: '', needIsolation: '',
+  gate: '', departureDate: '', horseIds: [],
   feeding: '', foodType: '', foodTypeName: '', stallType: '', stallTypeName: '',
-  waterSupplement: '', waterSupplementName: '', insurance: '', insuranceName: '', horseValue: '', specialCare: '',
+  waterSupplement: '', waterSupplementName: '', specialCare: '',
+  insuranceMode: '', insurancePolicy: '', waiverSigned: false,
 })
 
 function read(): BookingDraft {
@@ -78,12 +64,3 @@ export function useBookingDraft() {
   }
   return { draft, save }
 }
-
-// DEMO_MODE của create_request.js: bước 2 luôn khai sẵn 3 ngựa mẫu, bỏ qua số lượng ở bước 1.
-// Ngựa mẫu đã đổi sang ngựa của khách mẫu (Trang trại Long Thành) cho khớp bộ dữ liệu chung.
-export const DEMO_MODE = true
-export const DEMO_HORSES: DraftHorse[] = [
-  { id: 1, name: 'Storm Runner', microchip: '#VN-985211', breed: 'Thoroughbred (Anh)', breedValue: 'thoroughbred', gender: 'Thiến (Gelding)', genderValue: 'gelding', age: '5', weight: '520', color: 'Nâu đỏ (Bay)', colorValue: 'bay', marks: 'Sao trắng trán, tất trắng chân sau', completed: true },
-  { id: 2, name: 'Bạch Phong', microchip: '#VN-985212', breed: 'Arabian (Ả Rập)', breedValue: 'arabian', gender: 'Cái (Mare)', genderValue: 'mare', age: '7', weight: '480', color: 'Bạch mã (White)', colorValue: 'white', marks: 'Đốm trắng nhỏ trên mũi', completed: true },
-  { id: 3, name: 'Kim Lân', microchip: '#VN-985213', breed: 'Thoroughbred (Anh)', breedValue: 'thoroughbred', gender: 'Đực (Stallion)', genderValue: 'stallion', age: '6', weight: '550', color: 'Hạt dẻ (Chestnut)', colorValue: 'chestnut', marks: 'Vệt trắng dài giữa trán', completed: true },
-]

@@ -1,4 +1,3 @@
-.alerts { display: grid; gap: 12px; margin-bottom: 16px; }
 
 .layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; align-items: start; }
 .side { display: grid; gap: 16px; position: sticky; top: 88px; }

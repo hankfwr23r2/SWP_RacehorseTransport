@@ -5,10 +5,9 @@ import type { StaffRole } from '@shared/types/role'
 export const STAFF_MENUS: Record<StaffRole, [path: string, label: string][]> = {
   manager: [
     ['/manager', 'Bảng điều khiển'],
-    ['/manager/intake', 'Tiếp nhận Đơn hàng'],
     ['/manager/approvals', 'Phê duyệt Đơn hàng'],
     ['/manager/staff', 'Nhân sự'],
-    ['/manager/trip-reports', 'Báo cáo Chuyến đi'],
+    ['/manager/tracking', 'Theo dõi đơn vận chuyển'],
     ['/manager/incidents', 'Sự cố & Chi Phí'],
   ],
   specialist: [

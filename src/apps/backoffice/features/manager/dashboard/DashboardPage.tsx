@@ -67,7 +67,7 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="card">
-          <div className="card-header"><h3><i className="fa-solid fa-truck-fast" /> Hiệu suất Chuyến đi Gần đây</h3><Link to="/manager/trip-reports" className="text-orange small">Xem tất cả báo cáo →</Link></div>
+          <div className="card-header"><h3><i className="fa-solid fa-truck-fast" /> Hiệu suất Chuyến đi Gần đây</h3><Link to="/manager/tracking" className="text-orange small">Theo dõi đơn vận chuyển →</Link></div>
           <div className="table-wrap">
             <table className="data-table">
               <thead><tr><th>Mã chuyến</th><th>Tuyến đường</th><th>Thời gian hoàn thành</th><th>Trạng thái (OTD)</th><th>Chi phí sự cố (nếu có)</th></tr></thead>

@@ -8,7 +8,7 @@ import { CountUp, reducedMotion, useScrollReveal } from '@shared/motion/motion'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { CUSTOMER_STEPS, MAX_HORSES, MIN_LEAD_DAYS } from '@shared/config/business-rules'
 import { COUNTRIES, GATES, PLACES, type CountryCode } from '@shared/config/network'
-import { BIG_TRUCK_FACTOR, CARE_FEE_PER_DAY, DRIVE_HOURS_PER_DAY, INSURANCE_RATE, KM_TIERS, QUARANTINE_FEE, TRIP_OPEN_FEE } from '@shared/config/public-pricing'
+import { BIG_TRUCK_FACTOR, CARE_FEE_PER_DAY, DRIVE_HOURS_PER_DAY, KM_TIERS, QUARANTINE_FEE, TRIP_OPEN_FEE } from '@shared/config/public-pricing'
 import { formatDate, formatVND } from '@shared/lib/format'
 import { estimateFee, type FeeEstimate } from '@shared/lib/pricing'
 import { trackOrder, type PublicTracking } from '@shared/services/tracking'
@@ -135,21 +135,19 @@ function FeeLookup() {
   const [fromId, setFromId] = useState('dni')
   const [toId, setToId] = useState('pnh')
   const [horses, setHorses] = useState('1')
-  const [valueText, setValueText] = useState('')
   const [error, setError] = useState<{ field: 'to' | 'horses'; message: string } | null>(null)
-  const [result, setResult] = useState<(FeeEstimate & { from: string; to: string; value: number }) | null>(null)
+  const [result, setResult] = useState<(FeeEstimate & { from: string; to: string }) | null>(null)
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
     const from = PLACES.find(p => p.id === fromId)!
     const to = PLACES.find(p => p.id === toId)!
     const n = Number(horses)
-    const value = Number(valueText.replace(/\D/g, ''))
     if (from.id === to.id) return setError({ field: 'to', message: 'Điểm đến phải khác điểm đi.' })
     if (from.country !== 'VN' && to.country !== 'VN') return setError({ field: 'to', message: 'Hiện chỉ nhận tuyến có điểm đi hoặc điểm đến tại Việt Nam.' })
     if (!Number.isInteger(n) || n < 1 || n > MAX_HORSES) return setError({ field: 'horses', message: `Số ngựa từ 1 đến ${MAX_HORSES}. Trên ${MAX_HORSES} con, vui lòng gọi hotline 1900 6868.` })
     setError(null)
-    setResult({ ...estimateFee(from, to, n, value), from: from.name, to: to.name, value })
+    setResult({ ...estimateFee(from, to, n), from: from.name, to: to.name })
   }
 
   const options = (Object.keys(COUNTRIES) as CountryCode[]).map(code => (
@@ -164,7 +162,6 @@ function FeeLookup() {
         <label>Điểm đi<select value={fromId} onChange={e => { setFromId(e.target.value); setError(null) }}>{options}</select></label>
         <label>Điểm đến<select className={cx(error?.field === 'to' && s.inputError)} value={toId} onChange={e => { setToId(e.target.value); setError(null) }}>{options}</select></label>
         <label>Số ngựa<input className={cx(error?.field === 'horses' && s.inputError)} type="number" min={1} max={MAX_HORSES} value={horses} onChange={e => { setHorses(e.target.value); setError(null) }} /></label>
-        <label>Giá trị ngựa khai báo (₫, không bắt buộc)<input inputMode="numeric" placeholder="VD: 2.000.000.000" value={valueText} onChange={e => setValueText(e.target.value)} /></label>
         <button className="btn btn-solid" type="submit">Tính cước</button>
       </form>
       {error && <p className={s.formError}><i className="fa-solid fa-circle-exclamation" /> {error.message}</p>}
@@ -179,7 +176,6 @@ function FeeLookup() {
             <table className={s.feeTable}>
               <tbody>
                 {result.rows.map(([name, detail, amount]) => <tr key={name}><td>{name}<span className={s.sub}>{detail}</span></td><td>{formatVND(amount)}</td></tr>)}
-                {!result.value && <tr><td>Bảo hiểm vận chuyển<span className={s.sub}>Nhập giá trị ngựa khai báo để tính (gói cơ bản 2%, toàn diện 5%)</span></td><td>—</td></tr>}
               </tbody>
             </table>
           </div>
@@ -222,8 +218,6 @@ function PriceTable() {
               <tr><td>Kiểm dịch vận chuyển nội địa</td><td>{formatVND(QUARANTINE_FEE.domestic)}/ngựa</td></tr>
               <tr><td>Kiểm dịch & thủ tục xuất nhập cảnh</td><td>{formatVND(QUARANTINE_FEE.border)}/ngựa</td></tr>
               <tr><td>Chăm sóc dọc đường</td><td>{formatVND(CARE_FEE_PER_DAY)}/ngựa/ngày</td></tr>
-              <tr><td>Bảo hiểm gói cơ bản</td><td>{INSURANCE_RATE.basic * 100}% giá trị khai báo</td></tr>
-              <tr><td>Bảo hiểm gói toàn diện</td><td>{INSURANCE_RATE.full * 100}% giá trị khai báo</td></tr>
             </tbody>
           </table>
         </div>
@@ -398,7 +392,7 @@ const SERVICES: [string, string, string, string, string][] = [
   ['/?tab=fee#tra-cuu', 'fa-road', 'NỘI ĐỊA', 'Vận chuyển nội địa', 'Giữa các tỉnh thành Việt Nam'],
   ['/#mang-luoi', 'fa-earth-asia', 'XUYÊN BIÊN GIỚI', 'Vận chuyển xuyên biên giới', 'Việt Nam – Lào, Việt Nam – Campuchia'],
   ['/#quy-trinh', 'fa-file-shield', 'KIỂM DỊCH', 'Kiểm dịch & thủ tục', 'Giấy chứng nhận kiểm dịch, tờ khai hải quan'],
-  ['/?tab=price#tra-cuu', 'fa-heart-pulse', 'CHĂM SÓC', 'Chăm sóc & bảo hiểm', 'Nhân viên chăm sóc đi kèm, bảo hiểm theo giá trị khai báo'],
+  ['/?tab=price#tra-cuu', 'fa-heart-pulse', 'CHĂM SÓC', 'Chăm sóc dọc đường', 'Nhân viên chăm sóc đi kèm suốt hành trình'],
 ]
 
 const PROCESS: [string, string, string, string][] = [

@@ -3,7 +3,7 @@
 import { GATES, type GeoPoint, type Place } from '../config/network'
 import {
   AVG_SPEED_KMH, BIG_TRUCK_FACTOR, BORDER_HOURS, CARE_FEE_PER_DAY, DRIVE_HOURS_PER_DAY,
-  INSURANCE_RATE, KM_TIERS, QUARANTINE_FEE, ROAD_FACTOR, TRIP_OPEN_FEE,
+  KM_TIERS, QUARANTINE_FEE, ROAD_FACTOR, TRIP_OPEN_FEE,
 } from '../config/public-pricing'
 import type { ServiceLine } from '../types/order'
 import { formatVND } from './format'
@@ -51,8 +51,8 @@ export type FeeRow = [label: string, detail: string, amount: number]
 
 export interface FeeEstimate { km: number; gate: string | null; hours: number; days: number; truckLabel: string; rows: FeeRow[]; total: number }
 
-// Ước tính cước tham khảo; value = giá trị ngựa khai báo (0 = không mua bảo hiểm)
-export function estimateFee(from: Place, to: Place, horses: number, value: number): FeeEstimate {
+// Ước tính cước tham khảo (không có bảo hiểm: công ty không bán bảo hiểm)
+export function estimateFee(from: Place, to: Place, horses: number): FeeEstimate {
   const { km, gate } = routeOf(from, to)
   const border = !!gate
   const hours = km / AVG_SPEED_KMH + (border ? BORDER_HOURS : 0)
@@ -68,7 +68,6 @@ export function estimateFee(from: Place, to: Place, horses: number, value: numbe
     [border ? 'Kiểm dịch & thủ tục xuất nhập cảnh' : 'Kiểm dịch vận chuyển nội địa', `${horses} ngựa × ${formatVND(quarantine)}`, horses * quarantine],
     ['Chăm sóc dọc đường', `${horses} ngựa × ${days} ngày × ${formatVND(CARE_FEE_PER_DAY)}`, horses * days * CARE_FEE_PER_DAY],
   ]
-  if (value) rows.push(['Bảo hiểm vận chuyển (gói cơ bản)', `${INSURANCE_RATE.basic * 100}% × giá trị khai báo ${formatVND(value)}`, value * INSURANCE_RATE.basic])
   return { km, gate, hours, days, truckLabel, rows, total: rows.reduce((t, r) => t + r[2], 0) }
 }
 

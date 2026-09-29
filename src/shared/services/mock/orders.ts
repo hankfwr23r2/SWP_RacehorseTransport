@@ -106,9 +106,9 @@ export function seedOrders(): Order[] {
           { label: 'Giao ngựa', place: 'Trường đua Phnom Penh Royal Turf', time: now + 3 * HOUR, state: 'next' },
         ],
         health: [
-          { time: now - 40 * 60000, temp: '37.8°C', heart: '36 bpm', note: 'Ăn uống bình thường, đứng vững trong khoang', horse: 'Kim Lân', status: 'Bình thường', by: 'Võ Thị Lan' },
-          { time: now - 3 * HOUR, temp: '37.6°C', heart: '38 bpm', note: 'Đã uống 8 lít nước tại trạm dừng', horse: 'Kim Lân', status: 'Bình thường', by: 'Võ Thị Lan' },
-          { time: now - 6 * HOUR, temp: '37.5°C', heart: '34 bpm', note: 'Kiểm tra trước khi lên xe: đạt', horse: 'Kim Lân', status: 'Bình thường', by: 'Võ Thị Lan' },
+          { time: now - 40 * 60000, temp: '37.8°C', heart: '36 bpm', note: 'Ăn uống bình thường, đứng vững trong khoang', horse: 'Kim Lân', status: 'Khỏe', by: 'Võ Thị Lan' },
+          { time: now - 3 * HOUR, temp: '37.6°C', heart: '38 bpm', note: 'Đã uống 8 lít nước tại trạm dừng', horse: 'Kim Lân', status: 'Khỏe', by: 'Võ Thị Lan' },
+          { time: now - 6 * HOUR, temp: '37.5°C', heart: '34 bpm', note: 'Kiểm tra trước khi lên xe: đạt', horse: 'Kim Lân', status: 'Khỏe', by: 'Võ Thị Lan' },
         ],
       },
     },
@@ -171,7 +171,7 @@ export function seedOrders(): Order[] {
         ['Chăm sóc dọc đường', 'NV chăm sóc đi kèm · cỏ khô Timothy · nước điện giải', 1_500_000],
         ['Bảo hiểm vận chuyển', 'Gói cơ bản', 1_500_000],
       ],
-      // Trang Tiếp nhận: đơn mới, hệ thống cảnh báo nghi trùng. Manager từ chối thì khách thấy "Bị từ chối ở bước Tiếp nhận".
+      // Đơn mới, hệ thống cảnh báo nghi trùng. Manager từ chối sớm (trang Phê duyệt) thì khách thấy "Bị từ chối ở bước Tiếp nhận".
       status: 'processing', stage: 'intake', customerNote: '', hold: '1 xe chuyên dụng 4 ngăn',
       warning: `Có thể trùng đơn EQ-2026-1042: cùng khách hàng, cùng 2 ngựa (chip VN-985211, VN-985212), cùng ngày khởi hành ${formatDate(daysFromToday(12))}.`,
     },

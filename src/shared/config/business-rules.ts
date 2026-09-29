@@ -45,6 +45,11 @@ export const ORIGINALS_DUE_HOUR = 17
 export const HANDOVER_DUE_DAYS = 2 // kiểm dịch viên bàn giao điều phối trước 12:00 ngày D − 2
 export const HANDOVER_DUE_HOUR = 12
 
+// ===== Tài xế tại điểm đón / điểm giao (tài liệu nhóm, thẻ Ngoại lệ) =====
+export const PICKUP_WAIT_FEE_PER_HOUR = 500_000 // khách thiếu bản gốc giấy tờ tại điểm đón: phí chờ theo giờ
+export const PICKUP_MAX_WAIT_HOURS = 4 // chờ tối đa, quá thì Điều phối / Manager hủy lệnh
+export const RECEIVER_MAX_WAIT_HOURS = 6 // người nhận vắng tại điểm giao: quá thì đưa ngựa về trại ký gửi
+
 // ===== Nghiệm thu =====
 export const ACCEPTANCE_HOURS = 24
 export const ISSUE_RESPONSE_HOURS = 4

@@ -1,14 +1,15 @@
-// Trạng thái hiển thị ở trang Tiếp nhận, suy ra từ đơn chung (gốc: status của manager_tiep_nhan.js).
+// Trạng thái đơn đang thẩm định ở trang Phê duyệt (tab "Cần xử lý", "Đang thẩm định", "Từ chối").
 import { CHOICE_HOURS, HOUR } from '@shared/config/business-rules'
 import type { Order } from '@shared/types/order'
 
-export type IntakeStatus = 'new' | 'needs_manager' | 'inspecting' | 'routing' | 'rejected'
+// unassigned: đơn mới chưa tự phân công được (không còn kiểm dịch viên / điều phối viên đang làm việc)
+export type ReviewStatus = 'unassigned' | 'needs_manager' | 'inspecting' | 'routing' | 'rejected'
 
-export function intakeStatus(o: Order): IntakeStatus | null {
-  if (o.status === 'rejected') return o.rejectedStep === 2 ? null : 'rejected' // từ chối ở bước Phê duyệt thuộc trang Phê duyệt
+export function reviewStatus(o: Order): ReviewStatus | null {
+  if (o.status === 'rejected') return o.rejectedStep === 2 ? null : 'rejected' // từ chối ở bước Phê duyệt xem bằng khung Phê duyệt
   if (o.pending) return 'needs_manager'
   if (!['processing', 'choose_option', 'rechecking'].includes(o.status)) return null
-  if (o.stage === 'intake') return 'new'
+  if (o.stage === 'intake') return 'unassigned'
   if (o.stage === 'inspecting') return 'inspecting'
   if (o.stage === 'routing') return 'routing'
   return null // đang chờ Phê duyệt
