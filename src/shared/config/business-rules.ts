@@ -14,7 +14,7 @@ export const WEEKDAYS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 
 // ===== Đặt đơn =====
 export const MIN_LEAD_DAYS = 10
-export const MAX_HORSES = 8
+export const MAX_HORSES = 10
 
 // ===== Thẩm định (cam kết với khách) =====
 // Hạn = mốc SỚM HƠN của (1) 17:00 ngày làm việc thứ APPRAISAL_WORKING_DAYS sau ngày gửi đơn
@@ -44,6 +44,11 @@ export const ORIGINALS_DUE_DAYS = 3 // khách gửi bản gốc trước 17:00 n
 export const ORIGINALS_DUE_HOUR = 17
 export const HANDOVER_DUE_DAYS = 2 // kiểm dịch viên bàn giao điều phối trước 12:00 ngày D − 2
 export const HANDOVER_DUE_HOUR = 12
+
+// ===== Tài xế tại điểm đón / điểm giao (tài liệu nhóm, thẻ Ngoại lệ) =====
+export const PICKUP_WAIT_FEE_PER_HOUR = 500_000 // khách thiếu bản gốc giấy tờ tại điểm đón: phí chờ theo giờ
+export const PICKUP_MAX_WAIT_HOURS = 4 // chờ tối đa, quá thì Điều phối / Manager hủy lệnh
+export const RECEIVER_MAX_WAIT_HOURS = 6 // người nhận vắng tại điểm giao: quá thì đưa ngựa về trại ký gửi
 
 // ===== Nghiệm thu =====
 export const ACCEPTANCE_HOURS = 24

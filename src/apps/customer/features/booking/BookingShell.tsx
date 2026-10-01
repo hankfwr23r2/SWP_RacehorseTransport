@@ -4,7 +4,7 @@ import { useStaggerIn } from '@shared/motion/motion'
 import { Link } from 'react-router'
 import s from './Booking.module.css'
 
-const STEPS = ['1. Tuyến đường', '2. Thông tin ngựa', '3. Dịch vụ & Y tế', '4. Xác nhận & Dự toán']
+const STEPS = ['1. Loại chuyến & tuyến', '2. Chọn ngựa', '3. Dịch vụ & bảo hiểm', '4. Xác nhận']
 
 export function BookingShell({ step, crumb, title, subtitle, children }: { step: number; crumb: string; title: string; subtitle: string; children: ReactNode }) {
   const ref = useStaggerIn('.card, [data-step]', [step])

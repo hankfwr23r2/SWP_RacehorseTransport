@@ -7,18 +7,18 @@ import { HOTLINE } from '@shared/config/business-rules'
 import { PageTransition } from '@shared/motion/motion'
 import { AppHeader, appHeaderStyles as h } from '@shared/ui/AppHeader'
 import { TranslateToggle } from '@shared/ui/TranslateToggle'
+import { NotificationBell } from './NotificationBell'
 
 const MENU: [string, string][] = [
   ['/portal', 'Trang chủ'],
   ['/booking/route', 'Đặt chuyến ngay'],
+  ['/horses', 'Hồ sơ ngựa'],
   ['/orders', 'Đơn của tôi'],
-  ['/quotes', 'Báo giá của tôi'],
   ['/tracking', 'Tra cứu lộ trình'],
-  ['/acceptance', 'Nghiệm thu'],
 ]
 
 const isActive = (to: string, path: string) =>
-  path === to || (to === '/booking/route' && path.startsWith('/booking')) || (to === '/orders' && path.startsWith('/orders/'))
+  path === to || (to === '/booking/route' && path.startsWith('/booking')) || (to === '/orders' && (path.startsWith('/orders/') || path === '/acceptance'))
 
 export function CustomerLayout({ children }: { children: ReactNode }) {
   const { session, logout } = useAuth()
@@ -28,7 +28,7 @@ export function CustomerLayout({ children }: { children: ReactNode }) {
       <AppHeader
         homeHref="/portal" links={MENU} isActive={isActive} userName={session?.name}
         onLogout={() => { logout(); navigate('/') }}
-        extra={<a href={`tel:${HOTLINE.replace(/\s/g, '')}`} className={h.hotline}><i className="fa-solid fa-headset" /> <strong>{HOTLINE}</strong></a>}
+        extra={<><a href={`tel:${HOTLINE.replace(/\s/g, '')}`} className={h.hotline}><i className="fa-solid fa-headset" /> <strong>{HOTLINE}</strong></a><NotificationBell /></>}
       />
       <main><PageTransition>{children}</PageTransition></main>
       <footer className={h.footer}>© 2026 Vận chuyển Ngựa đua · Việt Nam · Lào · Campuchia · Hotline {HOTLINE}</footer>

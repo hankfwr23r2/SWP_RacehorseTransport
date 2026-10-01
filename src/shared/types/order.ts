@@ -37,7 +37,13 @@ export interface Papers {
 
 export interface Checkpoint { label: string; place: string; time: number; state: 'done' | 'current' | 'next' }
 // Nhật ký sức khỏe. horse/status/other/by/photo: báo cáo của hộ tống (trang Nhật ký sức khỏe ngựa; hộ tống không đo nhịp tim → heart = '—')
-export interface HealthLog { time: number; temp: string; heart: string; note: string; horse?: string; status?: string; other?: string; by?: string; photo?: string }
+// sentAt: lúc hộ tống gửi (dùng để khóa sửa / xóa sau HEALTH_EDIT_MINUTES); time: lúc kiểm tra
+export interface HealthLog { time: number; temp: string; heart: string; note: string; horse?: string; status?: string; other?: string; by?: string; photo?: string; sentAt?: number }
+
+// Checklist tài xế tại điểm đón / điểm giao (ảnh và chữ ký lưu tên tệp / ảnh chữ ký)
+// received: giấy đã nhận bản gốc · photos: ảnh từng giấy · horsePhotos: ảnh hiện trạng từng ngựa (tên ngựa → ảnh)
+export interface PickupCheck { received: string[]; photos: Record<string, string>; horsePhotos: Record<string, string>; horseNote: string; signedBy: string; signature: string; at: number; waitMinutes?: number }
+export interface DeliveryCheck { docsReturned: string[]; photo: string; receiver: string; signature: string; at: number }
 
 export interface Trip {
   plate: string
@@ -46,6 +52,11 @@ export interface Trip {
   contacts: [role: string, name: string, phone: string][]
   checkpoints: Checkpoint[]
   health: HealthLog[]
+  pickup?: PickupCheck
+  missingDocsAt?: number // tài xế báo khách thiếu bản gốc tại điểm đón: bắt đầu tính phí chờ
+  docsArrivedAt?: number // tài xế xác nhận khách đã bổ sung bản gốc: dừng tính phí chờ
+  delivery?: DeliveryCheck
+  handoverFailedAt?: number // tài xế báo người nhận vắng / từ chối nhận
 }
 
 export interface Vitals { time: number; temp: number; heart: number; eat: string; body: string }
@@ -73,7 +84,7 @@ export interface InspectionReport {
   evidence?: string[]
 }
 
-// Việc chuyển lên Manager ở trang Tiếp nhận
+// Việc chuyển lên Manager (tab Cần xử lý, trang Phê duyệt)
 export interface ManagerPending {
   kind: 'issue' | 'recheck' | 'expired' // issue: kiểm dịch báo vấn đề · recheck: khách chọn D · expired: khách không chọn trong 48 giờ
   at: number
@@ -135,7 +146,7 @@ export interface Order {
   approvedAt?: number
   paidAt?: number
   deliveredAt?: number
-  rejectedStep?: 0 | 1 | 2 // 0 = Tiếp nhận, 1 = Kiểm dịch, 2 = Phê duyệt (khách thấy 1 và 2 là "Thẩm định hồ sơ")
+  rejectedStep?: 0 | 1 | 2 // 0 = từ chối sớm, 1 = Kiểm dịch, 2 = Phê duyệt (khách thấy 1 và 2 là "Thẩm định hồ sơ")
   rejectedAt?: number
   cancelledAt?: number
   reason?: string
@@ -154,7 +165,7 @@ export interface Order {
   stage?: Stage
   inspector?: string
   coordinator?: string
-  intakeAt?: number // lúc Manager tiếp nhận đơn
+  intakeAt?: number // lúc hệ thống phân công kiểm dịch viên & điều phối viên
   customerNote?: string
   hold?: string // chỗ xe giữ tạm khi đặt đơn
   warning?: string // cảnh báo hệ thống (vd. nghi trùng đơn)

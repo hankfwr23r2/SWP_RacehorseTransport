@@ -1,0 +1,47 @@
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+.card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.cardTop { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--orange-soft); color: var(--orange); display: grid; place-items: center; font-size: 1.15rem; flex-shrink: 0; }
+.cardTitle { min-width: 0; flex: 1; }
+.subRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.subRow :global(.badge) { white-space: nowrap; font-size: 0.72rem; }
+.cardTitle h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin: 0; }
+.chip { font-size: 0.78rem; color: var(--muted); font-family: ui-monospace, monospace; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 0; }
+.facts dt { font-size: 0.75rem; color: var(--muted); }
+.facts dd { margin: 0; font-weight: 600; font-size: 0.88rem; }
+.marks { font-size: 0.82rem; color: var(--muted); margin: 0; }
+.docs { list-style: none; margin: 0; padding: 10px 12px; background: var(--bg-page); border-radius: var(--radius-sm); display: grid; gap: 4px; font-size: 0.84rem; }
+.docOk { color: var(--green); }
+.docMissing { color: var(--amber); font-weight: 600; }
+.docView { margin-left: 4px; padding: 0; border: none; background: none; font: inherit; font-size: 0.8rem; font-weight: 600; color: var(--orange); text-decoration: underline; cursor: pointer; }
+.docView:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.docPreview { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 40px; border: 1px dashed #cbd5e1; border-radius: var(--radius-sm); }
+.docPreview i { font-size: 3rem; color: var(--red); }
+.cardFoot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); }
+.empty { text-align: center; padding: 48px 16px; display: grid; justify-items: center; gap: 10px; color: var(--muted); }
+.empty > i { font-size: 2rem; color: var(--orange); }
+
+/* Khung thêm / sửa */
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.segment { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; }
+.segment button { padding: 9px 18px; border: none; background: var(--white); font: inherit; font-size: 0.88rem; cursor: pointer; color: var(--text); min-height: 40px; }
+.segment button + button { border-left: 1px solid var(--line); }
+.segment button.on { background: var(--orange); color: var(--white); font-weight: 600; }
+.segment button:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; }
+.segmentBad { border-color: var(--red); }
+.fileHead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.file { position: relative; display: block; border: 1.5px dashed #cbd5e1; border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.86rem; color: var(--muted); background: var(--bg-page); cursor: pointer; }
+.file:hover { border-color: var(--orange); }
+.file:focus-within { outline: 2px solid var(--orange); outline-offset: 1px; }
+.file input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.file i { color: var(--orange); margin-right: 4px; }
+.fileOk { color: var(--green); font-weight: 600; }
+.fileOk i { color: var(--green); }
+.fileChange { color: var(--orange); font-weight: 500; margin-left: 6px; text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .formGrid { grid-template-columns: 1fr; }
+}

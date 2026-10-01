@@ -2,11 +2,10 @@
 import type { AppRoute } from '@shared/routing/types'
 import { SitemapPage } from '../sitemap/SitemapPage'
 import { ManagerLoginPage, StaffLoginPage } from './features/auth/StaffLoginPage'
-import IntakePage from './features/manager/intake/IntakePage'
 import ApprovalsPage from './features/manager/approvals/ApprovalsPage'
 import StaffPage from './features/manager/staff/StaffPage'
 import DashboardPage from './features/manager/dashboard/DashboardPage'
-import TripReportsPage from './features/manager/trip-reports/TripReportsPage'
+import TrackingPage from './features/manager/tracking/TrackingPage'
 import IncidentsPage from './features/manager/incidents/IncidentsPage'
 import VerificationListPage from './features/specialist/verification/VerificationListPage'
 import VerifyPage from './features/specialist/verification/VerifyPage'
@@ -31,10 +30,9 @@ export const routes: AppRoute[] = [
   { path: '/manager/login', page: ManagerLoginPage, roles: [], title: 'Đăng nhập Quản lý', layout: 'bare' },
 
   { path: '/manager', page: DashboardPage, roles: M, title: 'Bảng điều khiển', layout: 'staff' },
-  { path: '/manager/intake', page: IntakePage, roles: M, title: 'Tiếp nhận Đơn hàng', layout: 'staff' },
   { path: '/manager/approvals', page: ApprovalsPage, roles: M, title: 'Phê duyệt Đơn hàng', layout: 'staff' },
   { path: '/manager/staff', page: StaffPage, roles: M, title: 'Nhân sự & Điều chuyển', layout: 'staff' },
-  { path: '/manager/trip-reports', page: TripReportsPage, roles: M, title: 'Báo cáo Chuyến đi', layout: 'staff' },
+  { path: '/manager/tracking', page: TrackingPage, roles: M, title: 'Theo dõi đơn vận chuyển', layout: 'staff' },
   { path: '/manager/incidents', page: IncidentsPage, roles: M, title: 'Sự cố & Chi phí', layout: 'staff' },
 
   { path: '/specialist/verification', page: VerificationListPage, roles: SP, title: 'Hồ sơ được giao', layout: 'staff' },

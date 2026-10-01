@@ -28,11 +28,12 @@ function LoginForm({ managerOnly }: { managerOnly: boolean }) {
       {error && <div className={`alert alert-danger ${s.error}`}><i className="fa-solid fa-circle-exclamation" /><div>{error}</div></div>}
       <div className="form-group">
         <label htmlFor="email">{managerOnly ? 'Tên đăng nhập / Email' : 'Email'}</label>
-        <input className="form-control" id="email" name="email" placeholder={managerOnly ? 'manager@equine.vn' : 'VD: manager@equine.vn, specialist@equine.vn'} required onChange={() => setError('')} />
+        <input className="form-control" id="email" name="email" type="email" inputMode="email" autoComplete="username" autoCapitalize="off" spellCheck={false} placeholder={managerOnly ? 'manager@equine.vn' : 'ten@equine.vn'} required onChange={() => setError('')} />
+        {!managerOnly && <div className="form-hint">Thử: manager@, specialist@, ops@, driver@, escort@ + equine.vn</div>}
       </div>
       <div className="form-group">
         <label htmlFor="password">Mật khẩu</label>
-        <input className="form-control" id="password" type="password" placeholder="••••••••" required />
+        <input className="form-control" id="password" type="password" autoComplete="current-password" placeholder="••••••••" required />
       </div>
       <p className="text-right small" style={{ marginBottom: 16 }}><a href="#" className="text-orange">Quên mật khẩu?</a></p>
       <button type="submit" className="btn btn-primary btn-full btn-lg">{managerOnly ? 'Đăng nhập Quản lý' : 'Đăng nhập'}</button>
@@ -42,18 +43,16 @@ function LoginForm({ managerOnly }: { managerOnly: boolean }) {
 
 export function StaffLoginPage() {
   return (
-    <AuthShell title="Đăng nhập Nội bộ" subtitle="Vui lòng đăng nhập bằng email được cấp" heading="Hệ thống Nội bộ" tagline="Cổng đăng nhập dành cho nhân viên. Quản lý, tài xế, hộ tống và vận hành." homeHref="/" homeExternal>
+    <AuthShell title="Đăng nhập Nội bộ" subtitle="Vui lòng đăng nhập bằng email được cấp" heading="Hệ thống Nội bộ" tagline="Cổng đăng nhập dành cho nhân viên. Quản lý, tài xế, hộ tống và vận hành." homeHref="/" homeExternal back={<a href="/"><i className="fa-solid fa-arrow-left" /> Về Trang chủ</a>}>
       <LoginForm managerOnly={false} />
-      <div className={s.extra}><a href="/">← Quay lại Trang chủ</a></div>
     </AuthShell>
   )
 }
 
 export function ManagerLoginPage() {
   return (
-    <AuthShell title="Cổng Quản lý" subtitle="Vui lòng đăng nhập với tài khoản cấp quản lý" heading="Hệ thống Quản lý Vận hành" tagline="Nền tảng kiểm soát và điều phối toàn diện lộ trình vận chuyển ngựa đua an toàn, tiêu chuẩn." homeHref="/" homeExternal>
+    <AuthShell title="Cổng Quản lý" subtitle="Vui lòng đăng nhập với tài khoản cấp quản lý" heading="Hệ thống Quản lý Vận hành" tagline="Nền tảng kiểm soát và điều phối toàn diện lộ trình vận chuyển ngựa đua an toàn, tiêu chuẩn." homeHref="/" homeExternal back={<a href="/"><i className="fa-solid fa-arrow-left" /> Về Trang chủ</a>}>
       <LoginForm managerOnly />
-      <div className={s.extra}><a href="/">← Quay lại Trang chủ</a></div>
     </AuthShell>
   )
 }

@@ -1,6 +1,6 @@
 /* Tài xế: giao diện di động (gốc: Driver/style.css) */
 .segmented { display: flex; gap: 4px; padding: 4px; margin-bottom: 16px; background: white; border: 1px solid var(--line); border-radius: 999px; }
-.segmented button { flex: 1; padding: 10px 12px; border: none; border-radius: 999px; background: none; font-weight: 600; color: var(--muted); cursor: pointer; }
+.segmented button { flex: 1; padding: 10px 8px; white-space: nowrap; font-size: 0.88rem; border: none; border-radius: 999px; background: none; font-weight: 600; color: var(--muted); cursor: pointer; }
 .segmented .active { background: var(--orange); color: white; }
 .header { margin-bottom: 14px; }
 .header h1 { font-size: 1.35rem; color: var(--navy); }
@@ -31,6 +31,66 @@
 .leg { display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 10px 0; border-top: 1px dashed var(--line); font-size: 0.86rem; }
 .leg i { color: var(--orange); font-size: 1.1rem; margin-top: 2px; }
 
+/* Checklist nhận ngựa / bàn giao */
+.stepCount { font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-left: 6px; }
+.docChecks { display: grid; gap: 10px; }
+.docCheck { display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.docCheck .checkRow { border: none; padding: 4px 2px; min-height: 36px; }
+.pickupDone { margin-top: 10px; padding: 10px 12px; border-radius: var(--radius-sm); background: var(--green-soft); color: var(--green); font-size: 0.84rem; font-weight: 600; display: grid; gap: 6px; }
+.redo { justify-self: start; padding: 0; border: none; background: none; font: inherit; font-size: 0.82rem; color: var(--orange); text-decoration: underline; cursor: pointer; }
+.start { min-height: 52px; font-size: 1.05rem; }
+.waitNote { margin-top: 8px; font-size: 0.82rem; font-weight: 600; color: var(--amber); }
+.sheetAlert { margin-bottom: 14px; }
+.stopWait { display: flex; width: 100%; justify-content: center; min-height: 44px; margin-top: 10px; }
+.sheetFoot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; width: 100%; }
+.sheetFoot :global(.btn) { min-height: 44px; }
+.sheetSection + .sheetSection { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.sheetSection h4 { font-size: 0.95rem; color: var(--navy); margin: 0 0 10px; }
+.photoGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.photo { position: relative; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 14px; border: 1.5px dashed #cbd5e1; border-radius: var(--radius-sm); background: var(--bg-page); cursor: pointer; }
+.photo:hover { border-color: var(--orange); }
+.photo:focus-within { outline: 2px solid var(--orange); outline-offset: 1px; }
+.photo input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.photo > i { font-size: 1.3rem; color: var(--orange); }
+.photoOk { border-style: solid; border-color: #a7f3d0; background: var(--green-soft); }
+.photoOk > i { color: var(--green); }
+.photoText { display: grid; gap: 2px; min-width: 0; }
+.photoLabel { font-weight: 600; font-size: 0.86rem; color: var(--text); }
+.photoSub { font-size: 0.78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sign { position: relative; height: 160px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: var(--white); }
+.sign canvas { width: 100%; height: 100%; display: block; touch-action: none; cursor: crosshair; }
+.signHint { position: absolute; inset: 0; display: grid; place-items: center; color: #cbd5e1; font-size: 1.1rem; pointer-events: none; }
+.signClear { position: absolute; top: 8px; right: 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); font: inherit; font-size: 0.78rem; cursor: pointer; }
+.checkList { display: grid; gap: 8px; }
+.checkRow { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; }
+.checkRow input { width: 20px; height: 20px; accent-color: var(--orange); flex-shrink: 0; }
+
+/* SOS */
+.sos {
+  position: fixed; left: 16px; bottom: 16px; z-index: 40; display: flex; align-items: center; gap: 8px;
+  padding: 14px 22px; min-height: 52px; border: none; border-radius: 999px; background: var(--red); color: var(--white);
+  font: inherit; font-weight: 800; font-size: 1rem; letter-spacing: 0.04em; cursor: pointer; box-shadow: 0 8px 20px rgba(220, 38, 38, 0.35);
+}
+.sosSpace { height: 76px; } /* chừa chỗ để nút SOS nổi không che nội dung cuối trang */
+.sos:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+.sosGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sosType { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: var(--white); font: inherit; font-size: 0.86rem; font-weight: 600; text-align: left; cursor: pointer; }
+.sosType i { font-size: 1.1rem; color: var(--red); width: 20px; text-align: center; }
+.sosOn { border-color: var(--red); background: var(--red-soft); }
+
+/* Chi phí */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 44px; padding: 8px 16px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--white); font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+.chipOn { border-color: var(--orange); background: var(--orange); color: var(--white); }
+.amountRow { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+.listTitle { font-size: 0.95rem; color: var(--navy); margin: 20px 0 10px; }
+.expenseList { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.expenseList li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.expenseAmount { font-weight: 700; text-align: right; white-space: nowrap; }
+
 @media (max-width: 560px) {
+  .sosGrid, .amountRow { grid-template-columns: 1fr; }
+  .sheetFoot { flex-direction: column-reverse; }
+  .sheetFoot :global(.btn) { width: 100%; justify-content: center; }
   .infoGrid { grid-template-columns: 1fr; }
 }

@@ -8,11 +8,13 @@ import { CountUp, reducedMotion, useScrollReveal } from '@shared/motion/motion'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { CUSTOMER_STEPS, MAX_HORSES, MIN_LEAD_DAYS } from '@shared/config/business-rules'
 import { COUNTRIES, GATES, PLACES, type CountryCode } from '@shared/config/network'
-import { BIG_TRUCK_FACTOR, CARE_FEE_PER_DAY, DRIVE_HOURS_PER_DAY, INSURANCE_RATE, KM_TIERS, QUARANTINE_FEE, TRIP_OPEN_FEE } from '@shared/config/public-pricing'
+import { BIG_TRUCK_FACTOR, CARE_FEE_PER_DAY, DRIVE_HOURS_PER_DAY, KM_TIERS, QUARANTINE_FEE, TRIP_OPEN_FEE } from '@shared/config/public-pricing'
 import { formatDate, formatVND } from '@shared/lib/format'
 import { estimateFee, type FeeEstimate } from '@shared/lib/pricing'
 import { trackOrder, type PublicTracking } from '@shared/services/tracking'
 import { FLAG_SVG } from '@shared/ui/flags'
+import { Flag } from '@shared/ui/Flag'
+import { Select } from '@shared/ui/Select'
 import s from './HomePage.module.css'
 
 gsap.registerPlugin(MotionPathPlugin)
@@ -25,7 +27,7 @@ const STEPS = CUSTOMER_STEPS.map(x => (x === 'Chờ thẩm định' ? 'Thẩm đ
 const SLIDES = [
   { bg: '/images/truck.jpg', tag: 'Xe chuyên dụng 2 – 4 ngăn', title: 'Vận chuyển ngựa đua', hl: 'Việt Nam · Lào · Campuchia', text: 'Xe chuyên dụng có vách ngăn và đệm chống trượt, nhân viên chăm sóc đi kèm suốt hành trình.', cta: ['Đặt chuyến ngay', '/login'] },
   { bg: '/images/vet.jpg', tag: 'Kiểm dịch & thủ tục trọn gói', title: 'Hồ sơ thú y được', hl: 'kiểm dịch viên xác minh', text: 'Chúng tôi làm thủ tục kiểm dịch và hải quan cửa khẩu. Bạn theo dõi từng giấy tờ ngay trên hệ thống.', cta: ['Xem quy trình', '/#quy-trinh'] },
-  { bg: null, tag: 'Báo giá minh bạch', title: 'Biết trước chi phí', hl: 'trước khi đặt chuyến', text: 'Tra cước theo tuyến và số ngựa. Giá trên đơn là giá bạn trả, không phát sinh.', cta: ['Tra cứu cước', '/?tab=fee#tra-cuu'] },
+  { bg: null, tag: 'Báo giá minh bạch', title: 'Biết trước chi phí', hl: 'trước khi đặt chuyến', text: 'Tra cước theo tuyến và số ngựa. Giá trên đơn được báo trước; phụ phí phát sinh (nếu có) sẽ được thông báo rõ.', cta: ['Tra cứu cước', '/?tab=fee#tra-cuu'] },
 ]
 
 const Words = ({ text }: { text: string }) => <>{text.split(' ').map((w, i) => <span key={i} className={s.word}>{w}&nbsp;</span>)}</>
@@ -135,36 +137,36 @@ function FeeLookup() {
   const [fromId, setFromId] = useState('dni')
   const [toId, setToId] = useState('pnh')
   const [horses, setHorses] = useState('1')
-  const [valueText, setValueText] = useState('')
   const [error, setError] = useState<{ field: 'to' | 'horses'; message: string } | null>(null)
-  const [result, setResult] = useState<(FeeEstimate & { from: string; to: string; value: number }) | null>(null)
+  const [result, setResult] = useState<(FeeEstimate & { from: string; to: string }) | null>(null)
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
     const from = PLACES.find(p => p.id === fromId)!
     const to = PLACES.find(p => p.id === toId)!
     const n = Number(horses)
-    const value = Number(valueText.replace(/\D/g, ''))
     if (from.id === to.id) return setError({ field: 'to', message: 'Điểm đến phải khác điểm đi.' })
     if (from.country !== 'VN' && to.country !== 'VN') return setError({ field: 'to', message: 'Hiện chỉ nhận tuyến có điểm đi hoặc điểm đến tại Việt Nam.' })
     if (!Number.isInteger(n) || n < 1 || n > MAX_HORSES) return setError({ field: 'horses', message: `Số ngựa từ 1 đến ${MAX_HORSES}. Trên ${MAX_HORSES} con, vui lòng gọi hotline 1900 6868.` })
     setError(null)
-    setResult({ ...estimateFee(from, to, n, value), from: from.name, to: to.name, value })
+    setResult({ ...estimateFee(from, to, n), from: from.name, to: to.name })
   }
 
-  const options = (Object.keys(COUNTRIES) as CountryCode[]).map(code => (
-    <optgroup key={code} label={COUNTRIES[code].name}>
-      {PLACES.filter(p => p.country === code).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-    </optgroup>
-  ))
+  const groups = (Object.keys(COUNTRIES) as CountryCode[]).map(code => ({
+    label: COUNTRIES[code].name,
+    icon: <Flag code={code} size={16} />,
+    options: PLACES.filter(p => p.country === code).map(p => ({ value: p.id, label: p.name })),
+  }))
 
   return (
     <>
       <form className={s.feeForm} noValidate onSubmit={submit}>
-        <label>Điểm đi<select value={fromId} onChange={e => { setFromId(e.target.value); setError(null) }}>{options}</select></label>
-        <label>Điểm đến<select className={cx(error?.field === 'to' && s.inputError)} value={toId} onChange={e => { setToId(e.target.value); setError(null) }}>{options}</select></label>
-        <label>Số ngựa<input className={cx(error?.field === 'horses' && s.inputError)} type="number" min={1} max={MAX_HORSES} value={horses} onChange={e => { setHorses(e.target.value); setError(null) }} /></label>
-        <label>Giá trị ngựa khai báo (₫, không bắt buộc)<input inputMode="numeric" placeholder="VD: 2.000.000.000" value={valueText} onChange={e => setValueText(e.target.value)} /></label>
+        <Select label="Điểm đi" value={fromId} groups={groups} onChange={v => { setFromId(v); setError(null) }} />
+        <Select label="Điểm đến" value={toId} groups={groups} invalid={error?.field === 'to'} onChange={v => { setToId(v); setError(null) }} />
+        <label className={s.horseField}>
+          <span>Số ngựa <small>(tối đa {MAX_HORSES}/đơn)</small></span>
+          <input className={cx(error?.field === 'horses' && s.inputError)} type="number" inputMode="numeric" min={1} max={MAX_HORSES} value={horses} onChange={e => { setHorses(e.target.value); setError(null) }} />
+        </label>
         <button className="btn btn-solid" type="submit">Tính cước</button>
       </form>
       {error && <p className={s.formError}><i className="fa-solid fa-circle-exclamation" /> {error.message}</p>}
@@ -179,7 +181,6 @@ function FeeLookup() {
             <table className={s.feeTable}>
               <tbody>
                 {result.rows.map(([name, detail, amount]) => <tr key={name}><td>{name}<span className={s.sub}>{detail}</span></td><td>{formatVND(amount)}</td></tr>)}
-                {!result.value && <tr><td>Bảo hiểm vận chuyển<span className={s.sub}>Nhập giá trị ngựa khai báo để tính (gói cơ bản 2%, toàn diện 5%)</span></td><td>—</td></tr>}
               </tbody>
             </table>
           </div>
@@ -222,8 +223,6 @@ function PriceTable() {
               <tr><td>Kiểm dịch vận chuyển nội địa</td><td>{formatVND(QUARANTINE_FEE.domestic)}/ngựa</td></tr>
               <tr><td>Kiểm dịch & thủ tục xuất nhập cảnh</td><td>{formatVND(QUARANTINE_FEE.border)}/ngựa</td></tr>
               <tr><td>Chăm sóc dọc đường</td><td>{formatVND(CARE_FEE_PER_DAY)}/ngựa/ngày</td></tr>
-              <tr><td>Bảo hiểm gói cơ bản</td><td>{INSURANCE_RATE.basic * 100}% giá trị khai báo</td></tr>
-              <tr><td>Bảo hiểm gói toàn diện</td><td>{INSURANCE_RATE.full * 100}% giá trị khai báo</td></tr>
             </tbody>
           </table>
         </div>
@@ -398,15 +397,15 @@ const SERVICES: [string, string, string, string, string][] = [
   ['/?tab=fee#tra-cuu', 'fa-road', 'NỘI ĐỊA', 'Vận chuyển nội địa', 'Giữa các tỉnh thành Việt Nam'],
   ['/#mang-luoi', 'fa-earth-asia', 'XUYÊN BIÊN GIỚI', 'Vận chuyển xuyên biên giới', 'Việt Nam – Lào, Việt Nam – Campuchia'],
   ['/#quy-trinh', 'fa-file-shield', 'KIỂM DỊCH', 'Kiểm dịch & thủ tục', 'Giấy chứng nhận kiểm dịch, tờ khai hải quan'],
-  ['/?tab=price#tra-cuu', 'fa-heart-pulse', 'CHĂM SÓC', 'Chăm sóc & bảo hiểm', 'Nhân viên chăm sóc đi kèm, bảo hiểm theo giá trị khai báo'],
+  ['/?tab=price#tra-cuu', 'fa-heart-pulse', 'CHĂM SÓC', 'Chăm sóc dọc đường', 'Nhân viên chăm sóc đi kèm suốt hành trình'],
 ]
 
 const PROCESS: [string, string, string, string][] = [
-  ['fa-paper-plane', 'Gửi đơn', 'Khai thông tin ngựa, tải giấy tờ thú y, chọn dịch vụ.', `Trước ngày đi ≥ ${MIN_LEAD_DAYS} ngày`],
+  ['fa-paper-plane', 'Gửi đơn', 'Chọn tuyến, chọn ngựa từ Hồ sơ ngựa, chọn dịch vụ và khai bảo hiểm.', `Trước ngày đi ≥ ${MIN_LEAD_DAYS} ngày`],
   ['fa-magnifying-glass', 'Thẩm định', 'Kiểm dịch viên xác minh hồ sơ, điều phối viên lập lộ trình.', 'Trong 5 ngày làm việc'],
   ['fa-credit-card', 'Duyệt & thanh toán', 'Quản lý duyệt đơn, bạn thanh toán 100% giá trên đơn.', 'Trong 48 giờ'],
-  ['fa-folder-open', 'Chuẩn bị giấy tờ', 'Bạn gửi bản gốc giấy tờ, chúng tôi làm thủ tục kiểm dịch và hải quan.', 'Trước ngày đi 3 ngày'],
-  ['fa-truck-moving', 'Vận chuyển', 'Kiểm tra sức khỏe trước khi lên xe, theo dõi hành trình trực tuyến.', 'Theo lộ trình'],
+  ['fa-folder-open', 'Chuẩn bị giấy tờ', 'Bạn gửi bản gốc giấy tờ, chúng tôi xin giấy kiểm dịch (và tờ khai hải quan nếu đi quốc tế).', 'Trước ngày đi 3 ngày'],
+  ['fa-truck-moving', 'Vận chuyển', 'Tài xế nhận ngựa theo checklist, hộ tống báo cáo sức khỏe dọc đường, bạn theo dõi hành trình trực tuyến.', 'Theo lộ trình'],
   ['fa-clipboard-check', 'Nghiệm thu', 'Kiểm tra tình trạng ngựa khi nhận và xác nhận hoàn thành.', 'Trong 24 giờ'],
 ]
 

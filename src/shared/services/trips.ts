@@ -6,8 +6,9 @@
 //   đơn đang vận chuyển → in_transit · đã giao → done
 // Sau này: GET /api/trips, POST /api/trips/{id}/assess, /confirm-route, /depart, /check-in, /health-logs
 import { HOUR } from '../config/business-rules'
+import { HEALTH_EDIT_MINUTES, HEALTH_OK } from '../config/health'
 import { legsFromStops, splitStop, tripHours } from '../lib/trip'
-import type { Checkpoint, HealthLog, Order, Vitals } from '../types/order'
+import type { Checkpoint, DeliveryCheck, HealthLog, Order, PickupCheck, Vitals } from '../types/order'
 import { crewApi, vehiclesApi } from './fleet'
 import { incidentsApi } from './incidents'
 import { seedTrips, type Leg, type OpsTrip } from './mock/trips'
@@ -101,8 +102,30 @@ async function resyncIfRouted(id: string) {
 const CHECKPOINT_LABEL: Record<string, string> = { 'nhận ngựa': 'Nhận ngựa lên xe, khởi hành', 'giao ngựa': 'Giao ngựa' }
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
+// Báo cáo sức khỏe còn sửa / xóa được: của chính người đó, gửi chưa quá HEALTH_EDIT_MINUTES
+export const canEditHealthLog = (h: HealthLog, by: string, now = Date.now()) => h.by === by && !!h.sentAt && now - h.sentAt < HEALTH_EDIT_MINUTES * 60000
+function editable(o: Order, sentAt: number, by: string) {
+  const h = o.trip?.health.find(x => x.sentAt === sentAt && x.by === by)
+  if (!h || !canEditHealthLog(h, by)) throw new Error(`Chỉ sửa / xóa được báo cáo của mình trong ${HEALTH_EDIT_MINUTES} phút sau khi gửi`)
+  return h
+}
+
+// Chặng hiện tại của chuyến, ghi vào sự cố (vd. "1/2")
+const legLabel = (t: OpsTrip, o: Order) => {
+  const current = o.trip!.checkpoints.findIndex(c => c.state === 'current')
+  return `${Math.max(1, Math.min(current, t.legs.length))}/${t.legs.length}`
+}
+const tripOf = (orderId: string) => store.all().find(x => x.orderId === orderId)!
+
+// Sự cố khẩn cấp "Y tế ngựa" từ báo cáo sức khỏe nặng của hộ tống
+const medicalIncident = (orderId: string, o: Order, log: HealthLog) => incidentsApi.create({
+  tripId: tripOf(orderId).id, orderId, leg: legLabel(tripOf(orderId), o), time: log.time,
+  severity: 'emergency', type: 'Y tế ngựa', desc: `${log.horse}: ${log.status}${log.note ? ` — ${log.note}` : ''} (thân nhiệt ${log.temp}, nhịp tim ${log.heart})`,
+  status: 'open', proposal: '',
+})
+
 function vitalsOf(log: HealthLog | undefined, fallbackTime: number): Vitals {
-  const ok = !log?.status || log.status === 'Bình thường'
+  const ok = !log?.status || log.status === HEALTH_OK
   return {
     time: log?.time ?? fallbackTime, temp: parseFloat(log?.temp ?? ''), heart: parseFloat(log?.heart ?? ''),
     eat: ok ? 'Bình thường' : log!.status!, body: ok ? 'Không chấn thương' : log!.note,
@@ -148,7 +171,8 @@ export const tripsApi = {
     await syncReview(id, { stage: 'approval' })
   },
 
-  // OPS-08: khởi hành → đơn chuyển Đang vận chuyển; khách thấy hành trình và nhật ký sức khỏe
+  // OPS-08: khởi hành → đơn chuyển Đang vận chuyển; khách thấy hành trình và nhật ký sức khỏe.
+  // Mốc đầu (nhận ngựa) chờ tài xế làm checklist tại điểm đón.
   async depart(id: string) {
     const t = store.get(id)!
     const [vehicles, crew, order] = await Promise.all([vehiclesApi.list(), crewApi.list(), ordersApi.get(t.orderId)])
@@ -161,7 +185,7 @@ export const tripsApi = {
       label: CHECKPOINT_LABEL[p.act] ?? capitalize(p.act),
       place: p.place,
       time: Math.round(now + (eta - now) * i / (stops.length - 1)),
-      state: i === 0 ? 'done' : i === 1 ? 'current' : 'next',
+      state: i === 0 ? 'current' : 'next',
     }))
     const member = (cid: string) => crew.find(c => c.id === cid)!
     await ordersApi.update(t.orderId, {
@@ -170,9 +194,14 @@ export const tripsApi = {
         plate: vehicles.find(v => v.id === first.vehicleId)!.plate, eta, updatedAt: now,
         contacts: [['Tài xế', member(first.driverId).name, member(first.driverId).phone], ['NV chăm sóc', member(first.escortId).name, member(first.escortId).phone]],
         checkpoints,
-        health: [{ time: now, temp: '—', heart: '—', note: 'Đã nhận ngựa lên xe. Hộ tống cập nhật chỉ số sức khỏe dọc đường.', by: member(first.escortId).name }],
+        health: [{ time: now, temp: '—', heart: '—', note: 'Xe đã nhận lệnh chạy tới điểm đón. Hộ tống cập nhật chỉ số sức khỏe dọc đường.', by: member(first.escortId).name }],
       },
     })
+  },
+
+  // Hộ tống xác nhận nhận chuyến được Điều phối giao
+  acceptAsEscort(id: string) {
+    store.update(id, { escortAcceptedAt: Date.now() })
   },
 
   // OPS-06: ghi nhận ảnh chặng
@@ -206,25 +235,88 @@ export const tripsApi = {
     })
   },
 
-  // Hộ tống xóa toàn bộ báo cáo của mình (nút "Delete All Reports" của bản cũ); giữ dòng hệ thống ghi lúc khởi hành
-  async deleteHealthLogs(by: string) {
-    const orders = await ordersApi.list()
-    await Promise.all(orders.filter(o => o.trip?.health.some(h => h.by === by && h.temp !== '—')).map(o =>
-      ordersApi.update(o.id, { trip: { ...o.trip!, health: o.trip!.health.filter(h => h.by !== by || h.temp === '—') } })))
+  // Tài xế lưu checklist nhận ngựa (giấy tờ bản gốc + ảnh, ảnh hiện trạng ngựa, khách ký). Chưa khởi hành.
+  async savePickup(orderId: string, check: Omit<PickupCheck, 'at' | 'waitMinutes'>) {
+    const o = (await ordersApi.get(orderId))!
+    const now = Date.now()
+    const { missingDocsAt, docsArrivedAt } = o.trip!
+    const waitMinutes = missingDocsAt ? Math.round(((docsArrivedAt ?? now) - missingDocsAt) / 60000) : undefined
+    return ordersApi.update(orderId, { trip: { ...o.trip!, pickup: { ...check, at: now, waitMinutes }, missingDocsAt: undefined, docsArrivedAt: undefined } })
+  },
+
+  // Khách mang bản gốc tới: tài xế dừng đồng hồ phí chờ ngay lúc đó, rồi mới làm checklist
+  async stopWaiting(orderId: string) {
+    const o = (await ordersApi.get(orderId))!
+    if (!o.trip?.missingDocsAt || o.trip.docsArrivedAt) return
+    await ordersApi.update(orderId, { trip: { ...o.trip, docsArrivedAt: Date.now() } })
+  },
+
+  // Bắt đầu chuyến: chỉ được khi đã xong checklist nhận ngựa → xác nhận mốc nhận ngựa
+  async startTrip(orderId: string) {
+    const o = (await ordersApi.get(orderId))!
+    if (!o.trip?.pickup) throw new Error('Chưa hoàn tất checklist nhận ngựa')
+    return tripsApi.checkIn(orderId)
+  },
+
+  // Khách thiếu bản gốc tại điểm đón: bắt đầu tính phí chờ, báo Điều phối
+  async reportMissingDocs(orderId: string, missing: string[], note: string) {
+    const o = (await ordersApi.get(orderId))!
+    const now = Date.now()
+    await ordersApi.update(orderId, { trip: { ...o.trip!, missingDocsAt: now } })
+    await incidentsApi.create({
+      tripId: tripOf(orderId).id, orderId, leg: legLabel(tripOf(orderId), o), time: now, severity: 'medium', type: 'Thiếu bản gốc giấy tờ',
+      desc: `Tại điểm đón, khách thiếu: ${missing.join(', ')}.${note ? ` ${note}` : ''} Đang tính phí chờ.`, status: 'open', proposal: '',
+    })
+  },
+
+  // Tài xế hoàn tất bàn giao (trả bản gốc, ảnh ngựa, người nhận ký) → xác nhận mốc giao ngựa
+  async completeDelivery(orderId: string, check: Omit<DeliveryCheck, 'at'>) {
+    const o = (await ordersApi.get(orderId))!
+    await ordersApi.update(orderId, { trip: { ...o.trip!, delivery: { ...check, at: Date.now() }, handoverFailedAt: undefined } })
+    return tripsApi.checkIn(orderId)
+  },
+
+  // Người nhận vắng / từ chối nhận: ghi lại thời điểm làm bằng chứng, báo Điều phối
+  async reportHandoverFailed(orderId: string, reason: string) {
+    const o = (await ordersApi.get(orderId))!
+    const now = Date.now()
+    await ordersApi.update(orderId, { trip: { ...o.trip!, handoverFailedAt: now } })
+    await incidentsApi.create({
+      tripId: tripOf(orderId).id, orderId, leg: legLabel(tripOf(orderId), o), time: now, severity: 'medium', type: 'Giao thất bại',
+      desc: `Tại điểm giao: ${reason}`, status: 'open', proposal: '',
+    })
+  },
+
+  // Tài xế bấm SOS → sự cố cho Điều phối xử lý
+  async sos(orderId: string, type: string, severity: 'emergency' | 'medium', desc: string, attachments: string[]) {
+    const o = (await ordersApi.get(orderId))!
+    return incidentsApi.create({
+      tripId: tripOf(orderId).id, orderId, leg: legLabel(tripOf(orderId), o), time: Date.now(), severity, type,
+      desc: `[SOS tài xế] ${desc}`, status: 'open', proposal: '', attachments: attachments.length ? attachments : undefined,
+    })
   },
 
   // Hộ tống ghi báo cáo sức khỏe. Tình trạng nặng → tự tạo sự cố "Y tế ngựa" cho Điều phối xử lý (OPS-04).
   async addHealthLog(orderId: string, log: HealthLog, severe: boolean) {
     const o = (await ordersApi.get(orderId))!
-    await ordersApi.update(orderId, { trip: { ...o.trip!, health: [log, ...o.trip!.health], updatedAt: Date.now() } })
-    if (!severe) return
-    const t = store.all().find(x => x.orderId === orderId)!
-    const current = o.trip!.checkpoints.findIndex(c => c.state === 'current')
-    await incidentsApi.create({
-      tripId: t.id, orderId, leg: `${Math.max(1, Math.min(current, t.legs.length))}/${t.legs.length}`, time: log.time,
-      severity: 'emergency', type: 'Y tế ngựa', desc: `${log.horse}: ${log.status}${log.note ? ` — ${log.note}` : ''} (thân nhiệt ${log.temp})`,
-      status: 'open', proposal: '',
-    })
+    const now = Date.now()
+    await ordersApi.update(orderId, { trip: { ...o.trip!, health: [{ ...log, sentAt: now }, ...o.trip!.health], updatedAt: now } })
+    if (severe) await medicalIncident(orderId, o, log)
+  },
+
+  // Hộ tống sửa báo cáo của mình trong HEALTH_EDIT_MINUTES sau khi gửi. Sửa thành tình trạng nặng → tạo sự cố như khi gửi mới.
+  async updateHealthLog(orderId: string, sentAt: number, by: string, log: HealthLog, severe: boolean) {
+    const o = (await ordersApi.get(orderId))!
+    const old = editable(o, sentAt, by)
+    await ordersApi.update(orderId, { trip: { ...o.trip!, health: o.trip!.health.map(h => (h === old ? { ...log, sentAt } : h)), updatedAt: Date.now() } })
+    if (severe && old.status !== log.status) await medicalIncident(orderId, o, log)
+  },
+
+  // Hộ tống xóa báo cáo của mình trong HEALTH_EDIT_MINUTES sau khi gửi (gửi nhầm)
+  async deleteHealthLog(orderId: string, sentAt: number, by: string) {
+    const o = (await ordersApi.get(orderId))!
+    const old = editable(o, sentAt, by)
+    await ordersApi.update(orderId, { trip: { ...o.trip!, health: o.trip!.health.filter(h => h !== old), updatedAt: Date.now() } })
   },
 }
 

@@ -2,16 +2,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { PAYMENT_HOURS } from '@shared/config/business-rules'
-import { choiceDeadline, paymentDeadline } from '@shared/lib/deadlines'
-import { formatDate, formatDateTime, formatVND } from '@shared/lib/format'
-import { choiceExpired } from '@shared/lib/order-status'
+import { formatDate, formatVND } from '@shared/lib/format'
 import { useAuth } from '@shared/auth/AuthContext'
 import { customerOrdersApi } from '@shared/services/orders'
 import { useLoad } from '@shared/services/useLoad'
 import { useStaggerIn } from '@shared/motion/motion'
 import { orderTotal, type Order } from '@shared/types/order'
+import { byPriority } from './attention'
 import { StatusBadge } from './StatusBadge'
-import s from './Orders.module.css'
 
 const TABS: [string, string, (o: Order) => boolean][] = [
   ['all', 'Tất cả', () => true],
@@ -27,9 +25,8 @@ export default function OrdersPage() {
   const { session } = useAuth()
   const { data: orders = [] } = useLoad(() => customerOrdersApi.list(session!.name), [session?.name])
   const [tab, setTab] = useState('all')
-  const waiting = orders.filter(o => o.status === 'awaiting_payment')
-  const choosing = orders.filter(o => o.status === 'choose_option' && !choiceExpired(o))
-  const list = orders.filter(TABS.find(t => t[0] === tab)![2])
+  // Việc cần bạn xử lý lên đầu (hạn gần trước), rồi đơn đang chạy, cuối cùng đơn đã đóng
+  const list = byPriority(orders.filter(TABS.find(t => t[0] === tab)![2]))
   const rowsRef = useStaggerIn('tbody tr', [tab, orders.length])
 
   return (
@@ -39,21 +36,6 @@ export default function OrdersPage() {
         <div className="page-header">
           <h1>Đơn của tôi</h1>
           <p>Theo dõi trạng thái các đơn vận chuyển. Khi đơn được duyệt, bạn có {PAYMENT_HOURS} giờ để thanh toán 100% giá trị đơn.</p>
-        </div>
-
-        <div className={s.alerts}>
-          {choosing.length > 0 && (
-            <div className="alert alert-danger"><i className="fa-solid fa-circle-exclamation" /><div>
-              Bạn có <strong>{choosing.length} đơn cần phản hồi</strong> do hồ sơ ngựa có vấn đề ({choosing.map(o => o.id).join(', ')}).
-              Hạn gần nhất: <strong>{formatDateTime(Math.min(...choosing.map(o => choiceDeadline(o.offer!.sentAt))))}</strong>.
-            </div></div>
-          )}
-          {waiting.length > 0 && (
-            <div className="alert alert-warning"><i className="fa-solid fa-credit-card" /><div>
-              Bạn có <strong>{waiting.length} đơn đã được duyệt</strong> đang chờ thanh toán.
-              Hạn gần nhất: <strong>{formatDateTime(Math.min(...waiting.map(o => paymentDeadline(o.approvedAt!, o.departAt))))}</strong>. Quá hạn đơn sẽ tự hủy.
-            </div></div>
-          )}
         </div>
 
         <div className="card">

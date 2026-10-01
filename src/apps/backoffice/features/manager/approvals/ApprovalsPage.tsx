@@ -1,5 +1,6 @@
 // Phê duyệt đơn hàng. Chuyển từ Manager/manager_phe_duyet.html + manager_phe_duyet.js.
-// Bước cuối trước khi khách thanh toán: duyệt đơn đã được tiếp nhận, kiểm dịch xác nhận hồ sơ và điều phối lập lộ trình.
+// Theo dõi đơn từ lúc khách gửi: xử lý việc kiểm dịch chuyển lên, từ chối sớm (tab Cần xử lý, Đang thẩm định — xem ReviewModal),
+// rồi duyệt đơn đã được kiểm dịch xác nhận hồ sơ và điều phối lập lộ trình, trước khi khách thanh toán.
 import { useState } from 'react'
 import { DOC_LABEL, PROCEDURES, proceduresFor, requiredDocs, type DocKey } from '@shared/config/documents'
 import { handoverDue, originalsDue, paymentDeadline } from '@shared/lib/deadlines'
@@ -12,16 +13,21 @@ import { Modal } from '@shared/ui/Modal'
 import { useToast } from '@shared/ui/toast'
 import { usePagination } from '@shared/ui/usePagination'
 import { InfoItem, SearchBox, Section, Stepper, TripInfo, cx, matches, partStyles as s } from '../../../shared/parts'
+import { Assignee, ReviewModal } from './ReviewModal'
+import { reviewStatus } from './review-status'
 
-type ApprovalStatus = 'pending' | 'approved' | 'paid' | 'rejected'
-const TABS: [ApprovalStatus, string][] = [['pending', 'Chờ duyệt'], ['approved', 'Đã duyệt - Chờ thanh toán'], ['paid', 'Đã thanh toán - Giấy tờ'], ['rejected', 'Từ chối']]
+type ApprovalStatus = 'action' | 'reviewing' | 'pending' | 'approved' | 'paid' | 'rejected'
+const TABS: [ApprovalStatus, string][] = [['action', 'Cần xử lý'], ['reviewing', 'Đang thẩm định'], ['pending', 'Chờ duyệt'], ['approved', 'Đã duyệt - Chờ thanh toán'], ['paid', 'Đã thanh toán - Giấy tờ'], ['rejected', 'Từ chối']]
 const REJECT_TYPES = ['Không đủ năng lực vận hành (xe / nhân sự)', 'Tuyến đường hoặc cửa khẩu không khả thi', 'Khác']
 
 function approvalStatus(o: Order): ApprovalStatus | null {
+  if (o.status === 'rejected') return 'rejected'
+  const rs = reviewStatus(o)
+  if (rs === 'unassigned' || rs === 'needs_manager') return 'action'
+  if (rs === 'inspecting' || rs === 'routing') return 'reviewing'
   if (o.status === 'processing' && o.stage === 'approval') return 'pending'
   if (o.status === 'awaiting_payment') return 'approved'
   if (o.status === 'paid' && o.papers) return 'paid'
-  if (o.status === 'rejected' && o.rejectedStep === 2) return 'rejected'
   return null
 }
 
@@ -141,7 +147,7 @@ function ApprovalModal({ order: o, onClose, onSave }: { order: Order; onClose: (
 export default function ApprovalsPage() {
   const toast = useToast()
   const { data: all = [], reload } = useLoad(ordersApi.list)
-  const [tab, setTab] = useState<ApprovalStatus>('pending')
+  const [tab, setTab] = useState<ApprovalStatus>('action')
   const [query, setQuery] = useState('')
   const [openId, setOpenId] = useState<string | null>(null)
   const rows = all.filter(o => approvalStatus(o)).sort((a, b) => a.departAt - b.departAt)
@@ -149,6 +155,7 @@ export default function ApprovalsPage() {
   const { rows: page, bar } = usePagination(list)
   const tableRef = useStaggerIn('tbody tr', [tab, query, list.length])
   const open = all.find(o => o.id === openId)
+  const reviewTab = tab === 'action' || tab === 'reviewing'
 
   const save = async (patch: Partial<Order>, message: string, type: 'success' | 'error' = 'success') => {
     await ordersApi.update(openId!, patch)
@@ -163,7 +170,7 @@ export default function ApprovalsPage() {
         <div className="breadcrumb">Hệ thống Vận hành / <span className="text-orange font-semibold">Phê duyệt Đơn hàng</span></div>
         <div className="page-header">
           <h1>Phê duyệt Đơn hàng</h1>
-          <p>Bước cuối trước khi khách thanh toán: duyệt các đơn đã được tiếp nhận, kiểm dịch xác nhận hồ sơ và điều phối lập lộ trình.</p>
+          <p>Đơn khách gửi được hệ thống tự giao Kiểm dịch viên &amp; Điều phối viên. Manager xử lý việc được chuyển lên, từ chối sớm đơn không hợp lệ, và duyệt đơn trước khi khách thanh toán.</p>
         </div>
         <div className="card">
           <div className={s.toolbar}>
@@ -175,28 +182,31 @@ export default function ApprovalsPage() {
           </div>
           <div ref={tableRef} className="table-wrap">
             <table className="data-table">
-              <thead><tr><th>Mã Đơn hàng</th><th>Khách hàng</th><th>Tuyến đường</th><th>Số ngựa</th><th>Khởi hành</th><th className="text-right">Tổng giá trị đơn</th><th className="text-right">Thao tác</th></tr></thead>
+              <thead><tr><th>Mã Đơn hàng</th><th>Khách hàng</th><th>Tuyến đường</th><th>Số ngựa</th><th>Khởi hành</th><th className="text-right">Tổng giá trị đơn</th>{reviewTab && <th>Phụ trách</th>}<th className="text-right">Thao tác</th></tr></thead>
               <tbody>
                 {page.length ? page.map(o => (
                   <tr key={o.id}>
-                    <td className={s.idCell}>{o.id}{tab === 'paid' && <div style={{ marginTop: 4 }}><PapersBadge o={o} /></div>}{tab === 'pending' && o.infeasible && <div style={{ marginTop: 4 }}><span className="badge badge-danger"><i className="fa-solid fa-route" /> Tuyến không khả thi</span></div>}</td>
+                    <td className={s.idCell}>{o.id}{o.warning && reviewTab && <> <i className={`fa-solid fa-triangle-exclamation ${s.amber}`} title="Có cảnh báo" /></>}{tab === 'paid' && <div style={{ marginTop: 4 }}><PapersBadge o={o} /></div>}{tab === 'pending' && o.infeasible && <div style={{ marginTop: 4 }}><span className="badge badge-danger"><i className="fa-solid fa-route" /> Tuyến không khả thi</span></div>}</td>
                     <td className="text-muted">{o.customer}</td>
                     <td>{o.routeShort}{o.border && <div className="sub-text"><i className="fa-solid fa-flag" /> {o.border}</div>}</td>
                     <td className="text-muted">{o.horses.length}</td>
                     <td className="text-muted">{formatDate(o.departAt)}</td>
                     <td className="text-right font-semibold nowrap">{formatVND(orderTotal(o))}</td>
-                    <td className="text-right nowrap">{tab === 'pending'
-                      ? <button className="btn btn-primary btn-sm" onClick={() => setOpenId(o.id)}>Xem & Duyệt</button>
+                    {reviewTab && <td><Assignee o={o} /></td>}
+                    <td className="text-right nowrap">{tab === 'pending' || tab === 'action'
+                      ? <button className="btn btn-primary btn-sm" onClick={() => setOpenId(o.id)}>{tab === 'action' ? 'Xử lý' : 'Xem & Duyệt'}</button>
                       : <button className="btn btn-ghost btn-sm" onClick={() => setOpenId(o.id)}><i className="fa-solid fa-eye" /> Xem</button>}</td>
                   </tr>
-                )) : <tr><td colSpan={7} className="text-center text-muted" style={{ padding: 24 }}>Không có đơn hàng nào</td></tr>}
+                )) : <tr><td colSpan={reviewTab ? 8 : 7} className="text-center text-muted" style={{ padding: 24 }}>Không có đơn hàng nào</td></tr>}
               </tbody>
             </table>
           </div>
           {bar}
         </div>
       </div>
-      {open && <ApprovalModal order={open} onClose={() => setOpenId(null)} onSave={save} />}
+      {open && (reviewStatus(open)
+        ? <ReviewModal order={open} orders={all} onClose={() => setOpenId(null)} onSave={save} />
+        : <ApprovalModal order={open} onClose={() => setOpenId(null)} onSave={save} />)}
     </div>
   )
 }
