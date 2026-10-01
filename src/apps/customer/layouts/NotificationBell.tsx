@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useAuth } from '@shared/auth/AuthContext'
-import { formatDateTime, timeLeftText } from '@shared/lib/format'
+import { formatDateTime, formatVND, timeLeftText } from '@shared/lib/format'
+import { billingApi } from '@shared/services/billing'
 import { customerOrdersApi } from '@shared/services/orders'
 import { useLoad } from '@shared/services/useLoad'
 import { attentionOf, byPriority } from '../features/orders/attention'
@@ -13,9 +14,12 @@ export function NotificationBell() {
   const { pathname } = useLocation()
   // Tải lại mỗi lần chuyển trang để số việc luôn mới (vừa thanh toán, vừa nghiệm thu…)
   const { data: orders = [] } = useLoad(() => customerOrdersApi.list(session!.name), [session?.name, pathname])
+  const { data: bills = [] } = useLoad(() => billingApi.list(session!.name), [session?.name, pathname])
+  const owed = bills.filter(b => b.settlement.due > 0) // phụ phí đã duyệt, chưa thanh toán quyết toán
   const [open, setOpen] = useState(false)
   const box = useRef<HTMLDivElement>(null)
   const items = byPriority(orders).flatMap(o => { const a = attentionOf(o); return a ? [{ o, a }] : [] })
+  const total = items.length + owed.length
 
   useEffect(() => { setOpen(false) }, [pathname])
   useEffect(() => {
@@ -30,15 +34,27 @@ export function NotificationBell() {
   return (
     <div ref={box} className={s.wrap}>
       <button type="button" className={s.bell} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen(!open)}
-        aria-label={items.length ? `Thông báo: ${items.length} việc cần bạn xử lý` : 'Thông báo'}>
+        aria-label={total ? `Thông báo: ${total} việc cần bạn xử lý` : 'Thông báo'}>
         <i className="fa-regular fa-bell" />
-        {items.length > 0 && <span className={s.count} aria-hidden="true">{items.length}</span>}
+        {total > 0 && <span className={s.count} aria-hidden="true">{total}</span>}
       </button>
       {open && (
         <div className={s.panel} role="region" aria-label="Thông báo">
-          <div className={s.head}>Cần bạn xử lý{items.length > 0 && <span className={s.headCount}>{items.length}</span>}</div>
-          {items.length ? (
+          <div className={s.head}>Cần bạn xử lý{total > 0 && <span className={s.headCount}>{total}</span>}</div>
+          {total ? (
             <ul className={s.list}>
+              {owed.map(({ order: o, settlement: st }) => (
+                <li key={`qt-${o.id}`}>
+                  <Link to="/billing" className={s.item}>
+                    <span className={`${s.icon} ${s.urgent}`}><i className="fa-solid fa-receipt" /></span>
+                    <span className={s.body}>
+                      <span className={s.title}>Thanh toán hóa đơn quyết toán {formatVND(st.due)}</span>
+                      <span className={s.meta}>{o.id} · {o.routeShort}</span>
+                      <span className={`${s.due} ${s.dueUrgent}`}>Cần thanh toán trước khi tài xế bàn giao ngựa</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
               {items.map(({ o, a }) => (
                 <li key={o.id}>
                   <Link to={a.href} className={s.item}>

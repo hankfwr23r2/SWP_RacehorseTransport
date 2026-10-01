@@ -1,7 +1,8 @@
 // Service đơn hàng. Tên hàm theo REST để sau này thay bằng API Spring Boot:
 //   list() → GET /api/orders · get(id) → GET /api/orders/{id} · update(id, patch) → PATCH /api/orders/{id}
-import { acceptanceDeadline, paymentDeadline } from '../lib/deadlines'
+import { acceptanceDeadline, papersScanDue, paymentDeadline } from '../lib/deadlines'
 import { formatDateTime } from '../lib/format'
+import { itemsOf, procedureState } from '../lib/papers'
 import type { Order } from '../types/order'
 import { seedOrders } from './mock/orders'
 import { seedOtherOrders } from './mock/orders-others'
@@ -14,6 +15,7 @@ const store = createStore<Order>('orders', () => [...seedOrders(), ...seedOtherO
 // Quy tắc hệ thống chạy mỗi lần đọc đơn (docs/PRD.md mục 3):
 // - quá hạn thanh toán → đơn tự hủy, nhả chỗ xe giữ tạm
 // - giao xong quá 24 giờ chưa phản hồi → tự động nghiệm thu
+// - quá hạn tải giấy kiểm dịch / tờ khai (24 giờ trước giờ đi) mà chưa có giấy hợp lệ → đơn Tạm giữ, nhả chỗ xe (trừ đơn Kiểm dịch đã báo Manager)
 // - đơn mới → giao kiểm dịch viên & điều phối viên đang ít việc nhất; không còn ai đang làm việc thì đơn chờ (Manager thấy ở trang Phê duyệt)
 // Khi có backend, việc này do job phía server làm.
 async function applySystemRules() {
@@ -36,6 +38,12 @@ async function applySystemRules() {
     if (o.status === 'awaiting_payment' && o.approvedAt && now > paymentDeadline(o.approvedAt, o.departAt)) {
       store.update(o.id, { status: 'cancelled', reason: `Quá hạn thanh toán (hạn ${formatDateTime(paymentDeadline(o.approvedAt, o.departAt))}).` })
     }
+    if (o.status === 'paid' && !o.papersReport && now > papersScanDue(o.departAt) && now < o.departAt && itemsOf(o).some(i => ['missing', 'rejected'].includes(procedureState(o, i.key)))) {
+      store.update(o.id, {
+        status: 'cancelled', cancelledAt: now, heldAt: now,
+        reason: `Quá hạn ${formatDateTime(papersScanDue(o.departAt))} mà chưa có đủ giấy kiểm dịch / tờ khai hải quan hợp lệ. Chỗ xe đã được nhả. Theo bảng hoàn tiền, hủy dưới 3 ngày trước ngày đi không được hoàn. Muốn đi, bạn cần đặt đơn mới.`,
+      })
+    }
     if (o.status === 'delivered' && o.deliveredAt && now > acceptanceDeadline(o.deliveredAt)) {
       store.update(o.id, { status: 'completed', acceptedAt: acceptanceDeadline(o.deliveredAt), acceptedBy: 'auto' })
     }
@@ -44,9 +52,12 @@ async function applySystemRules() {
 
 // Bỏ trường nội bộ trước khi đưa sang app khách (khi có backend, API phía khách tự làm việc này)
 const INTERNAL_KEYS = ['stage', 'inspector', 'coordinator', 'intakeAt', 'hold', 'warning', 'waitingCustomer', 'pending', 'rejectType', 'report', 'rechecked', 'review', 'task', 'papersReport', 'verification', 'recheckRequest', 'infeasible'] as const
-export type CustomerOrderView = Omit<Order, (typeof INTERNAL_KEYS)[number]>
+export type CustomerOrderView = Omit<Order, (typeof INTERNAL_KEYS)[number]> & { plates?: string }
+// Biển số xe đã gán (khách cần để khai tờ khai hải quan), lấy từ thông tin Manager duyệt, chỉ có sau khi điều phối chốt lộ trình
+const platesOf = (o: Order) => o.review?.vehicle.split(', ').map(v => v.replace(/\s*\(.*\)$/, '')).filter(Boolean).join(', ')
 const toCustomerView = (o: Order): CustomerOrderView => {
-  const view = structuredClone(o) as Partial<Order>
+  const view = structuredClone(o) as Partial<Order> & { plates?: string }
+  view.plates = platesOf(o)
   INTERNAL_KEYS.forEach(k => delete view[k])
   return view as CustomerOrderView
 }

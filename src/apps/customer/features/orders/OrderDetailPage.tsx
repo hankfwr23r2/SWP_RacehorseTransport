@@ -1,16 +1,18 @@
 // Đơn của tôi: chi tiết đơn. Chuyển từ showDetail(), sidePanel(), papersHtml(), openPay(), cancelOverdue() (don_cua_toi.js).
 import { useState, type ReactNode } from 'react'
 import { Link, useParams } from 'react-router'
-import { BANK, CUSTOMER_STEPS, HOTLINE, OFFICE_ADDRESS, PAYMENT_HOURS, REFUND_POLICY } from '@shared/config/business-rules'
-import { DOC_LABEL, FILE_PREFIX, PROCEDURES, proceduresFor, type DocKey } from '@shared/config/documents'
-import { appraisalDeadline, choiceDeadline, originalsDue, paymentDeadline, priorityDeadline } from '@shared/lib/deadlines'
+import { BANK, CUSTOMER_STEPS, HOTLINE, PAYMENT_HOURS, REFUND_POLICY } from '@shared/config/business-rules'
+import { PROCEDURES, proceduresFor, type ProcedureKey } from '@shared/config/documents'
+import { appraisalDeadline, choiceDeadline, papersScanDue, paymentDeadline, priorityDeadline } from '@shared/lib/deadlines'
 import { formatDate, formatDateTime, formatVND } from '@shared/lib/format'
 import { choiceExpired, currentStep, isAppraisalOverdue } from '@shared/lib/order-status'
+import { expiresEarly } from '@shared/lib/trip'
 import { useAuth } from '@shared/auth/AuthContext'
-import { customerOrdersApi } from '@shared/services/orders'
+import { authorizationLetterHtml } from '@shared/lib/authorization-letter'
+import { customerOrdersApi, type CustomerOrderView } from '@shared/services/orders'
 import { useLoad } from '@shared/services/useLoad'
 import { useStaggerIn } from '@shared/motion/motion'
-import { horseLabel, orderTotal, type Order } from '@shared/types/order'
+import { horseLabel, orderTotal, type Order, type Papers } from '@shared/types/order'
 import { Modal } from '@shared/ui/Modal'
 import { useToast } from '@shared/ui/toast'
 import { ChoicePanel } from './ChoicePanel'
@@ -20,8 +22,8 @@ import s from './Orders.module.css'
 const Row = ({ label, children }: { label: ReactNode; children: ReactNode }) => <div className="info-row"><span className="label">{label}</span><span className="value">{children}</span></div>
 const tel = (p: string) => `tel:${p.replace(/\s/g, '')}`
 
-const missingOriginals = (o: Order) => Object.entries(o.papers!.originals).flatMap(([horse, docs]) =>
-  Object.entries(docs).filter(([, at]) => !at).map(([k]) => `${DOC_LABEL[k as DocKey]} (${horse})`))
+const noPapers: Papers = { originals: {}, procedures: {} }
+const missingProcedures = (o: Order) => proceduresFor(!!o.border).filter(k => { const p = o.papers?.procedures[k]; return !p || p.check?.result === 'rejected' })
 
 function Stepper({ order }: { order: Order }) {
   const step = currentStep(order)
@@ -37,9 +39,12 @@ function Stepper({ order }: { order: Order }) {
   )
 }
 
-function Banner({ order: o }: { order: Order }) {
+function Banner({ order: o }: { order: CustomerOrderView }) {
   const box = (cls: string, icon: string, body: ReactNode) => <div className={`alert ${cls}`} style={{ marginBottom: 16 }}><i className={`fa-solid ${icon}`} /><div>{body}</div></div>
+  const plateBox = o.plates ? box('alert-info', 'fa-truck', <>Xe <strong>{o.plates}</strong> sẽ chở ngựa của bạn{o.border && <> qua cửa khẩu <strong>{o.border}</strong></>}. {o.border ? 'Dùng biển số này để khai Tờ khai hải quan.' : 'Biển số này dùng cho giấy kiểm dịch vận chuyển.'}</>) : null
   switch (o.status) {
+    case 'awaiting_payment':
+      return plateBox
     case 'processing':
       return isAppraisalOverdue(o)
         ? box('alert-warning', 'fa-bolt', <>
@@ -60,52 +65,72 @@ function Banner({ order: o }: { order: Order }) {
     case 'rechecking':
       return box('alert-info', 'fa-magnifying-glass', <><strong>Bạn đã yêu cầu kiểm tra lại lúc {formatDateTime(o.recheckAt ?? Date.now())}.</strong> Một kiểm dịch viên khác đang xem lại hồ sơ từ đầu. Ngày khởi hành {formatDate(o.departAt)} vẫn giữ nguyên.</>)
     case 'cancelled':
-      return box('alert-danger', 'fa-ban', <><strong>Đơn đã hủy.</strong> {o.reason}</>)
+      return box('alert-danger', 'fa-ban', <><strong>{o.heldAt ? 'Đơn bị tạm giữ.' : 'Đơn đã hủy.'}</strong> {o.reason}</>)
     case 'paid': {
-      const missing = o.papers ? missingOriginals(o) : []
-      return missing.length ? box('alert-warning', 'fa-envelope-open-text', <>
-        <strong>Vui lòng gửi bản gốc {missing.length} giấy tờ trước {formatDateTime(originalsDue(o.departAt))}</strong>: {missing.join('; ')}.<br />
-        Gửi chuyển phát hoặc mang trực tiếp đến {OFFICE_ADDRESS}. Qua cửa khẩu và trạm kiểm dịch chỉ chấp nhận bản gốc. Chưa có đủ bản gốc, chuyến đi có thể không khởi hành được.</>) : null
+      const missing = missingProcedures(o)
+      return <>{plateBox}{missing.length ? box('alert-warning', 'fa-file-circle-exclamation', <>
+        <strong>Bạn tự xin và tải bản scan {missing.map(k => PROCEDURES[k].label).join(' và ')} trước {formatDateTime(papersScanDue(o.departAt))}</strong> (24 giờ trước giờ khởi hành).<br />
+        Công ty chỉ vận chuyển, không xin giấy hộ.{o.border && <> Ghi đúng cửa khẩu <strong>{o.border}</strong> trên giấy.</>} Quá hạn mà chưa có giấy, đơn bị tạm giữ và chỗ xe được nhả.</>) : null}</>
     }
     default: return null
   }
 }
 
-function Papers({ order: o, onOpen }: { order: Order; onOpen: (file: string, title: string) => void }) {
-  const { originals, procedures } = o.papers!
+function Papers({ order: o, onOpen, onUpload, onLetter }: { order: CustomerOrderView; onOpen: (file: string, title: string) => void; onUpload: (key: ProcedureKey) => void; onLetter: () => void }) {
+  const { procedures } = o.papers ?? noPapers
   const scan = (file: string, title: string) => <button className={s.scan} onClick={() => onOpen(file, title)}><i className="fa-regular fa-file-pdf" /> Bản scan</button>
   return (
     <>
       <table className="data-table">
-        <thead><tr><th colSpan={3}>Giấy do cơ quan chức năng cấp · công ty làm thủ tục</th></tr></thead>
+        <thead><tr><th colSpan={3}>Giấy bạn tự xin từ cơ quan chức năng</th></tr></thead>
         <tbody>
           {proceduresFor(!!o.border).map(k => {
             const p = procedures[k]
             return (
               <tr key={k}>
                 <td className="font-semibold">{PROCEDURES[k].label}</td>
-                <td>{p ? <>{PROCEDURES[k].numberLabel} <strong>{p.number}</strong><div className="sub-text">{p.agency} · cấp {formatDate(p.issuedAt)}{p.validUntil ? ` · hiệu lực đến ${formatDate(p.validUntil)}` : ''}</div></> : <span className="badge badge-muted">Đang làm thủ tục</span>}</td>
-                <td className="text-right">{p && scan(p.file, PROCEDURES[k].label)}</td>
+                <td>{p
+                  ? <>{PROCEDURES[k].numberLabel} <strong>{p.number}</strong><div className="sub-text">{p.uploadedAt ? `Bạn tải lên ${formatDateTime(p.uploadedAt)}` : `${p.agency} · cấp ${formatDate(p.issuedAt)}`}{p.validUntil ? ` · hiệu lực đến ${formatDate(p.validUntil)}` : ''}</div>
+                    {p.check?.result === 'rejected' ? <div className="text-red small"><i className="fa-solid fa-circle-xmark" /> Bị từ chối: {p.check.reason}. Vui lòng xin lại giấy và tải lên.</div>
+                      : p.uploadedAt && !p.check ? <span className="badge badge-info">Chờ kiểm dịch viên đối chiếu</span>
+                      : <span className="badge badge-success">Đã duyệt</span>}</>
+                  : <span className="badge badge-warning">Chưa tải lên</span>}</td>
+                <td className="text-right">{p && p.check?.result !== 'rejected' ? scan(p.file, PROCEDURES[k].label) : o.status === 'paid' && <button className={s.scan} onClick={() => onUpload(k)}><i className="fa-solid fa-cloud-arrow-up" /> {p ? 'Tải lại' : 'Tải lên'}</button>}</td>
               </tr>
             )
           })}
         </tbody>
-        <thead><tr><th colSpan={3}>Giấy tờ của bạn · cần gửi bản gốc</th></tr></thead>
-        <tbody>
-          {Object.entries(originals).flatMap(([horse, docs]) => [
-            <tr key={horse} className={s.groupRow}><td colSpan={3}>{horse}</td></tr>,
-            ...Object.entries(docs).map(([k, at]) => (
-              <tr key={`${horse}-${k}`}>
-                <td>{DOC_LABEL[k as DocKey]}</td>
-                <td>{at ? <><span className="badge badge-success">Đã nhận bản gốc</span><div className="sub-text">{formatDateTime(at)}</div></> : <span className="badge badge-warning">Chưa nhận bản gốc</span>}</td>
-                <td className="text-right">{scan(`${FILE_PREFIX[k as DocKey]}_${horse.replace(/\s+/g, '_')}.pdf`, `${DOC_LABEL[k as DocKey]} · ${horse}`)}</td>
-              </tr>
-            )),
-          ])}
-        </tbody>
       </table>
-      <p className={s.hint}>Bản gốc đi cùng ngựa trên xe và được trả lại khi giao ngựa.</p>
+      {o.plates && o.status === 'paid' && <button className="btn btn-ghost btn-sm" style={{ margin: '10px 12px 0' }} onClick={onLetter}><i className="fa-solid fa-file-pdf" /> Tải Giấy ủy quyền áp tải (đã điền biển số {o.plates})</button>}
+      <p className={s.hint}>Ngày đi, bạn giao <strong>bản gốc</strong> các giấy này cùng hộ chiếu ngựa cho tài xế tại điểm đón. Bản gốc đi cùng ngựa và được trả lại khi giao ngựa.</p>
     </>
+  )
+}
+
+function UploadModal({ order: o, procedure: k, onClose, onSave }: { order: Order; procedure: ProcedureKey; onClose: () => void; onSave: (p: NonNullable<Papers['procedures'][ProcedureKey]>) => void }) {
+  const def = PROCEDURES[k]
+  const [f, setF] = useState({ number: '', valid: '', file: '' })
+  const [error, setError] = useState('')
+  const submit = () => {
+    const validUntil = f.valid ? new Date(`${f.valid}T23:59`).getTime() : undefined
+    if (!f.file) return setError('Chọn tệp bản scan của giấy.')
+    if (!f.number.trim()) return setError(`Nhập ${def.numberLabel.toLowerCase()}.`)
+    if (def.hasValidity && !validUntil) return setError('Nhập ngày hết hạn của giấy.')
+    if (validUntil && expiresEarly(validUntil, o.departAt, o.duration)) return setError('Giấy hết hạn trước ngày giao ngựa dự kiến. Bạn cần xin giấy khác còn hiệu lực.')
+    onSave({ number: f.number.trim(), agency: 'Khách tự xin', issuedAt: Date.now(), validUntil, file: f.file, uploadedAt: Date.now() })
+  }
+  return (
+    <Modal title={<>Tải lên {def.label}</>} onClose={onClose}
+      footer={<><button className="btn btn-ghost" onClick={onClose}>Để sau</button><button className="btn btn-primary" onClick={submit}>Tải lên</button></>}>
+      {o.border && (
+        <div className="alert alert-danger" style={{ marginBottom: 16 }}><i className="fa-solid fa-triangle-exclamation" /><div>Cửa khẩu của đơn: <strong>{o.border}</strong>. Giấy phải ghi đúng cửa khẩu này, ghi sai sẽ bị trả về để bạn xin lại.</div></div>
+      )}
+      {o.border && <div className="form-group"><label>Cửa khẩu</label><input className="form-control" value={o.border} disabled /></div>}
+      <div className="form-group"><label className="required">Bản scan</label><input className="form-control" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e => { setF({ ...f, file: e.target.files?.[0]?.name ?? '' }); setError('') }} /></div>
+      <div className="form-group"><label className="required">{def.numberLabel}</label><input className="form-control" value={f.number} onChange={e => { setF({ ...f, number: e.target.value }); setError('') }} /></div>
+      {def.hasValidity && <div className="form-group"><label className="required">Ngày hết hạn</label><input className="form-control" type="date" value={f.valid} onChange={e => { setF({ ...f, valid: e.target.value }); setError('') }} /></div>}
+      {error && <p className="form-hint" style={{ color: 'var(--red)' }}><i className="fa-solid fa-circle-exclamation" /> {error}</p>}
+    </Modal>
   )
 }
 
@@ -154,7 +179,7 @@ function SidePanel({ order: o, onPay, onCancel }: { order: Order; onPay: () => v
         <div className={s.subTitle}>Bước tiếp theo</div>
         <ol className={s.stops}>
           <li>Hợp đồng điện tử và hóa đơn đã gửi qua email</li>
-          {o.papers && <li>Gửi bản gốc giấy tờ của ngựa trước {formatDateTime(originalsDue(o.departAt))} (xem mục Giấy tờ chuyến đi)</li>}
+          <li>Tự xin và tải bản scan {proceduresFor(!!o.border).map(k => PROCEDURES[k].label).join(' và ')} trước {formatDateTime(papersScanDue(o.departAt))} (xem mục Giấy tờ chuyến đi)</li>
           <li>Ngày {formatDate(o.departAt)}: kiểm dịch viên kiểm tra sức khỏe ngựa tại chỗ trước khi lên xe</li>
           <li>Khởi hành; theo dõi hành trình ngay trên trang này</li>
         </ol>
@@ -265,6 +290,7 @@ export default function OrderDetailPage() {
   const { session } = useAuth()
   const { data: order, reload } = useLoad(() => customerOrdersApi.get(session!.name, id), [id, session?.name])
   const [modal, setModal] = useState<'pay' | 'cancel' | null>(null)
+  const [uploading, setUploading] = useState<ProcedureKey | null>(null)
   const [doc, setDoc] = useState<{ file: string; title: string } | null>(null)
   const cardsRef = useStaggerIn('.card', [id, order?.status])
 
@@ -277,6 +303,7 @@ export default function OrderDetailPage() {
     reload()
     window.scrollTo(0, 0)
   }
+  const openLetter = () => window.open(URL.createObjectURL(new Blob([authorizationLetterHtml(order, order.plates!)], { type: 'text/html' })), '_blank')
   const approved = ['awaiting_payment', 'paid', 'in_transit', 'delivered', 'completed'].includes(order.status) || (order.status === 'cancelled' && !!order.approvedAt)
   const inTransit = order.status === 'in_transit'
   const choosing = order.status === 'choose_option' && !choiceExpired(order)
@@ -345,10 +372,10 @@ export default function OrderDetailPage() {
               </div>
             )}
 
-            {order.papers && (
+            {(order.papers || order.status === 'paid') && (
               <div className="card">
-                <div className="card-header"><h3><i className="fa-solid fa-folder-open" /> Giấy tờ chuyến đi</h3><span className="sub-text">{order.papers.handedAt ? `Đã bàn giao cho đội vận chuyển lúc ${formatDateTime(order.papers.handedAt)}` : `Hạn gửi bản gốc: ${formatDateTime(originalsDue(order.departAt))}`}</span></div>
-                <div className="table-wrap"><Papers order={order} onOpen={(file, title) => setDoc({ file, title })} /></div>
+                <div className="card-header"><h3><i className="fa-solid fa-folder-open" /> Giấy tờ chuyến đi</h3><span className="sub-text">Hạn tải bản scan: {formatDateTime(papersScanDue(order.departAt))}</span></div>
+                <div className="table-wrap"><Papers order={order} onOpen={(file, title) => setDoc({ file, title })} onUpload={setUploading} onLetter={openLetter} /></div>
               </div>
             )}
 
@@ -368,6 +395,10 @@ export default function OrderDetailPage() {
         </div>
       </div>
 
+      {uploading && (
+        <UploadModal order={order} procedure={uploading} onClose={() => setUploading(null)}
+          onSave={p => { const papers = order.papers ?? noPapers; setUploading(null); update({ papers: { ...papers, procedures: { ...papers.procedures, [uploading]: p } } }, 'Đã tải giấy lên. Kiểm dịch viên sẽ đối chiếu với đơn.') }} />
+      )}
       {modal === 'pay' && <PayModal order={order} onClose={() => setModal(null)} onPaid={() => update({ status: 'paid', paidAt: Date.now() }, `Đã ghi nhận thanh toán đơn ${order.id}. Hợp đồng điện tử đã gửi qua email.`)} />}
       {modal === 'cancel' && (
         <Modal title={<>Hủy đơn <span className="text-orange">{order.id}</span>?</>} onClose={() => setModal(null)}

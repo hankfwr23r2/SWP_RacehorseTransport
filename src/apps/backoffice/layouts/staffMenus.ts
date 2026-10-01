@@ -9,10 +9,11 @@ export const STAFF_MENUS: Record<StaffRole, [path: string, label: string][]> = {
     ['/manager/staff', 'Nhân sự'],
     ['/manager/tracking', 'Theo dõi đơn vận chuyển'],
     ['/manager/incidents', 'Sự cố & Chi Phí'],
+    ['/manager/expenses', 'Chi phí tài xế'],
   ],
   specialist: [
     ['/specialist/verification', 'Hồ sơ được giao'],
-    ['/specialist/trip-papers', 'Chuẩn bị giấy tờ chuyến đi'],
+    ['/specialist/trip-papers', 'Giấy tờ chuyến đi'],
   ],
   coordinator: [
     ['/coordinator/assessment', 'Khả thi'],

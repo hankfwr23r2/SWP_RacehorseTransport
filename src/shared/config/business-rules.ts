@@ -40,10 +40,7 @@ export const PAYMENT_CAP_DAYS = 2
 export const URGENT_HOURS = 12 // còn ít hơn số giờ này thì cảnh báo đỏ
 
 // ===== Giấy tờ chuyến đi (đơn đã thanh toán) =====
-export const ORIGINALS_DUE_DAYS = 3 // khách gửi bản gốc trước 17:00 ngày D − 3
-export const ORIGINALS_DUE_HOUR = 17
-export const HANDOVER_DUE_DAYS = 2 // kiểm dịch viên bàn giao điều phối trước 12:00 ngày D − 2
-export const HANDOVER_DUE_HOUR = 12
+export const PAPERS_SCAN_HOURS = 24 // khách tải bản scan Giấy kiểm dịch + Tờ khai hải quan trước giờ khởi hành số giờ này (tài liệu nhóm, thẻ Ngoại lệ 1.1)
 
 // ===== Tài xế tại điểm đón / điểm giao (tài liệu nhóm, thẻ Ngoại lệ) =====
 export const PICKUP_WAIT_FEE_PER_HOUR = 500_000 // khách thiếu bản gốc giấy tờ tại điểm đón: phí chờ theo giờ

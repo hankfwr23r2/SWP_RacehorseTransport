@@ -7,6 +7,7 @@ import StaffPage from './features/manager/staff/StaffPage'
 import DashboardPage from './features/manager/dashboard/DashboardPage'
 import TrackingPage from './features/manager/tracking/TrackingPage'
 import IncidentsPage from './features/manager/incidents/IncidentsPage'
+import ExpensesPage from './features/manager/expenses/ExpensesPage'
 import VerificationListPage from './features/specialist/verification/VerificationListPage'
 import VerifyPage from './features/specialist/verification/VerifyPage'
 import TripPapersListPage from './features/specialist/trip-papers/TripPapersListPage'
@@ -34,10 +35,11 @@ export const routes: AppRoute[] = [
   { path: '/manager/staff', page: StaffPage, roles: M, title: 'Nhân sự & Điều chuyển', layout: 'staff' },
   { path: '/manager/tracking', page: TrackingPage, roles: M, title: 'Theo dõi đơn vận chuyển', layout: 'staff' },
   { path: '/manager/incidents', page: IncidentsPage, roles: M, title: 'Sự cố & Chi phí', layout: 'staff' },
+  { path: '/manager/expenses', page: ExpensesPage, roles: M, title: 'Chi phí tài xế', layout: 'staff' },
 
   { path: '/specialist/verification', page: VerificationListPage, roles: SP, title: 'Hồ sơ được giao', layout: 'staff' },
   { path: '/specialist/verification/:id', page: VerifyPage, roles: SP, title: 'Xác minh hồ sơ', example: 'EQ-2026-1065', layout: 'staff' },
-  { path: '/specialist/trip-papers', page: TripPapersListPage, roles: SP, title: 'Chuẩn bị giấy tờ chuyến đi', layout: 'staff' },
+  { path: '/specialist/trip-papers', page: TripPapersListPage, roles: SP, title: 'Giấy tờ chuyến đi', layout: 'staff' },
   { path: '/specialist/trip-papers/:id', page: TripPapersPage, roles: SP, title: 'Giấy tờ chuyến đi', example: 'EQ-2026-1058', layout: 'staff' },
 
   { path: '/coordinator/assessment', page: AssessmentPage, roles: CO, title: 'Đánh giá khả thi', layout: 'staff' },

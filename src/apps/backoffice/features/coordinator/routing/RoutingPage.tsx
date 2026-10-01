@@ -5,14 +5,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { STATIONS } from '@shared/config/network'
 import { formatDate, formatDeadline } from '@shared/lib/format'
-import { assignmentComplete, tripsApi, type TripView } from '@shared/services/trips'
+import { assignmentComplete, tripsApi } from '@shared/services/trips'
 import { useToast } from '@shared/ui/toast'
 import { InfoItem, cx, partStyles as p } from '../../../shared/parts'
 import c from '../Coordinator.module.css'
 import { routingDeadline, useOps, vehicleWarning } from '../../../shared/useOps'
 
-// Điểm dừng gợi ý: trạm của công ty + 2 phía cửa khẩu của tuyến
-const stopOptions = (t: TripView) => [...STATIONS, ...(t.order.border?.split(' – ').map(side => `Cửa khẩu ${side}`) ?? [])]
+// Điểm dừng gợi ý: chỉ trạm của công ty. Cửa khẩu do khách chọn lúc đặt đơn, khóa theo đơn, Điều phối không thêm / đổi / bỏ được.
+const stopOptions = () => STATIONS
 
 export default function RoutingPage() {
   const toast = useToast()
@@ -67,6 +67,7 @@ export default function RoutingPage() {
               <InfoItem label="Mã đơn">{t.orderId} · {t.order.customer}</InfoItem>
               <InfoItem label="Số ngựa / Khởi hành">{t.order.horses.length} con — {formatDate(t.order.departAt)}</InfoItem>
               <InfoItem label="Quãng đường / Thời gian">{t.order.distance} · {t.order.duration}</InfoItem>
+              {t.order.border && <InfoItem label="Cửa khẩu (khóa theo đơn)"><i className="fa-solid fa-lock" /> {t.order.border}</InfoItem>}
               {t.assessNote && <InfoItem label="Ghi chú khảo sát">{t.assessNote}</InfoItem>}
             </div>
             <h4 style={{ margin: '18px 0 10px' }}>Các chặng lộ trình</h4>
@@ -94,7 +95,7 @@ export default function RoutingPage() {
                   <div className={c.stopAdd}>
                     <select className="form-control" value={stop[l.no] ?? ''} onChange={e => setStop({ ...stop, [l.no]: e.target.value })}>
                       <option value="">— Thêm điểm dừng giữa chặng —</option>
-                      {stopOptions(t).filter(x => x !== l.from && x !== l.to).map(x => <option key={x}>{x}</option>)}
+                      {stopOptions().filter(x => x !== l.from && x !== l.to).map(x => <option key={x}>{x}</option>)}
                     </select>
                     <button className="btn btn-ghost btn-sm" disabled={!stop[l.no]} onClick={() => run(() => { tripsApi.splitLeg(t.id, l.no, stop[l.no]); setStop({}) })}><i className="fa-solid fa-plus" /> Thêm</button>
                   </div>

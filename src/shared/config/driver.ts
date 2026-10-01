@@ -38,3 +38,13 @@ export const CURRENCIES = {
   KHR: { label: 'Riel Campuchia (KHR)', rate: 6.3 },
 } as const
 export type Currency = keyof typeof CURRENCIES
+
+// Định mức mỗi khoản chi (VND): khai vượt thì Manager thấy chữ đỏ khi duyệt (chống khai khống). Số tham khảo, chỉnh theo thực tế.
+export const EXPENSE_QUOTA: Record<string, number> = {
+  'Xăng dầu': 2_000_000,
+  'Cầu đường': 500_000,
+  'Phí cửa khẩu': 1_000_000,
+  'Phí lưu bãi': 3_000_000,
+  'Phí thú y': 2_000_000,
+  'Khác': 500_000,
+}

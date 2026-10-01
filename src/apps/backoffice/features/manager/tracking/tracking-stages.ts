@@ -1,9 +1,10 @@
 // Trạng thái hiển thị ở trang Theo dõi đơn vận chuyển (suy từ đơn, không lưu riêng) và nhật ký của đơn.
 // 8 bước xếp theo bản thiết kế của nhóm; ngoại lệ gộp còn 2 loại.
-import { OPTIONS, type OptionKey } from '@shared/config/documents'
+import { OPTIONS, PROCEDURES, proceduresFor, type OptionKey } from '@shared/config/documents'
 import { isSevere } from '@shared/config/health'
 import { formatVND } from '@shared/lib/format'
 import { orderTotal, type Order } from '@shared/types/order'
+import { progressOf } from '@shared/lib/papers'
 
 export type StageKey =
   | 'pending_approval' | 'pending_payment' | 'awaiting_documents' | 'under_verification'
@@ -28,7 +29,7 @@ export const EXCEPTIONS: StageDef[] = [
 ]
 export const STAGE = Object.fromEntries([...STEPS, ...EXCEPTIONS].map(d => [d.key, d])) as Record<StageKey, StageDef>
 
-const originalsMissing = (o: Order) => !!o.papers && Object.values(o.papers.originals).some(docs => Object.values(docs).some(v => !v))
+const papersMissing = (o: Order) => !!o.papers && !progressOf(o).ready && !o.papers.handedAt
 
 export function stageOf(o: Order): StageKey {
   if (o.status === 'rejected' || o.status === 'cancelled') return 'cancelled'
@@ -36,7 +37,7 @@ export function stageOf(o: Order): StageKey {
   if (o.status === 'completed') return 'completed'
   if (o.status === 'delivered' || o.status === 'disputed') return 'delivered'
   if (o.status === 'in_transit') return 'in_transit'
-  if (o.status === 'paid') return originalsMissing(o) ? 'awaiting_documents' : 'ready_for_dispatch'
+  if (o.status === 'paid') return papersMissing(o) ? 'awaiting_documents' : 'ready_for_dispatch'
   if (o.status === 'awaiting_payment') return 'pending_payment'
   return o.stage === 'approval' ? 'pending_approval' : 'under_verification'
 }
@@ -76,6 +77,11 @@ export function orderLog(o: Order): LogEvent[] {
   add(o.approvedAt, { title: 'Manager phê duyệt', desc: `Gửi yêu cầu thanh toán ${formatVND(orderTotal(o))}`, tone: 'done', icon: 'fa-stamp' })
   add(o.paidAt, { title: 'Khách thanh toán 100%', tone: 'done', icon: 'fa-credit-card' })
   add(o.papersReport?.at, { title: 'Kiểm dịch báo cáo giấy tờ chuyến đi', desc: o.papersReport && `${o.papersReport.type}: ${o.papersReport.note}`, tone: 'alert', icon: 'fa-flag' })
+  proceduresFor(!!o.border).forEach(k => {
+    const p = o.papers?.procedures[k]
+    add(p?.uploadedAt, { title: `Khách tải ${PROCEDURES[k].label}`, tone: 'done', icon: 'fa-cloud-arrow-up' })
+    add(p?.check?.at, { title: `Kiểm dịch ${p?.check?.result === 'passed' ? 'duyệt' : 'từ chối'} ${PROCEDURES[k].label}`, desc: p?.check?.reason, tone: p?.check?.result === 'passed' ? 'done' : 'alert', icon: p?.check?.result === 'passed' ? 'fa-circle-check' : 'fa-circle-xmark' })
+  })
   add(o.papers?.handedAt, { title: 'Bàn giao giấy tờ cho Điều phối', tone: 'done', icon: 'fa-handshake' })
   add(o.pending?.at, { title: 'Chuyển lên Manager', desc: o.pending && PENDING_LABEL[o.pending.kind], tone: 'alert', icon: 'fa-user-tie' })
   add(o.rejectedAt, { title: 'Đơn bị từ chối', desc: `${o.rejectType ?? ''}${o.reason ? `: ${o.reason}` : ''}`, tone: 'alert', icon: 'fa-circle-xmark' })

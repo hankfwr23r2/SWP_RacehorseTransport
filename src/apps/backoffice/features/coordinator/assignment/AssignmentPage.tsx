@@ -3,13 +3,14 @@
 // Khởi hành khi: đủ xe + người mọi chặng và khách đã thanh toán (docs/PRD.md mục 3, bước 6–8).
 import type { ReactNode } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { handoverDue } from '@shared/lib/deadlines'
+import { papersScanDue } from '@shared/lib/deadlines'
 import { formatDateTime } from '@shared/lib/format'
 import { TRIP_STATUS_LABEL, assignmentComplete, tripsApi, type TripView } from '@shared/services/trips'
 import { useToast } from '@shared/ui/toast'
 import { partStyles as p } from '../../../shared/parts'
 import c from '../Coordinator.module.css'
 import { useOps, vehicleWarning } from '../../../shared/useOps'
+import { progressOf } from '@shared/lib/papers'
 
 const ASSIGNABLE: TripView['status'][] = ['assigned', 'awaiting_routing', 'in_transit']
 
@@ -34,7 +35,7 @@ export default function AssignmentPage() {
   if (!t) return <div className="page"><div className="wrap"><p className="text-muted">Chưa có chuyến nào để phân công.</p></div></div>
   const editable = t.status !== 'in_transit'
   const dep = departState(t)
-  const papers = t.order.papers
+  const progress = progressOf(t.order)
 
   const run = async (fn: () => Promise<unknown>) => { await fn(); reload() }
   const depart = async () => {
@@ -93,9 +94,9 @@ export default function AssignmentPage() {
           </div>
           <div style={{ marginTop: 12, display: 'grid', gap: 6 }}>
             <div>{dep.badge}</div>
-            {t.status === 'assigned' && (papers?.handedAt
-              ? <div className="small text-green"><i className="fa-solid fa-handshake" /> Đã nhận bộ giấy tờ từ kiểm dịch viên {t.order.inspector} lúc {formatDateTime(papers.handedAt)}. Chia giấy theo xe cho tài xế.</div>
-              : t.order.status === 'paid' && <div className="small text-muted"><i className="fa-solid fa-folder-open" /> Chưa nhận giấy tờ từ kiểm dịch viên {t.order.inspector} (hạn bàn giao {formatDateTime(handoverDue(t.order.departAt))}).</div>)}
+            {t.status === 'assigned' && t.order.status === 'paid' && (progress.ready
+              ? <div className="small text-green"><i className="fa-solid fa-circle-check" /> Kiểm dịch viên {t.order.inspector} đã duyệt đủ giấy khách tải lên. Bản gốc do tài xế thu tại điểm đón.</div>
+              : <div className="small text-muted"><i className="fa-solid fa-folder-open" /> Giấy khách tải lên chưa duyệt đủ ({progress.done}/{progress.total}, hạn khách tải {formatDateTime(papersScanDue(t.order.departAt))}). Kiểm dịch viên {t.order.inspector} đang đối chiếu.</div>)}
           </div>
           <div className={c.actions}>
             <button className="btn btn-ghost" onClick={() => navigate('/coordinator/routing')}>Về Lộ trình</button>

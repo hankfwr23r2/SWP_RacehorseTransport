@@ -1,10 +1,10 @@
-// Chuẩn bị giấy tờ chuyến đi (danh sách). Chuyển từ Specialist/CUS2_Policy_List.html + thu_tuc.js (renderList).
+// Giấy tờ chuyến đi (danh sách): đơn đã thanh toán có giấy khách tải lên chờ kiểm dịch viên đối chiếu. Chuyển từ Specialist/CUS2_Policy_List.html + thu_tuc.js (renderList).
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '@shared/auth/AuthContext'
 import { HOUR } from '@shared/config/business-rules'
 import { proceduresFor } from '@shared/config/documents'
-import { handoverDue } from '@shared/lib/deadlines'
+import { papersScanDue } from '@shared/lib/deadlines'
 import { formatDate, formatDateTime, formatDeadline } from '@shared/lib/format'
 import { useStaggerIn } from '@shared/motion/motion'
 import { ordersApi } from '@shared/services/orders'
@@ -12,26 +12,26 @@ import { useLoad } from '@shared/services/useLoad'
 import type { Order } from '@shared/types/order'
 import { usePagination } from '@shared/ui/usePagination'
 import { partStyles as p } from '../../../shared/parts'
-import { papersState, procedureExpiresEarly, progressOf, type PapersState } from './papers'
+import { papersState, procedureExpiresEarly, procedureState, progressOf, type PapersState } from '@shared/lib/papers'
 
-const TABS: [PapersState, string][] = [['preparing', 'Đang chuẩn bị'], ['ready', 'Sẵn sàng bàn giao'], ['handed', 'Đã bàn giao Điều phối'], ['reported', 'Đã báo cáo Manager']]
+const TABS: [PapersState, string][] = [['preparing', 'Cần đối chiếu'], ['ready', 'Đã đối chiếu xong'], ['reported', 'Đã báo cáo Manager']]
 
 export function DueBadge({ o, st }: { o: Order; st: PapersState }) {
-  if (st === 'handed') return <span className="text-muted small">Bàn giao lúc {formatDateTime(o.papers!.handedAt!)}</span>
+  if (st === 'ready') return <span className="text-muted small">—</span>
   if (st === 'reported') return <span className="text-muted small">Báo cáo lúc {formatDateTime(o.papersReport!.at)}</span>
-  const due = handoverDue(o.departAt)
-  if (Date.now() > due) return <span className="badge badge-danger">Quá hạn bàn giao</span>
+  const due = papersScanDue(o.departAt)
+  if (Date.now() > due) return <span className="badge badge-danger">Quá hạn tải giấy</span>
   const hoursLeft = (due - Date.now()) / HOUR
   return <span className={`badge ${hoursLeft <= 24 ? 'badge-danger' : hoursLeft <= 48 ? 'badge-warning' : 'badge-success'}`}>{formatDeadline(due)}</span>
 }
 
 export function PapersBadge({ o, st }: { o: Order; st: PapersState }) {
-  if (st === 'ready') return <span className="badge badge-success"><i className="fa-solid fa-circle-check" /> Sẵn sàng bàn giao</span>
-  if (st === 'handed') return <span className="badge badge-muted"><i className="fa-solid fa-handshake" /> Đã bàn giao {o.coordinator}</span>
+  if (st === 'ready') return <span className="badge badge-success"><i className="fa-solid fa-circle-check" /> Đã duyệt đủ giấy</span>
   if (st === 'reported') return <span className="badge badge-orange">Đã báo cáo Manager</span>
   const pr = progressOf(o)
   const warn = proceduresFor(!!o.border).some(k => procedureExpiresEarly(o, k))
-  return <span className={`badge ${warn ? 'badge-danger' : 'badge-info'}`}>{warn && <i className="fa-solid fa-triangle-exclamation" />} Đủ {pr.done}/{pr.total} giấy</span>
+  const waiting = proceduresFor(!!o.border).filter(k => procedureState(o, k) === 'pending').length
+  return <span className={`badge ${warn ? 'badge-danger' : waiting ? 'badge-warning' : 'badge-info'}`}>{warn && <i className="fa-solid fa-triangle-exclamation" />} Đã duyệt {pr.done}/{pr.total}{waiting ? ` · ${waiting} chờ đối chiếu` : ''}</span>
 }
 
 export default function TripPapersListPage() {
@@ -43,21 +43,20 @@ export default function TripPapersListPage() {
   const list = mine.filter(x => x.st === tab).sort((a, b) => a.o.departAt - b.o.departAt)
   const { rows, bar, reset } = usePagination(list)
   const tableRef = useStaggerIn('tbody tr', [tab, list.length])
-  const active = mine.filter(x => x.st === 'preparing' || x.st === 'ready')
+  const active = mine.filter(x => x.st === 'preparing')
   const stats: [string, number, string][] = [
-    ['Đang chuẩn bị', mine.filter(x => x.st === 'preparing').length, 'fa-regular fa-clock'],
-    ['Hạn bàn giao ≤ 24 giờ', active.filter(x => handoverDue(x.o.departAt) - Date.now() <= 24 * HOUR).length, 'fa-solid fa-triangle-exclamation'],
-    ['Sẵn sàng bàn giao', mine.filter(x => x.st === 'ready').length, 'fa-solid fa-box-archive'],
-    ['Đã bàn giao', mine.filter(x => x.st === 'handed').length, 'fa-regular fa-circle-check'],
+    ['Cần đối chiếu', mine.filter(x => x.st === 'preparing').length, 'fa-regular fa-clock'],
+    ['Hạn khách tải giấy ≤ 24 giờ', active.filter(x => papersScanDue(x.o.departAt) - Date.now() <= 24 * HOUR).length, 'fa-solid fa-triangle-exclamation'],
+    ['Đã đối chiếu xong', mine.filter(x => x.st === 'ready').length, 'fa-solid fa-box-archive'],
   ]
 
   return (
     <div className="page">
       <div className="wrap">
-        <div className="breadcrumb">Kiểm dịch / <span className="text-orange font-semibold">Chuẩn bị giấy tờ chuyến đi</span></div>
+        <div className="breadcrumb">Kiểm dịch / <span className="text-orange font-semibold">Giấy tờ chuyến đi</span></div>
         <div className="page-header">
-          <h1>Chuẩn bị giấy tờ chuyến đi</h1>
-          <p>Đơn đã thanh toán do bạn (<b>{me}</b>) phụ trách: nhận bản gốc của khách, cập nhật giấy cơ quan chức năng cấp, bàn giao bộ giấy cho Điều phối viên trước 12:00 ngày D−2.</p>
+          <h1>Giấy tờ chuyến đi</h1>
+          <p>Đơn đã thanh toán do bạn (<b>{me}</b>) phụ trách: khách tự xin Giấy kiểm dịch và Tờ khai hải quan rồi tải bản scan trước giờ đi 24 giờ; bạn đối chiếu microchip, cửa khẩu, hạn dùng và duyệt hoặc từ chối giấy.</p>
         </div>
         <div className="stat-grid">
           {stats.map(([label, value, icon]) => <div key={label} className="stat-card"><div className="stat-label"><i className={icon} /> {label}</div><div className="stat-value">{value} <span className="small text-muted">đơn</span></div></div>)}
@@ -68,10 +67,10 @@ export default function TripPapersListPage() {
           </div>
           <div ref={tableRef} className="table-wrap">
             <table className="data-table">
-              <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tuyến đường</th><th>Số ngựa</th><th>Khởi hành</th><th>Hạn bàn giao</th><th>Trạng thái</th><th /></tr></thead>
+              <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tuyến đường</th><th>Số ngựa</th><th>Khởi hành</th><th>Hạn khách tải giấy</th><th>Trạng thái</th><th /></tr></thead>
               <tbody>
                 {rows.length ? rows.map(({ o, st }) => {
-                  const working = st === 'preparing' || st === 'ready'
+                  const working = st === 'preparing'
                   return (
                     <tr key={o.id}>
                       <td className={p.idCell}>{o.id}</td>
@@ -81,7 +80,7 @@ export default function TripPapersListPage() {
                       <td className="text-muted">{formatDate(o.departAt)}</td>
                       <td><DueBadge o={o} st={st} /></td>
                       <td><PapersBadge o={o} st={st} /></td>
-                      <td className="text-right nowrap"><Link className={`btn btn-sm ${working ? 'btn-primary' : 'btn-ghost'}`} to={`/specialist/trip-papers/${o.id}`}>{working ? 'Xử lý' : 'Xem'}</Link></td>
+                      <td className="text-right nowrap"><Link className={`btn btn-sm ${working ? 'btn-primary' : 'btn-ghost'}`} to={`/specialist/trip-papers/${o.id}`}>{working ? 'Đối chiếu' : 'Xem'}</Link></td>
                     </tr>
                   )
                 }) : <tr><td colSpan={8} className="text-center text-muted" style={{ padding: 24 }}>Không có đơn nào</td></tr>}
