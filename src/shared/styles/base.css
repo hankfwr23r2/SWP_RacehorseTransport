@@ -10,6 +10,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overscroll-behavior-y: none; /* không cho trang nảy lộ nền trắng khi kéo quá đầu / cuối */
 }
 
 body {
