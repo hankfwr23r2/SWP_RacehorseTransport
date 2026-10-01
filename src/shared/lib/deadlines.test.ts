@@ -1,24 +1,27 @@
 // Đáp án lấy bằng cách chạy hàm của code HTML cũ (don_cua_toi.js, manager_phan_cong.js) với cùng đầu vào.
 // Test lệch = nghiệp vụ đã bị đổi so với bản cũ.
 import { describe, expect, it } from 'vitest'
-import { appraisalDeadline, originalsDue, paymentDeadline, priorityDeadline, taskDeadline, type TaskStep } from './deadlines'
+import { appraisalDeadline, papersScanDue, paymentDeadline, priorityDeadline, taskDeadline, type TaskStep } from './deadlines'
 import { formatDateTime } from './format'
 
 const T = (s: string) => new Date(s).getTime()
 
+it('hạn tải bản scan giấy tờ = 24 giờ trước giờ khởi hành', () => {
+  expect(formatDateTime(papersScanDue(T('2026-10-15T08:00')))).toBe('14/10/2026 08:00')
+})
+
 describe('hạn phía khách (don_cua_toi.js)', () => {
-  const cases: [string, string, string, string, string, string, string][] = [
-    // [gửi đơn, khởi hành, duyệt, hạn thẩm định, hạn ưu tiên, hạn thanh toán, hạn gửi bản gốc]
-    ['2026-09-25T09:00', '2026-10-15T00:00', '2026-09-28T10:30', '02/10/2026 17:00', '05/10/2026 17:00', '30/09/2026 10:30', '12/10/2026 17:00'],
-    ['2026-09-30T16:00', '2026-10-06T00:00', '2026-10-01T09:00', '02/10/2026 17:00', '05/10/2026 17:00', '02/10/2026 17:00', '03/10/2026 17:00'],
-    ['2026-12-29T08:00', '2027-01-12T00:00', '2026-12-30T15:00', '06/01/2027 17:00', '07/01/2027 17:00', '01/01/2027 15:00', '09/01/2027 17:00'],
-    ['2026-04-28T09:00', '2026-05-20T00:00', '2026-04-29T09:00', '07/05/2026 17:00', '08/05/2026 17:00', '01/05/2026 09:00', '17/05/2026 17:00'],
+  const cases: [string, string, string, string, string, string][] = [
+    // [gửi đơn, khởi hành, duyệt, hạn thẩm định, hạn ưu tiên, hạn thanh toán]
+    ['2026-09-25T09:00', '2026-10-15T00:00', '2026-09-28T10:30', '02/10/2026 17:00', '05/10/2026 17:00', '30/09/2026 10:30'],
+    ['2026-09-30T16:00', '2026-10-06T00:00', '2026-10-01T09:00', '02/10/2026 17:00', '05/10/2026 17:00', '02/10/2026 17:00'],
+    ['2026-12-29T08:00', '2027-01-12T00:00', '2026-12-30T15:00', '06/01/2027 17:00', '07/01/2027 17:00', '01/01/2027 15:00'],
+    ['2026-04-28T09:00', '2026-05-20T00:00', '2026-04-29T09:00', '07/05/2026 17:00', '08/05/2026 17:00', '01/05/2026 09:00'],
   ]
-  it.each(cases)('gửi %s, đi %s, duyệt %s', (sub, dep, appr, appraisal, priority, payment, originals) => {
+  it.each(cases)('gửi %s, đi %s, duyệt %s', (sub, dep, appr, appraisal, priority, payment) => {
     expect(formatDateTime(appraisalDeadline(T(sub), T(dep)))).toBe(appraisal)
     expect(formatDateTime(priorityDeadline(T(sub), T(dep)))).toBe(priority)
     expect(formatDateTime(paymentDeadline(T(appr), T(dep)))).toBe(payment)
-    expect(formatDateTime(originalsDue(T(dep)))).toBe(originals)
   })
 })
 

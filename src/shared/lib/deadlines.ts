@@ -1,7 +1,6 @@
 // Các mốc hạn chót. Chuyển nguyên từ don_cua_toi.js, manager_phan_cong.js, kiem_dich.js, thu_tuc.js, acceptance.js.
 import {
-  ACCEPTANCE_HOURS, APPRAISAL_CAP_DAYS, APPRAISAL_WORKING_DAYS, CAP_DAYS, CHOICE_HOURS, DAY, HANDOVER_DUE_DAYS,
-  HANDOVER_DUE_HOUR, HOUR, ORIGINALS_DUE_DAYS, ORIGINALS_DUE_HOUR, PAYMENT_CAP_DAYS, PAYMENT_HOURS,
+  ACCEPTANCE_HOURS, APPRAISAL_CAP_DAYS, APPRAISAL_WORKING_DAYS, CAP_DAYS, CHOICE_HOURS, HOUR, PAPERS_SCAN_HOURS, PAYMENT_CAP_DAYS, PAYMENT_HOURS,
   PRIORITY_WORKING_DAYS, SLA_WORKING_DAYS, WORK_END_HOUR,
 } from '../config/business-rules'
 import { atHour, lastWorkingDayBefore, shiftWorkingDays } from './dates'
@@ -21,8 +20,7 @@ export const paymentDeadline = (approvedAt: number, departAt: number) =>
 
 export const choiceDeadline = (sentAt: number) => sentAt + CHOICE_HOURS * HOUR
 
-export const originalsDue = (departAt: number) => atHour(departAt - ORIGINALS_DUE_DAYS * DAY, ORIGINALS_DUE_HOUR)
-export const handoverDue = (departAt: number) => atHour(departAt - HANDOVER_DUE_DAYS * DAY, HANDOVER_DUE_HOUR)
+export const papersScanDue = (departAt: number) => departAt - PAPERS_SCAN_HOURS * HOUR
 
 export const acceptanceDeadline = (deliveredAt: number) => deliveredAt + ACCEPTANCE_HOURS * HOUR
 

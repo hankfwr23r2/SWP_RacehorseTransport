@@ -14,6 +14,7 @@ const MENU: [string, string][] = [
   ['/booking/route', 'Đặt chuyến ngay'],
   ['/horses', 'Hồ sơ ngựa'],
   ['/orders', 'Đơn của tôi'],
+  ['/billing', 'Thanh toán & Hóa đơn'],
   ['/tracking', 'Tra cứu lộ trình'],
 ]
 

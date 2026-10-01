@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { ACCEPTANCE_HOURS, HOUR, RECEIVER_MAX_WAIT_HOURS } from '@shared/config/business-rules'
 import { returnDocs } from '@shared/config/driver'
-import { formatClock } from '@shared/lib/format'
+import { formatClock, formatVND } from '@shared/lib/format'
+import { billingApi } from '@shared/services/billing'
+import { useLoad } from '@shared/services/useLoad'
 import { tripsApi } from '@shared/services/trips'
 import type { Order } from '@shared/types/order'
 import { Modal } from '@shared/ui/Modal'
@@ -16,6 +18,7 @@ const FAIL_REASONS = ['Người nhận vắng mặt, không liên lạc được
 export function DeliverySheet({ order: o, onClose, onDone }: { order: Order; onClose: () => void; onDone: (msg: string) => void }) {
   const docs = returnDocs(!!o.border)
   const now = useNow()
+  const { data: owed = 0 } = useLoad(() => billingApi.due(o.id), [o.id])
   const [returned, setReturned] = useState<string[]>([])
   const [photo, setPhoto] = useState('')
   const [receiver, setReceiver] = useState('')
@@ -26,7 +29,7 @@ export function DeliverySheet({ order: o, onClose, onDone }: { order: Order; onC
   const failedAt = o.trip!.handoverFailedAt
   const waited = failedAt ? now - failedAt : 0
   const overdue = waited > RECEIVER_MAX_WAIT_HOURS * HOUR
-  const ready = returned.length === docs.length && !!photo && !!receiver.trim() && !!signature
+  const ready = returned.length === docs.length && !!photo && !!receiver.trim() && !!signature && owed === 0
 
   const done = async () => {
     await tripsApi.completeDelivery(o.id, { docsReturned: returned, photo, receiver: receiver.trim(), signature })
@@ -44,6 +47,12 @@ export function DeliverySheet({ order: o, onClose, onDone }: { order: Order; onC
 
   return (
     <Modal wide title="Bàn giao ngựa" subtitle={`${o.id} · ${o.to}`} onClose={onClose} footer={footer}>
+      {owed > 0 && (
+        <div className={`alert alert-danger ${s.sheetAlert}`}>
+          <i className="fa-solid fa-lock" />
+          <div><b>Khách chưa thanh toán hóa đơn quyết toán {formatVND(owed)}.</b> Chưa bàn giao ngựa được. Liên hệ khách hoặc Điều phối; khách thanh toán xong, mở lại màn hình này.</div>
+        </div>
+      )}
       {failedAt && (
         <div className={`alert ${overdue ? 'alert-danger' : 'alert-warning'} ${s.sheetAlert}`}>
           <i className="fa-solid fa-stopwatch" />
@@ -84,7 +93,7 @@ export function DeliverySheet({ order: o, onClose, onDone }: { order: Order; onC
           <div className="form-group"><label className="required">Người nhận</label><input className="form-control" value={receiver} onChange={e => setReceiver(e.target.value)} placeholder="Họ tên người nhận ngựa" /></div>
           <SignaturePad onChange={setSignature} />
         </div>
-        {!ready && <p className="form-hint"><i className="fa-solid fa-lock" /> Tick trả đủ giấy, có ảnh ngựa và chữ ký người nhận mới hoàn thành được.</p>}
+        {!ready && <p className="form-hint"><i className="fa-solid fa-lock" /> Tick trả đủ giấy, có ảnh ngựa, chữ ký người nhận và khách đã thanh toán quyết toán mới hoàn thành được.</p>}
       </>}
     </Modal>
   )

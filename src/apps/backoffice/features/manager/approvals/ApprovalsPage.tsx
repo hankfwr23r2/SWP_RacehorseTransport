@@ -2,8 +2,8 @@
 // Theo dõi đơn từ lúc khách gửi: xử lý việc kiểm dịch chuyển lên, từ chối sớm (tab Cần xử lý, Đang thẩm định — xem ReviewModal),
 // rồi duyệt đơn đã được kiểm dịch xác nhận hồ sơ và điều phối lập lộ trình, trước khi khách thanh toán.
 import { useState } from 'react'
-import { DOC_LABEL, PROCEDURES, proceduresFor, requiredDocs, type DocKey } from '@shared/config/documents'
-import { handoverDue, originalsDue, paymentDeadline } from '@shared/lib/deadlines'
+import { DOC_LABEL, PROCEDURES, proceduresFor, requiredDocs } from '@shared/config/documents'
+import { papersScanDue, paymentDeadline } from '@shared/lib/deadlines'
 import { formatDate, formatDateTime, formatVND } from '@shared/lib/format'
 import { useStaggerIn } from '@shared/motion/motion'
 import { ordersApi } from '@shared/services/orders'
@@ -13,6 +13,7 @@ import { Modal } from '@shared/ui/Modal'
 import { useToast } from '@shared/ui/toast'
 import { usePagination } from '@shared/ui/usePagination'
 import { InfoItem, SearchBox, Section, Stepper, TripInfo, cx, matches, partStyles as s } from '../../../shared/parts'
+import { procedureState, progressOf } from '@shared/lib/papers'
 import { Assignee, ReviewModal } from './ReviewModal'
 import { reviewStatus } from './review-status'
 
@@ -31,17 +32,10 @@ function approvalStatus(o: Order): ApprovalStatus | null {
   return null
 }
 
-function papersProgress(o: Order) {
-  const docs = Object.values(o.papers!.originals).flatMap(d => Object.values(d))
-  const procs = proceduresFor(!!o.border)
-  return { done: docs.filter(Boolean).length + procs.filter(k => o.papers!.procedures[k]).length, total: docs.length + procs.length }
-}
-
 function PapersBadge({ o }: { o: Order }) {
-  if (o.papers!.handedAt) return <span className="badge badge-success"><i className="fa-solid fa-handshake" /> Đã bàn giao Điều phối</span>
   if (o.papersReport) return <span className="badge badge-danger"><i className="fa-solid fa-flag" /> Kiểm dịch báo cáo</span>
-  const p = papersProgress(o)
-  return <span className="badge badge-info">Đủ {p.done}/{p.total} giấy</span>
+  const p = progressOf(o)
+  return p.ready ? <span className="badge badge-success"><i className="fa-solid fa-circle-check" /> Đã duyệt đủ giấy</span> : <span className="badge badge-info">Đã duyệt {p.done}/{p.total} giấy</span>
 }
 
 function Banner({ o, st }: { o: Order; st: ApprovalStatus }) {
@@ -50,27 +44,25 @@ function Banner({ o, st }: { o: Order; st: ApprovalStatus }) {
   if (st === 'rejected') return <div className={`alert alert-danger ${s.banner}`}><i className="fa-solid fa-circle-xmark" /><div>Từ chối — <b>{o.rejectType}</b>: {o.reason}</div></div>
   if (st === 'paid') return o.papersReport
     ? <div className={`alert alert-danger ${s.banner}`}><i className="fa-solid fa-flag" /><div><b>Kiểm dịch viên {o.inspector} báo cáo lúc {formatDateTime(o.papersReport.at)}</b> — {o.papersReport.type}.<br />Giấy liên quan: {o.papersReport.items.join('; ')}.<br />Ghi chú: {o.papersReport.note}</div></div>
-    : <div className={`alert alert-success ${s.banner}`}><i className="fa-solid fa-circle-check" /><div>Khách đã thanh toán 100% lúc <b>{formatDateTime(o.paidAt!)}</b>. {o.papers?.handedAt ? <>Giấy tờ đã bàn giao cho Điều phối viên lúc <b>{formatDateTime(o.papers.handedAt)}</b>.</> : <>Kiểm dịch viên đang chuẩn bị giấy tờ, hạn bàn giao <b>{formatDateTime(handoverDue(o.departAt))}</b>.</>}</div></div>
+    : <div className={`alert alert-success ${s.banner}`}><i className="fa-solid fa-circle-check" /><div>Khách đã thanh toán 100% lúc <b>{formatDateTime(o.paidAt!)}</b>. Khách tự xin và tải giấy trước <b>{formatDateTime(papersScanDue(o.departAt))}</b>, Kiểm dịch viên đối chiếu.</div></div>
   return null
 }
 
 function Papers({ o }: { o: Order }) {
-  const { originals, procedures } = o.papers!
+  const { procedures } = o.papers!
   const scan = <button className="btn btn-ghost btn-sm"><i className="fa-solid fa-eye" /> Bản scan</button>
+  const BADGE = { missing: ['badge-muted', 'Khách chưa tải'], pending: ['badge-warning', 'Chờ đối chiếu'], passed: ['badge-success', 'Đã duyệt'], rejected: ['badge-danger', 'Đã từ chối'], expired: ['badge-danger', 'Hết hiệu lực trước ngày giao'] } as const
   return (
     <>
-      <p className={s.hint} style={{ marginTop: 0, marginBottom: 8 }}><i className="fa-solid fa-user-doctor" /> Kiểm dịch viên: <b>{o.inspector}</b> · Khách gửi bản gốc trước <b>{formatDateTime(originalsDue(o.departAt))}</b> · Bàn giao Điều phối trước <b>{formatDateTime(handoverDue(o.departAt))}</b></p>
+      <p className={s.hint} style={{ marginTop: 0, marginBottom: 8 }}><i className="fa-solid fa-user-doctor" /> Kiểm dịch viên: <b>{o.inspector}</b> · Khách tự xin giấy và tải bản scan trước <b>{formatDateTime(papersScanDue(o.departAt))}</b> · Bản gốc do tài xế thu tại điểm đón</p>
       <div className="table-wrap">
         <table className="data-table">
-          <thead><tr><th>Giấy do cơ quan chức năng cấp</th><th>Thông tin</th><th /></tr></thead>
+          <thead><tr><th>Giấy khách tự xin</th><th>Thông tin</th><th>Đối chiếu</th><th /></tr></thead>
           <tbody>{proceduresFor(!!o.border).map(k => {
             const p = procedures[k]
-            return <tr key={k}><td className="font-semibold">{PROCEDURES[k].label}</td><td>{p ? <>Số <b>{p.number}</b><div className="sub-text">{p.agency} · cấp {formatDate(p.issuedAt)}{p.validUntil ? ` · hiệu lực đến ${formatDate(p.validUntil)}` : ''}</div></> : <span className="badge badge-muted">Chưa có</span>}</td><td className="text-right">{p && scan}</td></tr>
+            const [cls, label] = BADGE[procedureState(o, k)]
+            return <tr key={k}><td className="font-semibold">{PROCEDURES[k].label}</td><td>{p ? <>Số <b>{p.number}</b>{p.validUntil && <div className="sub-text">hiệu lực đến {formatDate(p.validUntil)}</div>}</> : <span className="text-muted">—</span>}</td><td><span className={`badge ${cls}`}>{label}</span></td><td className="text-right">{p && scan}</td></tr>
           })}</tbody>
-          <thead><tr><th>Bản gốc giấy tờ của khách</th><th>Trạng thái</th><th /></tr></thead>
-          <tbody>{Object.entries(originals).flatMap(([horse, docs]) => Object.entries(docs).map(([k, at]) => (
-            <tr key={horse + k}><td>{horse} · {DOC_LABEL[k as DocKey]}</td><td>{at ? <span className="text-green"><i className="fa-solid fa-circle-check" /> Đã nhận {formatDateTime(at)}</span> : <span className="badge badge-warning">Chưa nhận</span>}</td><td className="text-right">{scan}</td></tr>
-          )))}</tbody>
         </table>
       </div>
     </>

@@ -2,7 +2,7 @@
 
 > Tài liệu nghiệp vụ gốc. Code phải khớp tài liệu này; chỗ nào lệch thì ghi vào mục 11.
 > Nhóm đã chốt tài liệu nghiệp vụ mới (Google Doc "swp_tl", bỏ thẻ 1–6) ngày 27/09/2026. PRD đang được cập nhật dần theo tài liệu đó, từng phía một; phần chưa cập nhật vẫn ghi theo quy tắc cũ.
-> Cập nhật lần cuối: 27/09/2026.
+> Cập nhật lần cuối: 01/10/2026.
 
 ## 1. Phạm vi
 
@@ -67,16 +67,19 @@ D = ngày khởi hành. "Ngày làm việc" = T2–T6, 08:00–17:00, trừ ngà
    - Chốt lộ trình khi mọi chặng đã có xe → đơn chuyển Manager duyệt, kèm xe / tài xế / hộ tống.
 5. **Manager duyệt đơn** (trang Phê duyệt đơn hàng) → khách nhận yêu cầu thanh toán.
 6. **Khách thanh toán 100%** trước hạn (xem mục 4). Quá hạn thì đơn tự hủy và chỗ xe được nhả.
-7. **Chuẩn bị giấy tờ** (trang Chuẩn bị giấy tờ chuyến đi):
-   - Khách gửi **bản gốc** giấy tờ trước 17:00 D−3.
-   - Kiểm dịch viên xin giấy của cơ quan chức năng (làm ngoài hệ thống), sau đó nhập số giấy, cơ quan cấp, hiệu lực và bản scan.
-   - Kiểm dịch viên bàn giao cho Điều phối trước 12:00 D−2. Giấy có thời hạn phải còn hiệu lực đến hết ngày giao dự kiến.
+7. **Chuẩn bị giấy tờ** (khách thao tác ở trang Chi tiết đơn, mục Giấy tờ chuyến đi):
+   - **Khách tự xin** Giấy kiểm dịch (và Tờ khai hải quan nếu quốc tế) từ cơ quan chức năng. Công ty chỉ vận chuyển, không xin giấy hộ. Sau khi đơn được duyệt, hệ thống báo biển số xe cho khách để khai hải quan.
+   - Khách tải **bản scan** kèm số giấy và ngày hết hạn trước giờ khởi hành **24 giờ** (`PAPERS_SCAN_HOURS`). Quốc tế: ô cửa khẩu bị khóa theo đơn, giấy phải ghi đúng cửa khẩu đó. Giấy có thời hạn phải còn hiệu lực đến hết ngày giao dự kiến.
+   - Kiểm dịch viên chỉ **đối chiếu** (không xin giấy, không sửa lộ trình theo giấy sai): trùng microchip, trùng cửa khẩu, còn hạn. Đạt thì duyệt; sai thì từ chối giấy, khách xin lại.
+   - Quá hạn 24 giờ mà chưa có giấy hợp lệ (chưa tải hoặc giấy bị từ chối chưa xin lại): đơn "Tạm giữ" (code ghi là Đã hủy kèm `heldAt`), chỗ xe được nhả, không hoàn tiền theo bảng mục 7, khách tạo đơn mới nếu muốn đi. Đơn Kiểm dịch đã báo Manager thì không tự tạm giữ.
+   - Khi Điều phối chốt lộ trình, khách thấy **biển số xe** ở Chi tiết đơn (sau khi Manager duyệt) để khai hải quan, và tải **Giấy ủy quyền áp tải** đã điền biển số, in ra ký sống. Cửa khẩu khóa theo đơn: Điều phối không thêm / đổi / bỏ được.
+   - **Bản gốc** (mộc đỏ): khách giao cho tài xế tại điểm đón ngày đi (xem mục 8, checklist nhận ngựa).
 8. **Vận chuyển:**
    - Điều phối xác nhận khởi hành (trang Phân công) khi mọi chặng đủ xe, tài xế, hộ tống và khách đã thanh toán. Khách thấy hành trình ngay. Mốc đầu (nhận ngựa) chờ tài xế làm checklist tại điểm đón.
    - **Checklist nhận ngựa** (tài xế, tại điểm đón): tick đã nhận bản gốc và chụp ảnh từng giấy (hộ chiếu ngựa, Giấy chứng nhận kiểm dịch, Tờ khai hải quan nếu quốc tế, Giấy ủy quyền áp tải có chữ ký khách); chụp ảnh hiện trạng từng ngựa (kèm ghi chú nếu có); khách ký điện tử bàn giao. Lưu checklist xong mới hiện nút **Bắt đầu chuyến**; bấm thì mốc nhận ngựa hoàn thành. Lộ trình (các mốc) do Điều phối lập, tài xế chỉ xác nhận; khách (Chi tiết đơn), Manager (Theo dõi đơn vận chuyển) và Điều phối (Giám sát vận chuyển) cùng xem. Khách thiếu bản gốc: tài xế báo thiếu → hệ thống tạo sự cố cho Điều phối và tính phí chờ **500.000đ/giờ** (block giờ); khách mang giấy tới thì tài xế bấm "Khách đã bổ sung bản gốc" để dừng đồng hồ, rồi làm checklist; chờ tối đa **4 giờ**, quá thì hủy lệnh, khách chịu cước chuyến.
    - Tài xế xác nhận từng mốc. Mốc cuối (giao ngựa) cần **checklist bàn giao**: tick đã trả bản gốc hộ chiếu và giấy kiểm dịch, chụp ảnh ngựa đã xuống xe, người nhận ký điện tử → đơn Đã giao, bắt đầu 24 giờ nghiệm thu. Người nhận vắng / từ chối nhận: tài xế báo giao thất bại (lưu thời điểm làm bằng chứng, tạo sự cố cho Điều phối), chờ tối đa **6 giờ** rồi đưa ngựa về trại ký gửi.
    - **Nút SOS** (tài xế, khi đang chạy chuyến): chọn loại sự cố (ngựa cấp cứu, ngựa không đủ sức khỏe lúc đón, tai nạn, hỏng xe: khẩn cấp; hải quan giữ xe, tắc đường / sạt lở: chỉ làm chậm), mô tả, ảnh → tạo sự cố cho Điều phối.
-   - **Khai chi phí** (tài xế): loại phí, số tiền (Kíp / Riel quy đổi về VND theo tỷ giá tham khảo), ảnh biên lai bắt buộc. Xăng dầu, cầu đường, phí cửa khẩu, khác = phí vận hành công ty chịu; phí lưu bãi, phí thú y = phụ phí tính cho khách. Manager duyệt.
+   - **Khai chi phí** (tài xế): loại phí, số tiền (Kíp / Riel quy đổi về VND theo tỷ giá tham khảo), ảnh biên lai bắt buộc. Xăng dầu, cầu đường, phí cửa khẩu, khác = phí vận hành công ty chịu; phí lưu bãi, phí thú y = phụ phí tính cho khách. Manager duyệt ở trang Chi phí tài xế (2 tab: Phí vận hành / Phụ phí khách hàng), khoản vượt định mức (`EXPENSE_QUOTA`) hiện chữ đỏ, từ chối thì tài xế phải giải trình. Phụ phí duyệt xong tự cộng vào hóa đơn quyết toán của khách (xem mục 7).
    - **1 đơn = 1 xe = 1 hộ tống.** Điều phối giao chuyến → hộ tống thấy ở tab Chuyến (tuyến, ngày đi, ngựa, xe, tài xế) và bấm **Nhận chuyến** để xác nhận. Khi xe chạy, tab Báo cáo ghi cho đúng chuyến đang chạy, không chọn chuyến; chưa nhận chuyến thì chưa ghi được.
    - Hộ tống ghi báo cáo sức khỏe theo thời gian thực (giờ kiểm tra ghi tự động lúc gửi, không tự chọn): thân nhiệt, nhịp tim, tình trạng (Khỏe / Mệt mỏi / Căng thẳng / Bỏ ăn / Thương tích / Nguy kịch / Khác, chọn Khác thì bắt buộc mô tả; `HEALTH_STATUS` trong `src/shared/config/health.ts`), ghi chú, ảnh. Chỉ số sớm nhất và mới nhất dùng làm chỉ số lúc nhận / lúc giao trên biên bản nghiệm thu.
    - Khi tài xế check-in một mốc (điểm đón, trạm dừng, cửa khẩu), trang Hộ tống nhắc ghi báo cáo cho các ngựa chưa ghi từ mốc đó.
@@ -98,8 +101,7 @@ D = ngày khởi hành. "Ngày làm việc" = T2–T6, 08:00–17:00, trừ ngà
 | Lập lộ trình | 2 ngày làm việc · D−5 | `SLA_WORKING_DAYS.coordinator`, `CAP_DAYS.coordinator` |
 | Thanh toán | Lúc duyệt + 48 giờ · 17:00 D−2 | `PAYMENT_HOURS`, `PAYMENT_CAP_DAYS` |
 | Khách chọn phương án | 48 giờ | `CHOICE_HOURS` |
-| Khách gửi bản gốc giấy tờ | 17:00 D−3 | `ORIGINALS_DUE_DAYS` |
-| Bàn giao giấy cho Điều phối | 12:00 D−2 | — |
+| Khách tải bản scan giấy kiểm dịch + tờ khai hải quan | 24 giờ trước giờ khởi hành | `PAPERS_SCAN_HOURS` |
 | Phí chờ khi khách thiếu bản gốc tại điểm đón | 500.000đ/giờ, tối đa 4 giờ | `PICKUP_WAIT_FEE_PER_HOUR`, `PICKUP_MAX_WAIT_HOURS` |
 | Chờ người nhận tại điểm giao | Tối đa 6 giờ | `RECEIVER_MAX_WAIT_HOURS` |
 | Nghiệm thu | 24 giờ sau khi giao | `ACCEPTANCE_HOURS` |
@@ -123,7 +125,7 @@ Nếu mốc theo D rơi vào ngày nghỉ thì lùi về ngày làm việc liề
 
 **Khách nộp khi đặt đơn** (cả trong nước và quốc tế): Hộ chiếu ngựa (có microchip) · Sổ tiêm phòng. Lấy từ Hồ sơ ngựa, tự gắn vào đơn. **Không** đòi Giấy chứng nhận kiểm dịch hay Tờ khai hải quan lúc đặt (giấy kiểm dịch chỉ có hiệu lực vài ngày trước khi đi; tờ khai hải quan cần biển số xe, chỉ có sau khi đơn được duyệt).
 
-**Kiểm dịch viên xin sau khi khách thanh toán:**
+**Khách tự xin sau khi đơn được duyệt và thanh toán, tải bản scan trước giờ đi 24 giờ** (Kiểm dịch viên chỉ đối chiếu, xem mục 3 bước 7):
 - Nội địa: Giấy chứng nhận kiểm dịch động vật vận chuyển ra khỏi tỉnh
 - Xuyên biên giới: Giấy chứng nhận kiểm dịch xuất/nhập khẩu + Tờ khai hải quan cửa khẩu
 
@@ -132,6 +134,7 @@ Nếu mốc theo D rơi vào ngày nghỉ thì lùi về ngày làm việc liề
 - **Các dòng trên báo giá:** vận chuyển đường bộ (theo loại xe, số ngăn, km) · kiểm dịch & thủ tục · chăm sóc dọc đường · khoang VIP (tùy chọn) · cách ly (tùy chọn). Không có dòng bảo hiểm.
 - **Bảo hiểm: công ty không bán.** Khi đặt đơn, khách bắt buộc chọn một trong hai: (1) đã tự mua bảo hiểm cho ngựa, nhập mã hợp đồng; (2) không mua, tick đồng ý miễn trừ 100% trách nhiệm cho Nhà vận chuyển khi ngựa ốm đau hoặc tử vong do bệnh lý tự nhiên. Không chọn thì không đặt được.
 - **Thanh toán 100%** trước chuyến, chuyển khoản Vietcombank. Nghiệm thu không phát sinh thanh toán thêm.
+- **Hóa đơn quyết toán (phụ phí phát sinh):** ngoài 100% đã trả, trong chuyến có thể phát sinh phụ phí tài xế khai đã được Manager duyệt (phí lưu bãi, phí thú y) và phí chờ khi khách thiếu bản gốc tại điểm đón (500.000đ/giờ, block giờ, tối đa 4 giờ). Hệ thống gom thành một hóa đơn quyết toán ở trang Thanh toán & Hóa đơn của khách. **Chưa thanh toán hóa đơn này thì tài xế không bàn giao được ngựa** (checklist bàn giao bị khóa). Khách nhận thông báo ở chuông khi có khoản cần trả.
 - **Hoàn tiền:**
 
 | Trường hợp | Hoàn |
@@ -174,9 +177,11 @@ Khách chỉ thấy 5 bước: Gửi đơn · Chờ thẩm định · Thanh toá
 4. **Báo cáo giấy tờ chuyến đi chưa có bước Manager xử lý:** Kiểm dịch báo cáo (khách chưa gửi bản gốc, cơ quan chậm cấp giấy…) thì Manager chỉ xem được ở trang Phê duyệt, chưa có thao tác quyết định.
 5. **Kiểm dịch vẫn xác minh 5 loại giấy lúc đặt đơn:** trang Xác minh hồ sơ và dữ liệu mẫu dùng `requiredDocs` (`config/documents.ts`: thêm xét nghiệm EIA, giấy phép nhập khẩu, giấy sở hữu cho quốc tế), trong khi khách giờ chỉ nộp hộ chiếu + sổ tiêm.
 6. **Bảo hiểm còn trong dữ liệu phía nội bộ:** đơn mẫu và báo giá nội bộ còn dòng "Bảo hiểm vận chuyển"; đơn chưa lưu lựa chọn bảo hiểm của khách (mã hợp đồng / miễn trừ) vì bấm gửi ở bước 4 chưa tạo đơn thật.
-7. **Đơn chưa lưu cửa khẩu khách chọn:** trường `border` của đơn vẫn là cặp cửa khẩu do hệ thống gán; chưa có chỗ khóa cửa khẩu qua Kiểm dịch và Lập lộ trình.
-8. **Phần Manager / Điều phối cho việc của tài xế chưa làm:** Manager chưa có màn hình duyệt chi phí tài xế (khoản chi chỉ ở trạng thái Chờ duyệt); phí chờ tại điểm đón mới ghi số phút chờ, chưa cộng vào hóa đơn khách; quá 4 giờ (điểm đón) hoặc 6 giờ (điểm giao) chưa có thao tác hủy lệnh / đưa ngựa về trại ký gửi.
+7. **Đơn chưa lưu cửa khẩu khách chọn:** bấm gửi ở bước 4 chưa tạo đơn thật nên cửa khẩu khách chọn chưa vào đơn; `border` của đơn mẫu vẫn là cặp cửa khẩu do hệ thống gán. Phía Kiểm dịch (đối chiếu giấy) và Điều phối (Lập lộ trình) đã hiện cửa khẩu khóa, không sửa được.
+8. **Điều phối chưa có thao tác hủy lệnh cho việc của tài xế:** quá 4 giờ (điểm đón) hoặc 6 giờ (điểm giao) chưa có thao tác hủy lệnh / đưa ngựa về trại ký gửi.
 9. **Điều phối chưa thấy hộ tống đã nhận chuyến hay chưa:** hộ tống bấm Nhận chuyến (lưu `escortAcceptedAt` trên chuyến) nhưng trang Phân công / Giám sát chưa hiển thị; Điều phối cũng chưa bị chặn giao 2 chuyến chạy cùng lúc cho một hộ tống.
+
+10. **Luồng giấy tờ chuyến đi:** dữ liệu mẫu của vài đơn cũ vẫn có mục bản gốc và mốc bàn giao (`handedAt`), coi như đã đạt. Đơn mẫu EQ-2026-1054 (đi sau 15 giờ, thiếu giấy) sẽ tự thành "Tạm giữ" khi mở trang vì quá hạn tải giấy.
 
 
 ## 12. Câu hỏi mở (chưa chốt)

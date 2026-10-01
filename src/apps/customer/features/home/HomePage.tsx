@@ -404,7 +404,7 @@ const PROCESS: [string, string, string, string][] = [
   ['fa-paper-plane', 'Gửi đơn', 'Chọn tuyến, chọn ngựa từ Hồ sơ ngựa, chọn dịch vụ và khai bảo hiểm.', `Trước ngày đi ≥ ${MIN_LEAD_DAYS} ngày`],
   ['fa-magnifying-glass', 'Thẩm định', 'Kiểm dịch viên xác minh hồ sơ, điều phối viên lập lộ trình.', 'Trong 5 ngày làm việc'],
   ['fa-credit-card', 'Duyệt & thanh toán', 'Quản lý duyệt đơn, bạn thanh toán 100% giá trên đơn.', 'Trong 48 giờ'],
-  ['fa-folder-open', 'Chuẩn bị giấy tờ', 'Bạn gửi bản gốc giấy tờ, chúng tôi xin giấy kiểm dịch (và tờ khai hải quan nếu đi quốc tế).', 'Trước ngày đi 3 ngày'],
+  ['fa-folder-open', 'Chuẩn bị giấy tờ', 'Bạn tự xin giấy kiểm dịch (và tờ khai hải quan nếu đi quốc tế), tải bản scan; ngày đi giao bản gốc cho tài xế.', 'Trước giờ đi 24 giờ'],
   ['fa-truck-moving', 'Vận chuyển', 'Tài xế nhận ngựa theo checklist, hộ tống báo cáo sức khỏe dọc đường, bạn theo dõi hành trình trực tuyến.', 'Theo lộ trình'],
   ['fa-clipboard-check', 'Nghiệm thu', 'Kiểm tra tình trạng ngựa khi nhận và xác nhận hoàn thành.', 'Trong 24 giờ'],
 ]

@@ -29,9 +29,12 @@ export interface Offer {
   requoteServices: ServiceLine[] // giá mới cho phương án A
 }
 
+// Kiểm dịch viên đối chiếu giấy khách tải lên: trùng microchip, trùng cửa khẩu, còn hạn. Sai thì từ chối, khách xin lại
+export interface PaperCheck { result: 'passed' | 'rejected'; by: string; at: number; reason?: string }
+
 export interface Papers {
   originals: Record<string, Partial<Record<DocKey, number | null>>> // tên ngựa → giấy → lúc nhận bản gốc
-  procedures: Partial<Record<ProcedureKey, { number: string; agency: string; issuedAt: number; validUntil?: number; file: string }>>
+  procedures: Partial<Record<ProcedureKey, { number: string; agency: string; issuedAt: number; validUntil?: number; file: string; uploadedAt?: number; check?: PaperCheck }>> // uploadedAt: khách tự tải lên; check: kiểm dịch viên đối chiếu (tài liệu nhóm)
   handedAt?: number
 }
 
@@ -149,6 +152,7 @@ export interface Order {
   rejectedStep?: 0 | 1 | 2 // 0 = từ chối sớm, 1 = Kiểm dịch, 2 = Phê duyệt (khách thấy 1 và 2 là "Thẩm định hồ sơ")
   rejectedAt?: number
   cancelledAt?: number
+  heldAt?: number // đơn Tạm giữ do quá hạn tải giấy (status = cancelled)
   reason?: string
   note?: string // ghi chú hiện cho khách sau khi chọn phương án
   recheckAt?: number
@@ -157,6 +161,7 @@ export interface Order {
   papers?: Papers
   trip?: Trip
   handover?: Handover // thông tin bàn giao khi giao ngựa
+  settlementPaid?: { amount: number; at: number } // khách đã trả phụ phí quyết toán đến mức này
   acceptedAt?: number
   acceptedBy?: 'customer' | 'auto'
   issue?: { time: number; type: string; note: string; files: string[] } // khách báo vấn đề khi nghiệm thu

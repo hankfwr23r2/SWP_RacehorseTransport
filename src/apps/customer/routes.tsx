@@ -14,6 +14,7 @@ import OrderDetailPage from './features/orders/OrderDetailPage'
 import AcceptancePage from './features/acceptance/AcceptancePage'
 import TrackingPage from './features/tracking/TrackingPage'
 import HorsesPage from './features/horses/HorsesPage'
+import BillingPage from './features/billing/BillingPage'
 
 const C = ['customer'] as AppRoute['roles']
 
@@ -29,6 +30,7 @@ export const routes: AppRoute[] = [
   { path: '/booking/review', page: Step4ReviewPage, roles: C, title: 'Đặt chuyến · Xác nhận', layout: 'customer' },
   { path: '/orders', page: OrdersPage, roles: C, title: 'Đơn của tôi', layout: 'customer' },
   { path: '/orders/:id', page: OrderDetailPage, roles: C, title: 'Chi tiết đơn', example: 'EQ-2026-1028', layout: 'customer' },
+  { path: '/billing', page: BillingPage, roles: C, title: 'Thanh toán & Hóa đơn', layout: 'customer' },
   { path: '/tracking', page: TrackingPage, roles: C, title: 'Tra cứu lộ trình', layout: 'customer' },
   { path: '/acceptance', page: AcceptancePage, roles: C, title: 'Nghiệm thu', layout: 'customer' },
 ]
