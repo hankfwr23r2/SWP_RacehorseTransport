@@ -52,10 +52,9 @@ export const CUSTOMER_OPTION_LABEL: Record<OptionKey, string> = {
 export const ISSUE_POSITIVE = 'Xét nghiệm dương tính bệnh truyền nhiễm'
 export const INSPECTION_ISSUE_TYPES = [ISSUE_POSITIVE, 'Đã yêu cầu bổ sung nhưng giấy tờ vẫn không đạt', 'Khác']
 export const PAPERS_REPORT_TYPES = [
-  'Khách chưa gửi bản gốc đúng hạn',
-  'Bản gốc không khớp bản scan đã xác minh',
-  'Cơ quan chức năng không cấp hoặc chậm cấp giấy',
-  'Giấy được cấp hết hiệu lực trước ngày giao',
+  'Khách chưa tải giấy kiểm dịch / tờ khai đúng hạn',
+  'Giấy khách tải vẫn sai sau khi xin lại',
+  'Giấy hết hiệu lực trước ngày giao',
   'Khác',
 ]
 

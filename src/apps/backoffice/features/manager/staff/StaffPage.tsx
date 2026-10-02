@@ -63,7 +63,7 @@ function Rules() {
             <li>Đang chờ khách bổ sung giấy tờ: đồng hồ tạm dừng</li>
           </ul>
           <h4>Phòng ngừa thiếu người</h4>
-          <ul><li>Báo nghỉ khiến một vai trò không còn ai đang làm việc: cảnh báo, phải xác nhận</li><li>Trang Tiếp nhận: khóa nút tiếp nhận khi một vai trò không còn ai đang làm việc</li></ul>
+          <ul><li>Báo nghỉ khiến một vai trò không còn ai đang làm việc: cảnh báo, phải xác nhận</li><li>Đơn mới không tự phân công được khi một vai trò không còn ai đang làm việc: đơn chờ ở tab "Cần xử lý" trang Phê duyệt</li></ul>
         </div>
         <div>
           <h4>Tự động chuyển người</h4>
@@ -187,7 +187,7 @@ function LeaveModal({ member, staff, tasks, onClose, onDone }: { member: StaffMe
       footer={<button className="btn btn-primary" onClick={submit}><i className="fa-solid fa-user-clock" /> Xác nhận báo nghỉ</button>}>
       {!othersWorking.length && <>
         <div className="alert alert-danger"><i className="fa-solid fa-triangle-exclamation" /><div>
-          Sau khi báo nghỉ sẽ <b>không còn {ROLE_LABEL[member.role].toLowerCase()} nào đang làm việc</b>. {roleTasks.length} đơn ở bước {STEP_LABEL[member.role]} sẽ không tự chuyển được và cần manager xử lý ({roleTasks.map(t => t.orderId).join(', ')}), và trang Tiếp nhận sẽ khóa nút tiếp nhận đơn mới.
+          Sau khi báo nghỉ sẽ <b>không còn {ROLE_LABEL[member.role].toLowerCase()} nào đang làm việc</b>. {roleTasks.length} đơn ở bước {STEP_LABEL[member.role]} sẽ không tự chuyển được và cần manager xử lý ({roleTasks.map(t => t.orderId).join(', ')}), và đơn mới sẽ chưa được tự phân công.
         </div></div>
         <label className={cx(s.confirm, invalid === 'confirm' && s.confirmBad)}><input type="checkbox" checked={confirmed} onChange={e => { setInvalid(''); setConfirmed(e.target.checked) }} /> Tôi đã hiểu và vẫn ghi nhận nghỉ</label>
       </>}

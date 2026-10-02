@@ -8,7 +8,7 @@ import { DOCS_CROSS_BORDER, DOCS_DOMESTIC, type DocKey } from '../../config/docu
 import type { DocDecision, Horse, Order, ServiceLine } from '../../types/order'
 
 const H = (name: string, breed: string, sex: string, chip: string): Horse => ({ name, breed, sex, chip })
-// Giá ở trang Tiếp nhận chỉ có [hạng mục, số tiền]
+// Giá của đơn mới chỉ có [hạng mục, số tiền]
 const items = (list: [string, number][]): ServiceLine[] => list.map(([name, amount]) => [name, '', amount])
 const std = (vehicle: string, km: string, quarantine: [string, string, number], care: [string, number], insurance: number): ServiceLine[] => [
   ['Vận chuyển đường bộ', `Xe chuyên dụng ${vehicle} · khoang tiêu chuẩn · ${km}`, 0],
@@ -47,7 +47,7 @@ const received = (keys: DocKey[], at: number) => Object.fromEntries(keys.map(k =
 export function seedOtherOrders(): Order[] {
   const now = Date.now()
   return [
-    // ===== Trang Tiếp nhận: đơn mới =====
+    // ===== Đơn mới: hệ thống tự phân công khi đọc đơn (services/orders.ts) =====
     {
       ...ok('Trang trại Tây Ninh Stud'), id: 'EQ-2026-1076', submittedAt: atTime(0, '08:15'), departAt: daysFromToday(14),
       from: 'Trang trại Tây Ninh Stud (Tây Ninh, VN)', to: 'Trường đua Phnom Penh Royal Turf (Phnom Penh, KH)',
@@ -329,11 +329,11 @@ export function seedOtherOrders(): Order[] {
       stops: ['Trường đua Phú Thọ (TP.HCM) — nhận ngựa', 'Trạm nghỉ Tuy Hòa (Phú Yên) — nghỉ đêm', 'Trường đua Sông Hàn (Đà Nẵng) — giao ngựa'],
       services: withFreight(std('4 ngăn', '960 km', ['Kiểm dịch vận chuyển nội địa', 'Cấp giấy chứng nhận kiểm dịch cho 4 ngựa', 3_000_000], [CARE_FULL, 5_000_000], 3_000_000), 33_000_000),
       status: 'in_transit', approvedAt: atTime(-10, '09:00'), paidAt: atTime(-9, '10:00'), inspector: 'Nguyễn Thị Thu', coordinator: 'Trần Minh', vehicle: 'Xe chuyên dụng 4 ngăn',
-      review: { inspectNote: 'Vận chuyển nội địa, giấy tờ đầy đủ.', vehicle: '30A-55678 (xe chuyên dụng 4 ngăn)', driver: 'Lê Văn C', grooms: 'Võ Thị Lan' },
+      review: { inspectNote: 'Vận chuyển nội địa, giấy tờ đầy đủ.', vehicle: '30A-55678 (xe chuyên dụng 4 ngăn)', driver: 'Lê Văn C', grooms: 'Huỳnh Thị Mai' },
 
       trip: {
         plate: '30A-55678', eta: atTime(0, '17:00'), updatedAt: atTime(0, '07:10'),
-        contacts: [['Tài xế', 'Lê Văn C', '0901 555 666'], ['NV chăm sóc', 'Võ Thị Lan', '0908 333 444']],
+        contacts: [['Tài xế', 'Lê Văn C', '0901 555 666'], ['NV chăm sóc', 'Huỳnh Thị Mai', '0902 555 666']],
         checkpoints: [
           { label: 'Nhận ngựa lên xe, khởi hành', place: 'Trường đua Phú Thọ (TP.HCM)', time: atTime(-1, '05:30'), state: 'done' },
           { label: 'Nghỉ đêm', place: 'Trạm nghỉ Tuy Hòa (Phú Yên)', time: atTime(-1, '18:40'), state: 'done' },
@@ -341,9 +341,9 @@ export function seedOtherOrders(): Order[] {
           { label: 'Giao ngựa', place: 'Trường đua Sông Hàn (Đà Nẵng)', time: atTime(0, '17:00'), state: 'next' },
         ],
         health: [
-          { time: atTime(0, '06:30'), temp: '38.7°C', heart: '46 bpm', note: 'Tuyết Sơn có dấu hiệu stress nhiệt, đã cho uống điện giải', horse: 'Tuyết Sơn', status: 'Mệt nhẹ', by: 'Võ Thị Lan' },
-          { time: atTime(-1, '19:00'), temp: '37.8°C', heart: '38 bpm', note: 'Cả 4 con ăn uống bình thường tại trạm nghỉ', status: 'Bình thường', by: 'Võ Thị Lan' },
-          { time: atTime(-1, '05:00'), temp: '37.6°C', heart: '36 bpm', note: 'Kiểm tra trước khi lên xe: đạt', status: 'Bình thường', by: 'Võ Thị Lan' },
+          { time: atTime(0, '06:30'), temp: '38.7°C', heart: '46 bpm', note: 'Tuyết Sơn có dấu hiệu stress nhiệt, đã cho uống điện giải', horse: 'Tuyết Sơn', status: 'Mệt mỏi', by: 'Huỳnh Thị Mai' },
+          { time: atTime(-1, '19:00'), temp: '37.8°C', heart: '38 bpm', note: 'Cả 4 con ăn uống bình thường tại trạm nghỉ', status: 'Khỏe', by: 'Huỳnh Thị Mai' },
+          { time: atTime(-1, '05:00'), temp: '37.6°C', heart: '36 bpm', note: 'Kiểm tra trước khi lên xe: đạt', status: 'Khỏe', by: 'Huỳnh Thị Mai' },
         ],
       },
     },
@@ -367,7 +367,7 @@ export function seedOtherOrders(): Order[] {
           { label: 'Giao ngựa', place: 'Vientiane Turf Club', time: atTime(1, '16:00'), state: 'next' },
         ],
         health: [
-          { time: atTime(0, '05:30'), temp: '37.7°C', heart: '37 bpm', note: 'Kiểm tra trước khi lên xe: đạt', status: 'Bình thường', by: 'Lê Thị C' },
+          { time: atTime(0, '05:30'), temp: '37.7°C', heart: '37 bpm', note: 'Kiểm tra trước khi lên xe: đạt', status: 'Khỏe', by: 'Lê Thị C' },
         ],
       },
     },
@@ -527,6 +527,28 @@ export function seedOtherOrders(): Order[] {
       status: 'paid', approvedAt: atTime(-8, '09:00'), paidAt: atTime(-7, '09:00'), inspector: 'Phạm Văn Hưng', coordinator: 'Trần Minh', vehicle: 'Xe chuyên dụng 2 ngăn',
       review: { inspectNote: 'Giấy tờ hợp lệ.', vehicle: '51C-98765 (xe thùng tiêu chuẩn)', driver: 'Trần Văn B', grooms: 'Lê Thị C' },
       papers: { originals: { 'Hỏa Tiễn': received(DOCS_DOMESTIC, atTime(-6, '09:00')) }, procedures: {} },
+    },
+
+    // ===== Tài xế: đã khởi hành, xe tới điểm đón, chờ tài xế làm checklist nhận ngựa (đăng nhập driver@ để thử) =====
+    // Đặt cuối danh sách để không đổi mã các chuyến TR-91xx tự sinh.
+    {
+      ...ok('CLB Ngựa Đại Nam'), id: 'EQ-2026-1084', submittedAt: atTime(-15, '09:00'), departAt: daysFromToday(0),
+      from: 'Trường đua Đại Nam (Bình Dương, VN)', to: 'Trường đua Phú Thọ (TP.HCM, VN)',
+      routeShort: 'Bình Dương → TP.HCM', border: null, distance: '45 km', duration: '~2 giờ', horses: [nganHa, loiDien],
+      stops: ['Trường đua Đại Nam (Bình Dương) — nhận ngựa', 'Trường đua Phú Thọ (TP.HCM) — giao ngựa'],
+      services: withFreight(std('4 ngăn', '45 km', ['Kiểm dịch vận chuyển nội địa', 'Cấp giấy chứng nhận kiểm dịch cho 2 ngựa', 1_800_000], [CARE_FULL, 600_000], 900_000), 5_500_000),
+      status: 'in_transit', approvedAt: atTime(-7, '09:00'), paidAt: atTime(-6, '10:00'), inspector: 'Nguyễn Thị Thu', coordinator: 'Trần Minh', vehicle: 'Xe chuyên dụng 4 ngăn',
+      review: { inspectNote: 'Giấy tờ hợp lệ.', vehicle: '51C-123.45 (xe chuyên dụng 4 ngăn)', driver: 'Nguyễn Văn Hùng', grooms: 'Đỗ Văn Nam' },
+      papers: { originals: { 'Ngân Hà': received(DOCS_DOMESTIC, atTime(-4, '09:00')), 'Lôi Điện': received(DOCS_DOMESTIC, atTime(-4, '09:00')) }, procedures: {}, handedAt: atTime(-2, '11:00') },
+      trip: {
+        plate: '51C-123.45', eta: now + 2 * HOUR, updatedAt: now - 20 * 60000,
+        contacts: [['Tài xế', 'Nguyễn Văn Hùng', '0908 111 222'], ['NV chăm sóc', 'Đỗ Văn Nam', '0902 777 888']],
+        checkpoints: [
+          { label: 'Nhận ngựa lên xe, khởi hành', place: 'Trường đua Đại Nam (Bình Dương)', time: now - 20 * 60000, state: 'current' },
+          { label: 'Giao ngựa', place: 'Trường đua Phú Thọ (TP.HCM)', time: now + 2 * HOUR, state: 'next' },
+        ],
+        health: [{ time: now - 20 * 60000, temp: '—', heart: '—', note: 'Xe đã nhận lệnh chạy tới điểm đón. Hộ tống cập nhật chỉ số sức khỏe dọc đường.', by: 'Đỗ Văn Nam' }],
+      },
     },
   ]
 }

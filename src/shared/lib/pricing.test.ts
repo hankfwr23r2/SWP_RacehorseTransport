@@ -20,9 +20,9 @@ describe('tra cước (home.js)', () => {
     expect(trucksFor(horses).reduce((t, big) => t + truckCost(km, big), 0)).toBeCloseTo(truck, 0)
   })
 
-  it('tổng = cộng các dòng, có bảo hiểm khi khai giá trị', () => {
-    const r = estimateFee(place('hn'), place('vte'), 5, 2_000_000_000)
-    expect(r.rows).toHaveLength(4)
+  it('tổng = cộng các dòng, không có dòng bảo hiểm', () => {
+    const r = estimateFee(place('hn'), place('vte'), 5)
+    expect(r.rows).toHaveLength(3)
     expect(r.total).toBe(r.rows.reduce((t, row) => t + row[2], 0))
   })
 })
