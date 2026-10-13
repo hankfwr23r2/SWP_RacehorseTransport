@@ -1,6 +1,6 @@
 // Manager: duyệt báo giá cuối sau khi Kiểm dịch viên và Điều phối viên đều đạt (PRD mục 2.5).
 // Manager nhìn số xe Điều phối viên đã chọn để chọn tài xế và hộ tống cho từng xe. Báo giá do hệ thống tính; Manager chỉ điều chỉnh phụ phí và chiết khấu thương mại rồi gửi cho khách.
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@shared/auth/AuthContext'
 import { QUOTE_VALID_HOURS } from '@shared/config/booking-rules'
 import { VEHICLE_CLASS } from '@shared/config/booking-rules'
@@ -35,6 +35,33 @@ function QuoteModal({ b, all, onClose, onDone }: { b: Booking; all: Booking[]; o
   const trips = b.trips ?? []
   const sched = schedulesOf(all, b.id)
   const [picks, setPicks] = useState<Record<string, Pick2>>(() => Object.fromEntries(trips.map(t => [t.tripId, { driverId: t.driverId, escortId: t.escortId }])))
+
+  useEffect(() => {
+    if (!crew?.length) return
+    setPicks(prev => {
+      let changed = false
+      const next = { ...prev }
+      const availableDrivers = crew.filter(c => c.role === 'driver' && !sched.drivers.has(c.id))
+      const availableEscorts = crew.filter(c => c.role === 'escort' && !sched.escorts.has(c.id))
+      let dIdx = 0, eIdx = 0
+      for (const t of trips) {
+        const cur = next[t.tripId] || { driverId: '', escortId: '' }
+        let dId = cur.driverId
+        let eId = cur.escortId
+        if (!dId && dIdx < availableDrivers.length) {
+          dId = availableDrivers[dIdx++].id
+          changed = true
+        }
+        if (!eId && eIdx < availableEscorts.length) {
+          eId = availableEscorts[eIdx++].id
+          changed = true
+        }
+        next[t.tripId] = { driverId: dId, escortId: eId }
+      }
+      return changed ? next : prev
+    })
+  }, [crew, trips, sched])
+
   const [picking, setPicking] = useState<{ tripId: string; kind: 'driver' | 'escort' } | null>(null)
   const [back, setBack] = useState<{ to: 'specialist' | 'coordinator'; reason: string } | null>(null) // đang nhập lý do trả lại
   const used = (k: keyof Pick2) => new Set(Object.values(picks).map(p => p[k]).filter(Boolean))

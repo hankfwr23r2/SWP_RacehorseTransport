@@ -1,7 +1,7 @@
 // Manager: tiếp nhận đơn mới và kích hoạt thẩm định song song (PRD mục 2.3).
 // Manager chọn Kiểm dịch viên và Điều phối viên đang hoạt động để giao việc (không xem số đơn họ đang làm).
 import { ReadMore } from '@shared/ui/ReadMore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@shared/auth/AuthContext'
 import { formatDate, formatDateTime } from '@shared/lib/format'
 import { activeStaff } from '@shared/lib/booking'
@@ -36,11 +36,21 @@ function IntakeModal({ b, onClose, onDone }: { b: Booking; onClose: () => void; 
   const { data: staff } = useLoad(staffApi.list)
   const specialists = staff ? activeStaff(staff, 'specialist') : []
   const coordinators = staff ? activeStaff(staff, 'coordinator') : []
-  const [sp, setSp] = useState('')
-  const [co, setCo] = useState('')
+  const [sp, setSp] = useState(b.intake?.specialist.id ?? '')
+  const [co, setCo] = useState(b.intake?.coordinator.id ?? '')
   const [busy, setBusy] = useState(false)
   const [reason, setReason] = useState<string | null>(null) // không null = đang nhập lý do từ chối
-  const spId = sp, coId = co // Manager tự chọn, không có người mặc định
+
+  useEffect(() => {
+    if (!sp && (b.intake?.specialist.id || specialists[0]?.id)) {
+      setSp(b.intake?.specialist.id || specialists[0].id)
+    }
+    if (!co && (b.intake?.coordinator.id || coordinators[0]?.id)) {
+      setCo(b.intake?.coordinator.id || coordinators[0].id)
+    }
+  }, [specialists, coordinators, sp, co, b.intake])
+
+  const spId = sp, coId = co
 
   const activate = async () => {
     const a = specialists.find(x => x.id === spId)
