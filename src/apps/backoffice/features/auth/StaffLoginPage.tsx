@@ -1,9 +1,9 @@
-// Đăng nhập nội bộ và đăng nhập Manager. Chuyển từ Staffs/staff_login.html (+ staff_login.js) và Manager/manager_login.html.
-// Giả lập: email chứa từ khóa vai trò (manager, driver, escort, specialist, ops…) quyết định trang được vào.
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@shared/auth/AuthContext'
-import { LOGIN_KEYWORDS } from '@shared/services/mock/staff'
+import { authApi } from '@shared/api/auth'
+import { tokenStorage } from '@shared/api/client'
+import type { StaffRole } from '@shared/types/role'
 import { AuthShell, authStyles as s } from '@shared/ui/AuthShell'
 import { HOME_OF } from '../../layouts/staffMenus'
 
@@ -11,16 +11,38 @@ function LoginForm({ managerOnly }: { managerOnly: boolean }) {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const email = (new FormData(e.currentTarget).get('email') as string).toLowerCase()
-    // Cổng Manager: mọi tài khoản đều vào trang Manager (như manager_login.html cũ)
-    const match = managerOnly ? LOGIN_KEYWORDS[0] : LOGIN_KEYWORDS.find(([key]) => email.includes(key))
-    if (!match) return setError('Email không hợp lệ hoặc không thuộc hệ thống nội bộ. (Gợi ý: email cần chứa manager, driver, escort, ops hoặc specialist)')
-    const [, role, name] = match
-    login({ role, name, username: email })
-    navigate(HOME_OF[role])
+    setError('')
+    setLoading(true)
+    const data = new FormData(e.currentTarget)
+    const email = (data.get('email') as string).trim()
+    const password = (data.get('password') as string) ?? ''
+
+    try {
+      const res = await authApi.loginStaff({ username: email, password })
+      const rawRole = (res.role || 'manager').toLowerCase()
+      const role = rawRole as StaffRole
+
+      if (managerOnly && role !== 'manager' && role !== 'admin') {
+        setError('Tài khoản của bạn không có quyền truy cập vào cổng Quản lý.')
+        return
+      }
+
+      tokenStorage.set(res.accessToken)
+      login({
+        role,
+        name: res.fullName || res.staffCode || res.username,
+        username: res.email || res.username,
+      })
+      navigate(HOME_OF[role] ?? '/manager')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Đăng nhập thất bại. Vui lòng kiểm tra lại.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -28,14 +50,16 @@ function LoginForm({ managerOnly }: { managerOnly: boolean }) {
       {error && <div className={`alert alert-danger ${s.error}`}><i className="fa-solid fa-circle-exclamation" /><div>{error}</div></div>}
       <div className="form-group">
         <label htmlFor="email">{managerOnly ? 'Tên đăng nhập / Email' : 'Email'}</label>
-        <input className="form-control" id="email" name="email" placeholder={managerOnly ? 'manager@equine.vn' : 'VD: manager@equine.vn, specialist@equine.vn'} required onChange={() => setError('')} />
+        <input className="form-control" id="email" name="email" placeholder={managerOnly ? 'manager@equine.vn' : 'VD: manager, coordinator...'} required onChange={() => setError('')} />
       </div>
       <div className="form-group">
         <label htmlFor="password">Mật khẩu</label>
-        <input className="form-control" id="password" type="password" placeholder="••••••••" required />
+        <input className="form-control" id="password" name="password" type="password" placeholder="••••••••" required />
       </div>
       <p className="text-right small" style={{ marginBottom: 16 }}><a href="#" className="text-orange">Quên mật khẩu?</a></p>
-      <button type="submit" className="btn btn-primary btn-full btn-lg">{managerOnly ? 'Đăng nhập Quản lý' : 'Đăng nhập'}</button>
+      <button type="submit" className="btn btn-primary btn-full btn-lg" disabled={loading}>
+        {loading ? 'Đang xác thực...' : managerOnly ? 'Đăng nhập Quản lý' : 'Đăng nhập'}
+      </button>
     </form>
   )
 }

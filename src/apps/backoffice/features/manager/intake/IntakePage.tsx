@@ -1,33 +1,56 @@
 // Manager: tiếp nhận đơn mới và kích hoạt thẩm định song song (PRD mục 2.3).
-// Hệ thống gợi ý Kiểm dịch viên và Điều phối viên ít việc nhất; Manager có thể đổi người.
-import { useState } from 'react'
+// Manager chọn Kiểm dịch viên và Điều phối viên đang hoạt động để giao việc (không xem số đơn họ đang làm).
+import { ReadMore } from '@shared/ui/ReadMore'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@shared/auth/AuthContext'
 import { formatDate, formatDateTime } from '@shared/lib/format'
-import { suggestStaff } from '@shared/lib/booking'
+import { activeStaff } from '@shared/lib/booking'
 import { bookingsApi } from '@shared/services/bookings'
 import { staffApi } from '@shared/services/staff'
 import { useLoad } from '@shared/services/useLoad'
 import type { Booking } from '@shared/types/booking'
-import { BookingStatusBadge } from '@shared/ui/BookingStatusBadge'
 import { Modal } from '@shared/ui/Modal'
 import { useToast } from '@shared/ui/toast'
-import { HorseConfigList, ReviewChips, Tabs, TripSummary } from '../../../shared/BookingParts'
+import { HorseConfigList, ReviewChips, TripSummary } from '../../../shared/BookingParts'
+import { ListPage, idCell, routeCell, statusCell, type Column } from '../../../shared/ListPage'
 import { placeShort } from '../../../shared/place'
 import s from '../../../shared/booking.module.css'
+import { StaffPicker } from '../../../shared/StaffPicker'
 
 type Tab = 'new' | 'running'
 
-function IntakeModal({ b, all, onClose, onDone }: { b: Booking; all: Booking[]; onClose: () => void; onDone: () => void }) {
+// Nút chọn người giao việc: bấm mở popup thẻ
+function PickButton({ person, icon, onClick }: { person?: { name: string }; icon: string; onClick: () => void }) {
+  return (
+    <button type="button" className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start', gap: 10, minHeight: 46, textAlign: 'left' }} onClick={onClick}>
+      <i className={`fa-solid ${icon}`} aria-hidden="true" style={{ color: '#ea580c' }} />
+      <span style={{ flex: 1 }}>{person ? <b>{person.name}</b> : 'Chọn người'}</span>
+      <small style={{ color: '#ea580c', fontWeight: 600 }}>{person ? 'Đổi' : 'Chọn'}</small>
+    </button>
+  )
+}
+
+function IntakeModal({ b, onClose, onDone }: { b: Booking; onClose: () => void; onDone: () => void }) {
   const toast = useToast()
   const { session } = useAuth()
   const { data: staff } = useLoad(staffApi.list)
-  const specialists = staff ? suggestStaff(staff, 'specialist', all) : []
-  const coordinators = staff ? suggestStaff(staff, 'coordinator', all) : []
-  const [sp, setSp] = useState('')
-  const [co, setCo] = useState('')
+  const specialists = staff ? activeStaff(staff, 'specialist') : []
+  const coordinators = staff ? activeStaff(staff, 'coordinator') : []
+  const [sp, setSp] = useState(b.intake?.specialist.id ?? '')
+  const [co, setCo] = useState(b.intake?.coordinator.id ?? '')
   const [busy, setBusy] = useState(false)
-  const spId = sp || specialists[0]?.id
-  const coId = co || coordinators[0]?.id
+  const [reason, setReason] = useState<string | null>(null) // không null = đang nhập lý do từ chối
+
+  useEffect(() => {
+    if (!sp && (b.intake?.specialist.id || specialists[0]?.id)) {
+      setSp(b.intake?.specialist.id || specialists[0].id)
+    }
+    if (!co && (b.intake?.coordinator.id || coordinators[0]?.id)) {
+      setCo(b.intake?.coordinator.id || coordinators[0].id)
+    }
+  }, [specialists, coordinators, sp, co, b.intake])
+
+  const spId = sp, coId = co
 
   const activate = async () => {
     const a = specialists.find(x => x.id === spId)
@@ -36,34 +59,51 @@ function IntakeModal({ b, all, onClose, onDone }: { b: Booking; all: Booking[]; 
     setBusy(true)
     try {
       await bookingsApi.activate(b.id, session!.name, { id: a.id, name: a.name }, { id: c.id, name: c.name })
-      toast(`Đã tiếp nhận ${b.id}, đẩy sang thẩm định song song`)
+      toast(`Đã tiếp nhận ${b.id}, đã giao Kiểm dịch viên và Điều phối viên`)
       onDone()
     } catch (e) { toast(e instanceof Error ? e.message : 'Không tiếp nhận được', 'error'); setBusy(false) }
   }
 
-  const option = (x: { id: string; name: string; load: number }, i: number) => <option key={x.id} value={x.id}>{x.name} · {x.load} đơn đang làm{i === 0 ? ' (gợi ý)' : ''}</option>
+  const reject = async () => {
+    setBusy(true)
+    try {
+      await bookingsApi.rejectOrder(b.id, session!.name, 'manager', reason ?? '')
+      toast(`Đã từ chối ${b.id}, khách nhận được lý do`)
+      onDone()
+    } catch (e) { toast(e instanceof Error ? e.message : 'Không từ chối được', 'error'); setBusy(false) }
+  }
+
+  const [pick, setPick] = useState<'specialist' | 'coordinator' | null>(null)
 
   return (
     <Modal
       wide onClose={onClose} title={`Tiếp nhận ${b.id}`} subtitle={`${b.customer} · gửi lúc ${formatDateTime(b.createdAt)}`}
-      footer={<><button className="btn btn-ghost" onClick={onClose}>Đóng</button><button className="btn btn-primary" disabled={busy || !spId || !coId} onClick={activate}><i className="fa-solid fa-play" /> Tiếp nhận và kích hoạt thẩm định</button></>}
+      footer={reason === null
+        ? <><button className="btn btn-ghost" onClick={onClose}>Đóng</button><button className="btn btn-ghost" onClick={() => setReason('')}><i className="fa-solid fa-ban" /> Từ chối đơn</button><button className="btn btn-primary" disabled={busy || !spId || !coId} onClick={activate}><i className="fa-solid fa-play" /> Tiếp nhận và kích hoạt thẩm định</button></>
+        : <><button className="btn btn-ghost" onClick={() => setReason(null)}>Quay lại</button><button className="btn btn-danger" disabled={busy || !reason.trim()} onClick={reject}><i className="fa-solid fa-ban" /> Xác nhận từ chối</button></>}
     >
+      {reason !== null && (
+        <div className="form-group">
+          <label htmlFor="rj" className="required">Lý do từ chối (khách sẽ thấy)</label>
+          <textarea id="rj" className="form-control" rows={3} value={reason} onChange={e => setReason(e.target.value)} />
+        </div>
+      )}
       <TripSummary b={b} />
-      {b.importPermit && <p className={s.hint} style={{ marginTop: 12 }}><i className="fa-solid fa-file-import" /> Import Permit đã nộp: {b.importPermit.fileName}</p>}
       <h4 style={{ margin: '18px 0 10px' }}>Ngựa và dịch vụ</h4>
       <HorseConfigList b={b} />
       <h4 style={{ margin: '18px 0 10px' }}>Giao việc</h4>
       <div className={s.form2}>
         <div className="form-group">
-          <label htmlFor="sp">Kiểm dịch viên (thẩm định y tế)</label>
-          <select id="sp" className="form-control" value={spId ?? ''} onChange={e => setSp(e.target.value)}>{specialists.map(option)}</select>
+          <label>Kiểm dịch viên (duyệt hồ sơ ngựa)</label>
+          <PickButton icon="fa-user-doctor" person={spId ? specialists.find(x => x.id === spId) : undefined} onClick={() => setPick('specialist')} />
         </div>
         <div className="form-group">
-          <label htmlFor="co">Điều phối viên (xe và lộ trình)</label>
-          <select id="co" className="form-control" value={coId ?? ''} onChange={e => setCo(e.target.value)}>{coordinators.map(option)}</select>
+          <label>Điều phối viên (xe và lộ trình)</label>
+          <PickButton icon="fa-route" person={coId ? coordinators.find(x => x.id === coId) : undefined} onClick={() => setPick('coordinator')} />
         </div>
       </div>
-      <p className={s.hint}>Hệ thống gợi ý người ít việc nhất và bỏ qua người đang nghỉ. Hai người thẩm định song song, cả hai đạt thì đơn mới sang bước duyệt báo giá.</p>
+      <ReadMore className={s.hint} text={'Chọn người đang hoạt động; người đang nghỉ bị khóa. Tiếp nhận xong, Điều phối viên chọn xe (chia ngựa lên nhiều xe nếu cần) và lập lộ trình, rồi bạn chọn tài xế và hộ tống cho từng xe khi duyệt báo giá.'} />
+      {pick && staff && <StaffPicker task={pick} staff={staff} selected={(pick === 'specialist' ? spId : coId) ?? ''} onPick={id => (pick === 'specialist' ? setSp(id) : setCo(id))} onClose={() => setPick(null)} />}
     </Modal>
   )
 }
@@ -75,40 +115,22 @@ export default function IntakePage() {
   const list = all ?? []
   const fresh = list.filter(b => b.status === 'pending_intake')
   const running = list.filter(b => b.status === 'under_review')
-  const shown = tab === 'new' ? fresh : running
-
+  const columns: Column<Booking>[] = [
+    { head: 'Mã đơn', cell: b => idCell(b) },
+    { head: 'Khách hàng', cell: b => b.customer, nowrap: true },
+    { head: 'Tuyến', cell: b => routeCell(placeShort(b.origin.name), placeShort(b.dest.name)) },
+    { head: 'Khởi hành', cell: b => formatDate(b.departAt), nowrap: true },
+    { head: 'Ngựa', cell: b => `${b.horses.length} con`, nowrap: true },
+    tab === 'new' ? { head: 'Gửi lúc', cell: b => formatDateTime(b.createdAt), nowrap: true } : { head: 'Thẩm định', cell: b => <ReviewChips b={b} /> },
+    { head: 'Trạng thái', cell: b => statusCell(b.status) },
+    { head: 'Thao tác', cell: b => (tab === 'new' ? <button className="btn btn-primary btn-sm" onClick={() => setOpen(b)}>Tiếp nhận</button> : null), right: true },
+  ]
   return (
-    <div className="page">
-      <div className="wrap">
-        <div className={s.head}>
-          <div className="page-header" style={{ margin: 0 }}>
-            <h1>Tiếp nhận đơn hàng</h1>
-            <p>Đơn khách vừa gửi. Giao Kiểm dịch viên và Điều phối viên để họ thẩm định song song.</p>
-          </div>
-        </div>
-        <Tabs<Tab> value={tab} onChange={setTab} tabs={[['new', 'Chờ tiếp nhận', fresh.length], ['running', 'Đang thẩm định', running.length]]} />
-
-        <div className="card table-wrap">
-          <table className="data-table">
-            <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Tuyến</th><th>Khởi hành</th><th>Ngựa</th>{tab === 'new' ? <th>Gửi lúc</th> : <th>Tiến độ</th>}<th className="text-right">Thao tác</th></tr></thead>
-            <tbody>
-              {shown.map(b => (
-                <tr key={b.id}>
-                  <td className={s.id}>{b.id}</td>
-                  <td>{b.customer}</td>
-                  <td>{placeShort(b.origin.name)} → {placeShort(b.dest.name)}<div className={s.sub}>{b.type === 'international' ? `Quốc tế · ${b.gate}` : 'Trong nước'}</div></td>
-                  <td className="nowrap">{formatDate(b.departAt)}</td>
-                  <td>{b.horses.length}</td>
-                  <td>{tab === 'new' ? <span className="nowrap">{formatDateTime(b.createdAt)}</span> : <><ReviewChips b={b} /><div className={s.sub} style={{ marginTop: 4 }}>{b.intake?.specialist.name} · {b.intake?.coordinator.name}</div></>}</td>
-                  <td className="text-right">{tab === 'new' ? <button className="btn btn-primary btn-sm" onClick={() => setOpen(b)}>Tiếp nhận</button> : <BookingStatusBadge status={b.status} audience="staff" />}</td>
-                </tr>
-              ))}
-              {all && !shown.length && <tr><td colSpan={7}><div className={s.empty}><i className="fa-solid fa-circle-check" />{tab === 'new' ? 'Không có đơn nào chờ tiếp nhận.' : 'Không có đơn nào đang thẩm định.'}</div></td></tr>}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      {open && <IntakeModal b={open} all={list} onClose={() => setOpen(null)} onDone={() => { setOpen(null); reload() }} />}
-    </div>
+    <>
+      <ListPage title="Tiếp nhận đơn hàng" subtitle="Giao Kiểm dịch viên và Điều phối viên thẩm định song song." tabs={[['new', 'Chờ tiếp nhận', fresh.length], ['running', 'Đang thẩm định', running.length]]} tab={tab} onTab={setTab} hot={['new']}
+        rows={tab === 'new' ? fresh : running} rowKey={b => b.id} columns={columns} haystack={b => [b.id, b.customer, b.origin.name, b.dest.name]} dateOf={b => b.departAt} loaded={!!all}
+        emptyText={tab === 'new' ? 'Không có đơn nào chờ tiếp nhận.' : 'Không có đơn nào đang thẩm định.'} />
+      {open && <IntakeModal b={open} onClose={() => setOpen(null)} onDone={() => { setOpen(null); reload() }} />}
+    </>
   )
 }

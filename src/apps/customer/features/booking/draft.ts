@@ -1,14 +1,12 @@
 // Bản nháp đơn đặt chuyến qua 4 bước, lưu sessionStorage (PRD mục 2.2).
 import { useSyncExternalStore } from 'react'
-import { TARGET_TEMP } from '@shared/config/booking-rules'
-import type { HorseDoc, Party, StallType, TransportType } from '@shared/types/booking'
+import type { FeedPackageId, WaterPlanId } from '@shared/config/booking-rules'
+import type { Party, StallType, TransportType } from '@shared/types/booking'
 
 export interface HorseConfig {
   stall: StallType
-  targetTemp: number
-  feeding: string
-  water: string
-  careNote: string
+  feedPackage: FeedPackageId
+  waterPlan: WaterPlanId
   insurance: 'buy' | 'decline' | '' // phải chọn rõ cho từng ngựa
 }
 
@@ -18,13 +16,11 @@ export interface BookingDraft {
   direction: 'out' | 'in' // out: Việt Nam → nước bạn
   originId: string
   destId: string
-  gate: string
   departDate: string // YYYY-MM-DD
   consignor: Party
   consignee: Party
   horseIds: string[]
   config: Record<string, HorseConfig>
-  importPermit?: HorseDoc
 }
 
 export const STORAGE_KEY = 'SWP_RACEHORSE_TRANSPORT_REQUEST'
@@ -32,12 +28,12 @@ export const STORAGE_KEY = 'SWP_RACEHORSE_TRANSPORT_REQUEST'
 const blankParty = (): Party => ({ name: '', phone: '', idNumber: '', address: '' })
 
 export const emptyDraft = (): BookingDraft => ({
-  type: '', partner: '', direction: 'out', originId: '', destId: '', gate: '', departDate: '',
+  type: '', partner: '', direction: 'out', originId: '', destId: '', departDate: '',
   consignor: blankParty(), consignee: blankParty(), horseIds: [], config: {},
 })
 
 export const defaultConfig = (): HorseConfig => ({
-  stall: 'standard', targetTemp: TARGET_TEMP.default, feeding: '', water: '', careNote: '', insurance: '',
+  stall: 'standard', feedPackage: 'basic', waterPlan: 'every_3h', insurance: '',
 })
 
 // Bản nháp là một kho dùng chung: cột tóm tắt và các bước cùng đọc, nên khách gõ tới đâu tóm tắt cập nhật tới đó.

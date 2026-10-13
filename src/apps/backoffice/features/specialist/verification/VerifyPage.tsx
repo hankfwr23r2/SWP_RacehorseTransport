@@ -1,16 +1,17 @@
-// Specialist: thẩm định y tế một đơn. Đạt thì ghi chỉ dẫn an sinh; sai sót thì yêu cầu khách bổ sung (bắt buộc ghi lý do).
+// Specialist: duyệt hồ sơ ngựa một đơn. Đạt thì xác nhận; sai sót thì yêu cầu khách bổ sung (bắt buộc ghi lý do).
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useAuth } from '@shared/auth/AuthContext'
-import { HORSE_DOC, HORSE_DOC_TYPES, TARGET_TEMP, type HorseDocType } from '@shared/config/booking-rules'
+import { FEED_PACKAGE, WATER_PLAN, HORSE_DOC, HORSE_DOC_TYPES, type HorseDocType } from '@shared/config/booking-rules'
 import { horseReadiness } from '@shared/lib/booking'
-import { formatDateTime } from '@shared/lib/format'
+import { formatDate, formatDateTime } from '@shared/lib/format'
 import { bookingsApi } from '@shared/services/bookings'
 import { horsesApi } from '@shared/services/horses'
 import { useLoad } from '@shared/services/useLoad'
 import type { Booking, HorseProfile } from '@shared/types/booking'
 import { BookingStatusBadge } from '@shared/ui/BookingStatusBadge'
 import { HorseDocChips } from '@shared/ui/HorseDocChips'
+import { ImageThumb } from '@shared/ui/ImageThumb'
 import { useToast } from '@shared/ui/toast'
 import { History, ReviewChips, TripSummary } from '../../../shared/BookingParts'
 import s from '../../../shared/booking.module.css'
@@ -23,9 +24,6 @@ function Review({ b, horses, onDone }: { b: Booking; horses: HorseProfile[]; onD
   const navigate = useNavigate()
   const { session } = useAuth()
   const [checked, setChecked] = useState<string[]>([])
-  const [temp, setTemp] = useState(String(b.medical?.temp ?? TARGET_TEMP.default))
-  const [rest, setRest] = useState(b.medical?.restPlan || 'Nghỉ xả cơ 30 phút sau mỗi 3 giờ di chuyển')
-  const [note, setNote] = useState(b.medical?.welfareNote ?? '')
   const [fixing, setFixing] = useState(false)
   const [reason, setReason] = useState('')
   const [items, setItems] = useState<string[]>([])
@@ -33,16 +31,13 @@ function Review({ b, horses, onDone }: { b: Booking; horses: HorseProfile[]; onD
 
   const problems = horses.flatMap(h => { const r = horseReadiness(h, b.departAt); return [...r.missing, ...r.expired].map(doc => ({ horseId: h.id, doc })) })
   const allChecked = checked.length === horses.length
-  const tempNum = Number(temp)
-  const tempOk = tempNum >= TARGET_TEMP.min && tempNum <= TARGET_TEMP.max
-  const permitMissing = b.type === 'international' && !b.importPermit
-  const canApprove = allChecked && !problems.length && tempOk && !permitMissing
+  const canApprove = allChecked
 
   const run = async (fn: () => Promise<unknown>, ok: string) => {
     setBusy(true)
     try { await fn(); toast(ok); onDone() } catch (e) { toast(e instanceof Error ? e.message : 'Không thực hiện được', 'error'); setBusy(false) }
   }
-  const approve = () => run(() => bookingsApi.approveMedical(b.id, session!.name, { temp: tempNum, restPlan: rest.trim(), welfareNote: note.trim() }), `Đã xác nhận đạt y tế ${b.id}`)
+  const approve = () => run(() => bookingsApi.approveMedical(b.id, session!.name), `Đã duyệt hồ sơ ngựa ${b.id}`)
   const requestFix = () => run(async () => {
     await bookingsApi.requestResubmission(b.id, session!.name, reason, items.map(i => { const [horseId, doc] = i.split(':'); return { horseId, doc: doc as HorseDocType } }))
     navigate('/specialist/verification')
@@ -64,42 +59,36 @@ function Review({ b, horses, onDone }: { b: Booking; horses: HorseProfile[]; onD
                   {r.ok ? <span className="badge badge-success">Đủ giấy, còn hạn đến ngày đi</span> : <span className="badge badge-danger">Giấy chưa đạt</span>}
                 </div>
                 <HorseDocChips horse={h} at={b.departAt} />
-                {bh && <div className={s.config}><span>Khách yêu cầu <b>{bh.targetTemp}°C</b></span>{bh.feeding && <span>Dinh dưỡng: <b>{bh.feeding}</b></span>}</div>}
-                {b.medical?.status === 'pending' && (
-                  <label className={s.check}><input type="checkbox" checked={checked.includes(h.id)} disabled={!r.ok} onChange={e => { const on = e.target.checked; setChecked(c => (on ? [...c, h.id] : c.filter(x => x !== h.id))) }} />
+                <div className={s.docFiles} aria-label="Giấy khách đã nộp">
+                  {HORSE_DOC_TYPES.map(d => { const f = h.docs[d]; return (
+                    <div key={d} className={s.docFile}>
+                      {f ? <ImageThumb name={f.fileName} size={64} /> : <span className={s.docEmpty}><i className="fa-regular fa-file" aria-hidden="true" /></span>}
+                      <div><b>{HORSE_DOC[d].label}</b><small>{f ? `${f.fileName} · nộp ${formatDateTime(f.uploadedAt)}${f.expiresAt ? ` · hạn ${formatDate(f.expiresAt)}` : ''}` : 'Khách chưa nộp'}</small></div>
+                    </div>
+                  ) })}
+                </div>
+                {bh && <div className={s.config}><span>Thức ăn: <b>{FEED_PACKAGE[bh.feedPackage].label}</b></span><span>Cữ nước: <b>{WATER_PLAN[bh.waterPlan].label}</b></span></div>}
+                {(b.medical?.status ?? 'pending') === 'pending' && (
+                  <label className={s.check}><input type="checkbox" checked={checked.includes(h.id)} onChange={e => { const on = e.target.checked; setChecked(c => (on ? [...c, h.id] : c.filter(x => x !== h.id))) }} />
                     Đã đối chiếu hộ chiếu, microchip {h.microchip} và hạn xét nghiệm EIA/EVA</label>
                 )}
               </div>
             )
           })}
         </div>
-        {b.type === 'international' && <p className={s.hint} style={{ marginTop: 12 }}><i className="fa-solid fa-file-import" /> Import Permit: {b.importPermit ? `${b.importPermit.fileName} (kiểm tra tính pháp lý)` : <b style={{ color: 'var(--red)' }}>chưa có</b>}</p>}
       </div>
 
-      {b.medical?.status === 'pending' && (
+      {(b.medical?.status ?? 'pending') === 'pending' && (
         <>
-          <div className="card">
-            <div className="card-header"><h3><i className="fa-solid fa-heart-pulse" /> Chỉ dẫn an sinh cho chuyến đi</h3></div>
-            <div className={s.form2}>
-              <div className="form-group">
-                <label htmlFor="temp" className="required">Nhiệt độ khoang ({TARGET_TEMP.min}–{TARGET_TEMP.max}°C)</label>
-                <input id="temp" type="number" step={0.5} className={`form-control ${tempOk ? '' : 'invalid'}`} value={temp} onChange={e => setTemp(e.target.value)} />
-                {!tempOk && <div className="form-error">Nhiệt độ phải trong khoảng {TARGET_TEMP.min}–{TARGET_TEMP.max}°C.</div>}
-              </div>
-              <div className="form-group"><label htmlFor="rest">Lịch nghỉ, xả cơ</label><input id="rest" className="form-control" value={rest} onChange={e => setRest(e.target.value)} /></div>
-            </div>
-            <div className="form-group"><label htmlFor="wn">Ghi chú an sinh cho Escort</label><input id="wn" className="form-control" value={note} onChange={e => setNote(e.target.value)} placeholder="VD: Kim Lân dễ căng thẳng, theo dõi mồ hôi" /></div>
-          </div>
-
           <div className="card">
             <div className={s.actionBar}>
               <div>
-                <b>{canApprove ? 'Sẵn sàng xác nhận đạt y tế' : 'Chưa thể xác nhận đạt'}</b>
-                <div className={s.hint}>{!allChecked ? `Cần tick đối chiếu cả ${horses.length} ngựa. ` : ''}{problems.length ? 'Có giấy thiếu hoặc hết hạn, hãy yêu cầu khách bổ sung. ' : ''}{permitMissing ? 'Thiếu Import Permit. ' : ''}{!tempOk ? 'Nhiệt độ ngoài khoảng cho phép.' : ''}</div>
+                <b>{canApprove ? 'Sẵn sàng duyệt hồ sơ ngựa' : 'Chưa thể xác nhận đạt'}</b>
+                <div className={s.hint}>{!allChecked ? `Cần tick đối chiếu cả ${horses.length} ngựa. ` : ''}{problems.length ? 'Có giấy thiếu hoặc hết hạn trên hệ thống. Nếu hồ sơ thực tế đạt, hãy tick đối chiếu để duyệt; nếu không đạt, hãy bấm Yêu cầu bổ sung. ' : ''}</div>
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <button className="btn btn-ghost" onClick={startFix} disabled={busy}><i className="fa-solid fa-rotate-left" /> Yêu cầu bổ sung</button>
-                <button className="btn btn-primary" onClick={approve} disabled={!canApprove || busy}><i className="fa-solid fa-circle-check" /> Xác nhận đạt y tế</button>
+                <button className="btn btn-primary" onClick={approve} disabled={!canApprove || busy}><i className="fa-solid fa-circle-check" /> Duyệt hồ sơ ngựa</button>
               </div>
             </div>
             {fixing && (
@@ -128,7 +117,7 @@ function Review({ b, horses, onDone }: { b: Booking; horses: HorseProfile[]; onD
         <div className="alert alert-warning"><i className="fa-solid fa-hourglass-half" /><div><b>Đang chờ khách bổ sung.</b> {b.medical.resubmit?.reason} Khi khách gửi lại, đơn sẽ quay về mục “Cần thẩm định”.</div></div>
       )}
       {b.medical?.status === 'approved' && (
-        <div className="alert alert-success"><i className="fa-solid fa-circle-check" /><div><b>Đã xác nhận đạt y tế</b> lúc {b.medical.at && formatDateTime(b.medical.at)}. Nhiệt độ {b.medical.temp}°C. {b.medical.restPlan}</div></div>
+        <div className="alert alert-success"><i className="fa-solid fa-circle-check" /><div><b>Đã duyệt hồ sơ ngựa</b> lúc {b.medical.at && formatDateTime(b.medical.at)}.{!b.plan && ' Đang chờ Điều phối viên chốt xe và lộ trình để chuyển Quản lý duyệt báo giá.'}</div></div>
       )}
     </>
   )
@@ -141,19 +130,22 @@ export default function VerifyPage() {
   const { data: horses } = useLoad(async () => {
     const booking = await bookingsApi.get(id)
     if (!booking) return []
-    return (await Promise.all(booking.horses.map(h => horsesApi.get(booking.customer, h.horseId)))).filter(Boolean) as HorseProfile[]
+    return (await Promise.all(booking.horses.map(h => horsesApi.byId(h.horseId)))).filter(Boolean) as HorseProfile[]
   }, [id, b?.medical?.status])
 
   if (!b || !horses) return <div className="page"><div className="wrap"><p className="text-muted">Đang tải…</p></div></div>
-  if (b.intake?.specialist.name !== session!.name) return <div className="page"><div className="wrap"><div className="alert alert-danger"><i className="fa-solid fa-lock" /><div>Đơn {b.id} không được giao cho bạn. <Link to="/specialist/verification" className="text-orange font-semibold">Về danh sách</Link></div></div></div></div>
+  const isAssigned = !b.intake || b.intake.specialist.name === session?.name || session?.role === 'admin' || session?.role === 'manager'
+  if (!isAssigned) return <div className="page"><div className="wrap"><div className="alert alert-danger"><i className="fa-solid fa-lock" /><div>Đơn {b.id} hiện được giao cho {b.intake?.specialist.name || 'chuyên viên khác'}. <Link to="/specialist/verification" className="text-orange font-semibold">Về danh sách</Link></div></div></div></div>
 
   return (
     <div className="page">
       <div className="wrap">
-        <div className="breadcrumb"><Link to="/specialist/verification">Thẩm định y tế</Link> / <span className="text-orange font-semibold">{b.id}</span></div>
+        <div className="breadcrumb"><Link to="/specialist/verification">Duyệt hồ sơ ngựa</Link> / <span className="text-orange font-semibold">{b.id}</span></div>
         <div className="page-header" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}><h1>Đơn {b.id}</h1><BookingStatusBadge status={b.status} audience="staff" /><ReviewChips b={b} /></div>
+        {!b.intake && <div className="alert alert-info" style={{ marginBottom: 16 }}><i className="fa-solid fa-circle-info" /><div>Đơn chưa được Quản lý tiếp nhận và phân công chính thức. Đang hiển thị ở chế độ xem trước.</div></div>}
         <div className={s.layout}>
           <div className={s.main}>
+            {b.sentBack?.to === 'specialist' && <div className="alert alert-warning"><i className="fa-solid fa-rotate-left" /><div><b>Quản lý trả lại đơn này:</b> {b.sentBack.reason} <span className="sub-text">({b.sentBack.by}, {formatDateTime(b.sentBack.at)})</span></div></div>}
             <div className="card"><div className="card-header"><h3><i className="fa-solid fa-route" /> Chuyến đi</h3></div><TripSummary b={b} /></div>
             <Review key={b.medical?.status} b={b} horses={horses} onDone={reload} />
           </div>
