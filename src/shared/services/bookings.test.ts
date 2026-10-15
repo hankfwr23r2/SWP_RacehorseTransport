@@ -60,6 +60,7 @@ describe('hành trình một xe (Flow 4)', () => {
   })
   it('giao ngựa: cần Escort kiểm tra lần cuối và ảnh biên bản có chữ ký', async () => {
     expect(await fail(bookingsApi.completeDelivery(ID, T, D))).toMatch(/Chưa tới điểm giao/)
+    expect(await fail(bookingsApi.reportDeliveryTimeout(ID, T, D, { timeoutReason: 'UNREACHABLE', selectedAction: 'STABLE_NEARBY', note: 'Chưa tới' }))).toMatch(/Chưa tới điểm giao/)
     await bookingsApi.arriveCheckpoint(ID, T, D, 'capture_delivery.jpg')
     expect(await fail(bookingsApi.completeDelivery(ID, T, D))).toMatch(/kiểm tra thể trạng/)
     await bookingsApi.submitWelfare(ID, T, E, { condition: 'normal', waterLiters: 2, hay: false, photo: 'ngua_cuoi.jpg', note: 'Ngựa khỏe' })

@@ -699,6 +699,72 @@ export const bookingsApi = {
     return out
   },
 
+  // Driver: báo quá hạn 2 giờ bàn giao ngựa do người nhận không tới / từ chối / chưa sẵn sàng, kích hoạt an sinh
+  reportDeliveryTimeout: async (
+    id: string,
+    tripId: string,
+    by: string,
+    input: {
+      timeoutReason: 'UNREACHABLE' | 'DESTINATION_UNREADY' | 'CONSIGNEE_REJECTED'
+      selectedAction: 'STABLE_NEARBY' | 'RETURN_TO_HQ'
+      partnerName?: string
+      partnerPhone?: string
+      estimatedCost?: number
+      note: string
+    }
+  ): Promise<Booking> => {
+    const b = must(id)
+    const t = liveTrip(b, tripId)
+    running(t)
+    const cp = currentCheckpoint(t)
+    if (cp?.type !== 'delivery' || !cp.arrivedAt) throw new Error('Chưa tới điểm giao.')
+
+    const reasonLabel =
+      input.timeoutReason === 'UNREACHABLE' ? 'Không liên lạc được người nhận' :
+      input.timeoutReason === 'DESTINATION_UNREADY' ? 'Cơ sở đích chưa sẵn sàng nhận' : 'Người nhận từ chối nhận'
+    const actionLabel =
+      input.selectedAction === 'STABLE_NEARBY'
+        ? `Thuê chuồng lưu trú khẩn cấp gần nhất${input.partnerName ? ` (${input.partnerName})` : ''}`
+        : 'Chở ngựa quay về Trụ sở chính Việt Nam'
+
+    const incId = INCIDENT_NO(b)
+    const inc: Incident = {
+      id: incId,
+      tripId,
+      kind: 'horse_health',
+      reportedBy: by,
+      reportedAt: Date.now(),
+      location: cp.place,
+      photo: cp.photo || 'handover_timeout.jpg',
+      note: `[Quá hạn 2h bàn giao] Lý do: ${reasonLabel}. Phương án: ${actionLabel}. Ghi chú: ${input.note.trim() || 'Không có'}`,
+      status: 'active',
+      plan: {
+        action: 'to_station',
+        station: input.partnerName || 'Trạm lưu trú khẩn cấp gần nhất',
+        restMinutes: 720,
+        newEta: Date.now() + 12 * 3600 * 1000,
+        note: actionLabel,
+        at: Date.now(),
+        by,
+      },
+      approval: { at: Date.now(), by: 'Hệ thống tự động kích hoạt an sinh' },
+      expenses: input.estimatedCost && input.estimatedCost > 0 ? [{
+        id: `EXP-${b.id.slice(-4)}-${(b.incidents ?? []).reduce((n, i) => n + i.expenses.length, 0) + 1}`,
+        category: 'holding_stable',
+        label: `Phí thuê chuồng / lưu ca xe quá hạn 2h (${actionLabel})`,
+        photo: 'chung_tu_luu_chuong.jpg',
+        amount: Math.round(input.estimatedCost),
+        payer: 'customer',
+        at: Date.now(),
+        by,
+      }] : [],
+    }
+    b.incidents = [...(b.incidents ?? []), inc]
+    const out = commitIncident(b, by, `Xe ${tripId} kích hoạt phương án an sinh quá hạn 2h: ${actionLabel}`)
+    notify(b, ['manager', 'coordinator', 'customer'], `Quá hạn 2h giao ngựa — đơn ${id}`, `Xe ${tripId}: ${actionLabel}. Chi phí phát sinh được tính vào quyết toán.`, { manager: LINK.manager.incidents, coordinator: '/coordinator/incidents' })
+    return out
+  },
+
   // ===== Flow 5: sự cố khẩn cấp =====
   // Driver / Escort: bấm SOS cho một xe đang chạy
   reportIncident: async (id: string, tripId: string, by: string, kind: IncidentKind, photo: string, note: string): Promise<Booking> => {
